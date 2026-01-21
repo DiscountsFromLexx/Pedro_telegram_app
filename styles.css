@@ -547,14 +547,14 @@ input:checked + .slider:before {
     transform: scale(1.1);
 }
 
-@media (max-width: 500px) {  
+@media (max-width: 800px) {  
     .main-container {
         padding: 4px;
-        width: 100%;
+        width: 200%;
     }
     .container {
         padding: 6px;
-        width: 100%;
+        width: 200%;
     }
     .instruction-btn {
         top: 10px;
