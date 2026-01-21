@@ -403,6 +403,11 @@ input:checked + .slider:before {
     padding: 10px;
 }
 
+.checkbox-group {
+    margin-bottom: 10px;
+    text-align: left;
+}
+
 .input-group {
     margin-bottom: 16px;
     text-align: left;
