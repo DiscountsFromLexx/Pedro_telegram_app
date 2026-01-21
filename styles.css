@@ -9,7 +9,7 @@ body {
     justify-content: center;
     align-items: center;
     min-height: 100vh;
-    min-width: 300px;
+    min-width: 100px;
     font-family: Helvetica, Arial, sans-serif;
     -webkit-tap-highlight-color: transparent;
 }
@@ -550,11 +550,11 @@ input:checked + .slider:before {
 @media (max-width: 800px) {  
     .main-container {
         padding: 4px;
-        width: 200%;
+        width: 100%;
     }
     .container {
         padding: 6px;
-        width: 200%;
+        width: 100%;
     }
     .instruction-btn {
         top: 10px;
