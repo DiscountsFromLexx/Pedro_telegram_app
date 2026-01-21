@@ -4,43 +4,48 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>Telegram Mini App - Знахідки</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <!-- Додаємо Telegram Web Apps SDK -->
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
 </head>
-<body class="dark-theme"> <!-- Додаємо клас за замовчуванням -->
+<body class="dark-theme">
     <div class="main-container">
         <div class="container">
-            <!-- Додаємо перемикач тем -->
-            <label class="theme-toggle">
-                <input type="checkbox" id="themeToggle">
-                <span class="slider"></span>
-            </label>
-            <button type="button" class="instruction-btn">Інструкції</button>
-            <a href="https://t.me/myznahidki" target="_blank" class="instruction-img-link">
+            <a href="https://t.me/+Nmsg2YySEj8zYTVi" target="_blank" class="znahidka-btn">ЗНАХІДКИ</a>
+            <button type="button" class="instruction-btn">ІНСТРУКЦІЇ</button>
+            <a href="https://t.me/+Nmsg2YySEj8zYTVi" target="_blank" class="instruction-img-link">
                 <img src="https://raw.githubusercontent.com/DiscountsFromAli/X-CUBOT/main/images/znahidki.PNG" alt="Знахідки" class="instruction-img">
             </a>
-            <!-- Решта HTML без змін -->
             <div class="header-text">Ставайте співавтором каналу, діліться своїми знахідками!</div>
             <div class="block-form">
                 <form id="telegramForm">
                     <div class="input-group">
                         <label for="field1">Ціна:</label>
-                        <input type="text" id="field1" name="field1" placeholder="Введіть кінцеву ціну" required>
-                    </div>
-                    <div class="input-group">
-                        <label for="field2">Знижка:</label>
-                        <input type="text" id="field2" name="field2" placeholder="Введіть розмір знижки (обов’язково)" required>
-                    </div>
-                    <div class="input-group">
-                        <label for="field3">Додаткові умови:</label>
-                        <input type="text" id="field3" name="field3" placeholder="Вкажіть умови, якщо є (не обов’язково)">
+                        <input type="text" id="field1" name="field1" placeholder="Тільки цифри (обов’язково)" required>
                     </div>
                     <div class="input-group">
                         <label for="field4">Посилання:</label>
-                        <input type="text" id="field4" name="field4" placeholder="Вставте посилання на товар (обов’язково)" required>
+                        <input type="text" id="field4" name="field4" placeholder="Посилання на товар (обов’язково)" required>
                     </div>
                     <div class="input-group">
-                        <label for="field5">Коментарі:</label>
-                        <input type="text" id="field5" name="field5" placeholder="Додайте коментар (не обов’язково)">
+                        <label for="field5">Характеристики:</label>
+                        <input type="text" id="field5" name="field5" placeholder="Кількість, колір тощо, (не обов’язково)">
+                    </div>                     
+                    <div class="input-group">
+                        <label for="field3">Додаткові умови:</label>
+                        <input type="text" id="field3" name="field3" placeholder="Монети, рання, доставка тощо (не обов’язково)">
+                    </div>                    
+                    <div class="input-group">
+                        <label>
+                            <input type="checkbox" id="anonymous" name="anonymous"> Приховати ім’я (анонімно)
+                        </label>
+                    </div>
+                    <div class="input-group" id="customNameGroup" style="display: none;">
+                        <label for="customName">Власне ім’я:</label>
+                        <input type="text" id="customName" name="customName" placeholder="Введіть ім’я або залиштесь анонімним">
                     </div>
                     <div class="submit-group">
                         <button type="submit" class="submit-btn">☀ ПОДІЛИТИСЬ ☀</button>
@@ -48,7 +53,6 @@
                     </div>
                 </form>
             </div>
-            <!-- Решта HTML без змін -->
             <div class="channels-text">
                 <div class="tgkch-text">🔆 НАШІ ТЕЛЕГРАМ КАНАЛИ</div>
                 <p>
@@ -67,21 +71,30 @@
             </div>
             <div class="iheader-text" id="instructions">Інструкції</div>
             <div class="instructions-text">
-                <p>✅ У полі "Ціна" вказуйте ціну та валюту.</p>
-                <p>✅ У полі "Знижка" вказуйте розмір знижки (за монети, без монет).</p>
-                <p>✅ Поле "Додаткові умови" необов’язкове, вказуйте купони чи інші умови.</p>
-                <p>✅ У полі "Посилання" вставляйте посилання з мобільного додатку ("https://a.aliexpress.com/...") або сайту ("https://www.aliexpress.com/...").</p>
-                <p>🚫 Заборонені посилання типу "https://s.click.aliexpress.com/...".</p>
+                <p>✅ У полі "Ціна" вказуйте тільки ціну, округлену без десятих.</p>
+                <p>✅ У полі "Посилання" вставляйте посилання з мобільного додатку ("https://a.aliexpress.com/...; https://s.click.aliexpress.com/...") або сайту ("https://www.aliexpress.com/...").</p>
+                <p>✅ Поле "Характеристики" необов’язкове, вказуйте назву або інші характеристики (кількість, колір тощо)</p>
+                <p>✅ Поле "Додаткові умови" необов’язкове, вказуйте розділ (монети, рання тощо), купони чи інші умови.</p><br>             
                 <p>♥️ Діліться товаром, щоб зробити когось таким же щасливчиком, як ви!</p>
                 <p>
-                    <strong>Ваш товар буде опубліковано на каналі ЗНАХІДКИ</strong><br>
-                    <a href="https://t.me/myznahidki" target="_blank">https://t.me/myznahidki</a>
+                    <strong>Ваш товар буде опубліковано на каналі ЗНАХІДКИ</strong>
+                    <a href="https://t.me/+Nmsg2YySEj8zYTVi" target="_blank">https://t.me/+Nmsg2YySEj8zYTVi</a>
                 </p>
-                <p>シ Гарного настрою!</p>
+                <p><br>シ Гарного настрою!</p>
             </div>
+        </div>
+        <!-- Перемикач тем у окремому контейнері -->
+        <div class="theme-toggle-container">
+            <label class="theme-toggle">
+                <input type="checkbox" id="themeToggle">
+                <span class="slider"></span>
+            </label>
+            <span class="theme-label theme-label-moon">🌙</span>
+            <span class="theme-label theme-label-sun">🔆</span>
         </div>
         <button class="scroll-top-btn" onclick="scrollToTop()">Вгору</button>
     </div>
-    <script src="app.js"></script>
+    <!-- Підключаємо script.js після SDK -->
+    <script src="script.js"></script>
 </body>
 </html>
