@@ -13,19 +13,19 @@ body {
     -webkit-tap-highlight-color: transparent;
 }
 
-/* Темний режим (поточний стиль) */
+/* Темний режим (старий styles.css) */
 body.dark-theme {
-    background: linear-gradient(to bottom, #e0ffff, #ffffff);
+    background: linear-gradient(to bottom, #000000, #191970);
 }
 
 body.dark-theme .container {
-    background: #fff;
+    background: linear-gradient(to bottom, #000000, #191970);
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
 }
 
 body.dark-theme .instruction-btn {
-    background: #ffffff;
-    color: #1E90FF;
+    background: transparent;
+    color: #FFFFFF;
     border: 2px solid #1E90FF;
 }
 
@@ -34,17 +34,29 @@ body.dark-theme .instruction-btn:hover {
     color: #ffffff;
 }
 
+body.dark-theme .znahidka-btn {
+    background: transparent;
+    color: #FFFFFF;
+    border: 2px solid #1E90FF;
+}
+
+body.dark-theme .znahidka-btn:hover {
+    background: #1E90FF;
+    color: #ffffff;
+}
+
 body.dark-theme .header-text {
-    color: #333;
+    color: #FFFFFF;
 }
 
 body.dark-theme .input-group label {
-    color: #FF8C00;
+    color: #FFFFFF;
 }
 
 body.dark-theme .input-group input {
     border: 1px solid #4682B4;
-    background: #f9f9f9;
+    color: #FFFFFF;
+    background: #000000;
 }
 
 body.dark-theme .input-group input:focus {
@@ -53,7 +65,8 @@ body.dark-theme .input-group input:focus {
 }
 
 body.dark-theme .submit-btn, body.dark-theme .clear-btn {
-    background: linear-gradient(to bottom, #1E90FF, #4682B4);
+    background: linear-gradient(to bottom, #4682B4, #4682B4);
+    border: 1px solid #1E90FF;
 }
 
 body.dark-theme .submit-btn:hover, body.dark-theme .clear-btn:hover {
@@ -61,19 +74,31 @@ body.dark-theme .submit-btn:hover, body.dark-theme .clear-btn:hover {
 }
 
 body.dark-theme .channels-text {
-    color: #333;
+    color: #FFFFFF;
 }
 
 body.dark-theme .tgkch-text {
-    color: #FF8C00;
+    color: #FFFFFF;
 }
 
 body.dark-theme .iheader-text {
-    color: #FF8C00;
+    color: #FFFFFF;
 }
 
 body.dark-theme .instructions-text {
-    color: #4682B4;
+    color: #FFFFFF;
+}
+
+body.dark-theme .instructions-text a {
+    color: #00BFFF;
+}
+
+body.dark-theme .instructions-text a:hover {
+    color: #B2EBF2;
+}
+
+body.dark-theme .theme-label {
+    color: #FFFFFF;
 }
 
 /* Світлий режим (на основі наданого коду) */
@@ -89,33 +114,39 @@ body.light-theme .instruction-btn {
     background: transparent;
     color: #4682B4;
     border: 1px solid #000080;
-    font-family: 'Montserrat', sans-serif;
-    letter-spacing: 2px;
+    font-weight: 300;
 }
 
 body.light-theme .instruction-btn:hover {
+    background: #191970;
+    color: #ffffff;
+}
+
+body.light-theme .znahidka-btn {
+    background: transparent;
+    color: #4682B4;
+    border: 1px solid #000080;
+    font-weight: 300;
+}
+
+body.light-theme .znahidka-btn:hover {
     background: #1E90FF;
     color: #ffffff;
 }
 
 body.light-theme .header-text {
     color: #000000;
-    font-family: 'Montserrat', sans-serif;
-    letter-spacing: 2px;
+    font-weight: 500;
 }
 
 body.light-theme .input-group label {
     color: #000000;
-    font-family: 'Montserrat', sans-serif;
-    letter-spacing: 2px;
 }
 
 body.light-theme .input-group input {
     border: 0px solid #000080;
-    background: #F5F5F5;
     color: #000000;
-    font-family: 'Montserrat', sans-serif;
-    letter-spacing: 2px;
+    background: #F5F5F5;
 }
 
 body.light-theme .input-group input:focus {
@@ -126,8 +157,6 @@ body.light-theme .input-group input:focus {
 body.light-theme .submit-btn, body.light-theme .clear-btn {
     background: #4682B4;
     border: 1px solid #FFFFFF;
-    font-family: 'Montserrat', sans-serif;
-    letter-spacing: 5px;
 }
 
 body.light-theme .submit-btn:hover, body.light-theme .clear-btn:hover {
@@ -135,45 +164,82 @@ body.light-theme .submit-btn:hover, body.light-theme .clear-btn:hover {
 }
 
 body.light-theme .channels-text {
-    color: #FFFFFF;
-    font-family: 'Montserrat', sans-serif;
-    letter-spacing: 1px;
+    color: #000000;
+    font-weight: 300;
 }
 
 body.light-theme .tgkch-text {
-    color: #FFFFFF;
-    font-family: 'Montserrat', sans-serif;
-    letter-spacing: 1px;
+    color: #000000;
 }
 
 body.light-theme .iheader-text {
-    color: #FFFFFF;
-    font-family: 'Montserrat', sans-serif;
+    color: #000000;
 }
 
 body.light-theme .instructions-text {
-    color: #FFFFFF;
-    font-family: 'Montserrat', sans-serif;
-    letter-spacing: 1px;
+    color: #000000;
 }
 
 body.light-theme .instructions-text a {
-    color: #00BFFF;
+    color: #000000;
 }
 
 body.light-theme .instructions-text a:hover {
     color: #B2EBF2;
 }
 
-/* Стилі для перемикача тем */
-.theme-toggle {
-    position: fixed;
-    top: 15px;
-    left: 15px;
-    display: inline-block;
-    width: 60px;
-    height: 34px;
+body.light-theme .theme-label {
+    color: #000000;
+}
+
+/* Стилі для перемикача тем (зменшений розмір, окремий контейнер, з написом) */
+.theme-toggle-container {
+    position: absolute;
+    top: 60px; /* Нижче логотипу (80px висота + 10px відступ) */
+    right: 30px; /* Праворуч, як instruction-btn 36 */
+    display: flex;
+    align-items: center;
+    gap: 2px; /* 8зч */
     z-index: 1000;
+}
+
+.theme-label {
+    font-size: 14px;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 600;
+    transition: font-size 0.3s ease;
+}
+
+body.dark-theme .theme-label {
+    color: #FFFFFF;
+}
+
+body.light-theme .theme-label {
+    color: #000000;
+}
+
+.theme-label-moon {
+    order: -1; /* Розташовуємо 🌙 ліворуч від перемикача */
+}
+
+.theme-label-sun {
+    order: 1; /* Розташовуємо 🔆 праворуч від перемикача */
+}
+
+.theme-label.active {
+    font-size: 18px; /* Більший розмір для активного режиму */
+}
+
+.theme-label:not(.active) {
+    font-size: 12px; /* Менший розмір для неактивного режиму */
+}
+
+.theme-toggle {
+    position: relative;
+    display: inline-block;
+    height: 40px; /* Зменшено з 34px */
+    width: 94px;  /*  64px */   
+    
 }
 
 .theme-toggle input {
@@ -189,19 +255,48 @@ body.light-theme .instructions-text a:hover {
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: #ccc;
+    background-color: #000000; /* задній фон темного режиму */
     transition: 0.4s;
-    border-radius: 34px;
+    border: 1px solid #FFFFFF;
+    border-radius: 24px;
 }
 
+/* Напис на повзунку */
+.slider:after {
+    position: absolute;
+    content: "темний режим";
+    font-size: 12px;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 600;
+    color: #D3D3D3;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%; /* Забезпечує заповнення повзунка */
+    text-align: center; /* Чітке горизонтальне центрування */
+    transition: 0.4s;
+}
+
+input:checked + .slider:after {
+    content: "світлий режим";
+    color: #FFFFFF;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+    text-align: center;
+}
+
+/* Овальний перемикач */
 .slider:before {
     position: absolute;
     content: "";
-    height: 26px;
-    width: 26px;
-    left: 4px;
-    bottom: 4px;
-    background-color: white;
+    height: 30px; /* 14px */
+    width: 30px; /* 14px */
+    left: -30px; /* Початкове положення 2 */
+    bottom: 2px; /* відстань перемикача знизу 11 */
+    background-color: transparent; /* Кольор овального перемикача */
+    border: 1px solid #FFFFFF;
     transition: 0.4s;
     border-radius: 50%;
 }
@@ -211,15 +306,23 @@ input:checked + .slider {
 }
 
 input:checked + .slider:before {
-    transform: translateX(26px);
+    transform: translateX(119px); /* Відстань прокрутки перемикача 73 */
 }
 
-/* Решта стилів без змін */
+.theme-label {
+    font-size: 16px; /* Збільшив з 4px для читабельності */
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 400;
+    letter-spacing: 1px;
+}
+
+/* Решта стилів зі старого styles.css */
 .main-container {
     display: flex;
     flex-direction: column;
     align-items: center;
-    width: 100%;
+    width: 90%;
+    min-width: 300px;
     max-width: 600px;
     padding: 20px;
 }
@@ -229,16 +332,70 @@ input:checked + .slider:before {
     padding: 20px;
     border-radius: 12px;
     text-align: center;
+    position: relative;
 }
 
+.instruction-btn {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: transparent;
+    color: #FFFFFF;
+    border: 2px solid #1E90FF;
+    border-radius: 8px;
+    padding: 10px 20px;
+    font-size: 16px;
+    font-weight: 100;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    z-index: 1000;
+    font-family: 'Montserrat', sans-serif;
+    -webkit-tap-highlight-color: transparent;
+    letter-spacing: 2px;
+}
+.instruction-btn:hover {
+    background: #1E90FF;
+    color: #ffffff;
+}
+.znahidka-btn {
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    background: transparent;
+    color: #FFFFFF;
+    border: 2px solid #1E90FF;
+    border-radius: 8px;
+    padding: 10px 20px;
+    font-size: 16px;
+    font-weight: 100;
+    cursor: pointer;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    z-index: 1000;
+    font-family: 'Montserrat', sans-serif;
+    -webkit-tap-highlight-color: transparent;
+    letter-spacing: 2px;
+}
+.znahidka-btn:hover {
+    background: #1E90FF;
+    color: #ffffff;
+}
 .instruction-img-link {
     margin-top: 20px;
 }
-
 .instruction-img {
     width: 80px;
     height: 80px;
     border-radius: 10px;
+}
+
+.header-text {
+    margin-top: 20px;
+    font-size: 20px;
+    font-weight: 300;
+    font-family: 'Montserrat', sans-serif;
+    letter-spacing: 2px;
+    text-align: center;
 }
 
 .block-form {
@@ -253,8 +410,10 @@ input:checked + .slider:before {
 
 .input-group label {
     display: block;
-    font-size: 16px;
-    font-weight: 600;
+    font-size: 20px;
+    font-weight: 400;
+    font-family: 'Montserrat', sans-serif;
+    letter-spacing: 2px;
     margin-bottom: 5px;
 }
 
@@ -262,7 +421,10 @@ input:checked + .slider:before {
     width: 100%;
     padding: 10px;
     border-radius: 6px;
-    font-size: 30px;
+    font-size: 14px;
+    font-weight: 400;
+    font-family: 'Montserrat', sans-serif;
+    letter-spacing: 2px;
     transition: border-color 0.3s ease;
 }
 
@@ -273,12 +435,28 @@ input:checked + .slider:before {
     margin-top: 20px;
 }
 
-.submit-btn, .clear-btn {
+.submit-btn {
     padding: 12px;
-    border: none;
-    border-radius: 8px;
+    border-radius: 6px;
     font-size: 16px;
-    font-weight: 600;
+    font-weight: 300;
+    font-family: 'Montserrat', sans-serif;
+    -webkit-tap-highlight-color: transparent;
+    color: #FFFFFF;
+    letter-spacing: 5px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+}
+.clear-btn {
+    padding: 12px;
+    border-radius: 6px;
+    font-size: 16px;
+    font-weight: 300;
+    font-family: 'Montserrat', sans-serif;
+    -webkit-tap-highlight-color: transparent;
+    letter-spacing: 5px;
+    color: #FF0000;
     cursor: pointer;
     transition: all 0.3s ease;
     box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
@@ -296,12 +474,19 @@ input:checked + .slider:before {
 .channels-text {
     margin-top: 30px;
     font-size: 16px;
+    font-weight: 200;
+    font-family: 'Montserrat', sans-serif;
+    -webkit-tap-highlight-color: transparent;
+    letter-spacing: 1px;
     text-align: left;
 }
 
 .tgkch-text {
     font-size: 18px;
-    font-weight: bold;
+    font-weight: 900;
+    font-family: 'Montserrat', sans-serif;
+    -webkit-tap-highlight-color: transparent;
+    letter-spacing: 1px;
     margin-bottom: 10px;
 }
 
@@ -317,15 +502,26 @@ input:checked + .slider:before {
 .iheader-text {
     margin-top: 40px;
     font-size: 22px;
-    font-weight: bold;
+    font-weight: 900;
+    font-family: 'Montserrat', sans-serif;
+    -webkit-tap-highlight-color: transparent;
     text-align: left;
 }
 
 .instructions-text {
     margin-top: 10px;
     font-size: 16px;
+    font-weight: 400;
+    font-family: 'Montserrat', sans-serif;
+    -webkit-tap-highlight-color: transparent;
+    letter-spacing: 1px;
     text-align: left;
     line-height: 1.5;
+}
+
+.instructions-text a {
+    text-decoration: none;
+    transition: color 0.3s ease;
 }
 
 .scroll-top-btn {
@@ -350,24 +546,55 @@ input:checked + .slider:before {
     transform: scale(1.1);
 }
 
-@media (max-width: 500px) {
+@media (max-width: 500px) {  
+    .main-container {
+        padding: 4px;
+        width: 100%;
+    }
     .container {
-        padding: 15px;
+        padding: 6px;
+        width: 100%;
     }
     .instruction-btn {
         top: 10px;
         right: 10px;
         padding: 8px 15px;
         font-size: 14px;
+        font-weight: 400;
     }
-    .theme-toggle {
+    .znahidka-btn {
         top: 10px;
         left: 10px;
+        padding: 8px 15px;
+        font-size: 14px;
+        font-weight: 400;
+        text-decoration: none;
     }
+    .theme-toggle-container {
+        top: 60px;
+        right: 10px;
+        gap: 1px;
+    }
+    .theme-label {
+        font-size: 10px; /* Зменшено з 14px */
+        font-family: 'Montserrat', sans-serif;
+        font-weight: 100;
+        color: #FF0000;
+
+    .theme-label.active {
+        font-size: 16px;
+    }
+    .theme-label:not(.active) {
+        font-size: 8px;
+    }
+    
     .header-text {
         font-size: 18px;
+        font-weight: 200;
     }
     .input-group input {
-        font-size: 12px;
+        font-size: 14px;
+        font-family: 'Montserrat', sans-serif;
+        font-weight: 500;
     }
 }
