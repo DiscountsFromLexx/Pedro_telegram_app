@@ -9,7 +9,6 @@ body {
     justify-content: center;
     align-items: center;
     min-height: 100vh;
-    min-width: 100px;
     font-family: Helvetica, Arial, sans-serif;
     -webkit-tap-highlight-color: transparent;
 }
@@ -265,7 +264,7 @@ body.light-theme .theme-label {
 /* Напис на повзунку */
 .slider:after {
     position: absolute;
-    content: "темний режим";
+    content: "dark mode";
     font-size: 12px;
     font-family: 'Montserrat', sans-serif;
     font-weight: 600;
@@ -279,7 +278,7 @@ body.light-theme .theme-label {
 }
 
 input:checked + .slider:after {
-    content: "світлий режим";
+    content: "white mode";
     color: #FFFFFF;
     top: 50%;
     left: 50%;
