@@ -329,7 +329,7 @@ input:checked + .slider:before {
 }
 
 .container {
-    width: 100%;
+    width: 300%;
     padding: 20px;
     border-radius: 12px;
     text-align: center;
