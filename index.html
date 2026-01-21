@@ -15,13 +15,22 @@
     <div class="main-container">
         <div class="container">
             <a href="https://t.me/+Nmsg2YySEj8zYTVi" target="_blank" class="znahidka-btn">COUPONS</a>
-            <button type="button" class="instruction-btn">❓HOW TO❓</button>
+            <button type="button" class="instruction-btn">❓HOW TO</button>
             <a href="https://t.me/+Nmsg2YySEj8zYTVi" target="_blank" class="instruction-img-link">
                 <img src="https://raw.githubusercontent.com/DiscountsFromAli/X-CUBOT/main/images/pedro.jpeg" alt="Знахідки" class="instruction-img">
             </a>
             <div class="header-text">Багато ідей та твоє натхнення - запорука успіху!</div>
             <div class="block-form">
                 <form id="telegramForm">
+                    <div class="input-group">
+                        <label>
+                            <input type="checkbox" id="anonymous" name="anonymous"> Приховати ім’я (анонімно)
+                        </label>
+                    </div>
+                    <div class="input-group" id="customNameGroup" style="display: none;">
+                        <label for="customName">Власне ім’я:</label>
+                        <input type="text" id="customName" name="customName" placeholder="Введіть ім’я або залиштесь анонімним">
+                    </div>
                     <div class="input-group">
                         <label for="field4">Link from Aliexpress</label>
                         <input type="text" id="field4" name="field4" placeholder="Insert a link to the product from Aliexpress" required>
@@ -38,15 +47,7 @@
                         <label for="field3">Додаткові умови:</label>
                         <input type="text" id="field3" name="field3" placeholder="Монети, рання, доставка тощо (не обов’язково)">
                     </div>                    
-                    <div class="input-group">
-                        <label>
-                            <input type="checkbox" id="anonymous" name="anonymous"> Приховати ім’я (анонімно)
-                        </label>
-                    </div>
-                    <div class="input-group" id="customNameGroup" style="display: none;">
-                        <label for="customName">Власне ім’я:</label>
-                        <input type="text" id="customName" name="customName" placeholder="Введіть ім’я або залиштесь анонімним">
-                    </div>
+                    
                     <div class="submit-group">
                         <button type="submit" class="submit-btn">☀ ПОДІЛИТИСЬ ☀</button>
                         <button type="button" class="clear-btn">🧹 ОЧИСТИТИ 🧹</button>
