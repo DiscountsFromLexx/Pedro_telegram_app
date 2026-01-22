@@ -406,6 +406,7 @@ input:checked + .slider:before {
 .checkbox-group {
     margin-bottom: 5px;
     font-size: 14px;
+    letter-spacing: 4px;
     color: #FFFFFF;
     text-align: left;
     position: left;
