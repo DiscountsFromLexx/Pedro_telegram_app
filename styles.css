@@ -462,7 +462,7 @@ input:checked + .slider:before {
     box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
 }
 .clear-btn {
-    padding: 12px;
+    padding: 2px;
     border-radius: 6px;
     font-size: 14px;
     font-weight: 300;
@@ -609,5 +609,17 @@ input:checked + .slider:before {
         font-size: 12px;
         font-family: 'Montserrat', sans-serif;
         font-weight: 500;
+    }
+    .checkbox-group {
+        margin-bottom: 5px;
+        font-size: 14px;
+        letter-spacing: 4px;
+        color: #FFFFFF;
+        text-align: left;
+        position: left;
+        border: 1px solid #1E90FF;
+        border-radius: 8px;
+        padding: 10px 20px;
+        margin-bottom: 6px;
     }
 }
