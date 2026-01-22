@@ -605,7 +605,7 @@ input:checked + .slider:before {
         font-weight: 200;
     }
     .input-group input {
-        font-size: 14px;
+        font-size: 12px;
         font-family: 'Montserrat', sans-serif;
         font-weight: 500;
     }
