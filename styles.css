@@ -405,13 +405,14 @@ input:checked + .slider:before {
 
 .checkbox-group {
     margin-bottom: 5px;
-    font-size: 12px;
+    font-size: 14px;
     color: #FFFFFF;
     text-align: left;
     position: left;
     border: 1px solid #1E90FF;
     border-radius: 8px;
     padding: 10px 20px;
+    margin-bottom: 6px;
 }
 
 .input-group {
