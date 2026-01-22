@@ -449,9 +449,9 @@ input:checked + .slider:before {
 }
 
 .submit-btn {
-    padding: 12px;
+    padding: 4px;
     border-radius: 6px;
-    font-size: 14px;
+    font-size: 10px;
     font-weight: 300;
     font-family: 'Montserrat', sans-serif;
     -webkit-tap-highlight-color: transparent;
@@ -462,9 +462,9 @@ input:checked + .slider:before {
     box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
 }
 .clear-btn {
-    padding: 2px;
+    padding: 4px;
     border-radius: 6px;
-    font-size: 14px;
+    font-size: 10px;
     font-weight: 300;
     font-family: 'Montserrat', sans-serif;
     -webkit-tap-highlight-color: transparent;
