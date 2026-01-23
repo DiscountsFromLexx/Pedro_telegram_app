@@ -428,7 +428,7 @@ input:checked + .slider:before {
 
 .input-group label {
     display: block;
-    font-size: 20px;
+    font-size: 14px;
     font-weight: 400;
     font-family: 'Montserrat', sans-serif;
     letter-spacing: 2px;
@@ -439,7 +439,7 @@ input:checked + .slider:before {
     width: 100%;
     padding: 10px;
     border-radius: 6px;
-    font-size: 14px;
+    font-size: 10px;
     font-weight: 400;
     font-family: 'Montserrat', sans-serif;
     letter-spacing: 2px;
