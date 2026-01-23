@@ -448,7 +448,7 @@ input:checked + .slider:before {
 
 .submit-group {
     display: flex;    
-    gap: 15px;
+    gap: 25px;
     margin-top: 10px;
 }
 
@@ -460,7 +460,7 @@ input:checked + .slider:before {
     font-weight: 300;
     font-family: 'Montserrat', sans-serif;
     -webkit-tap-highlight-color: transparent;
-    color: #FFFFFF;
+    color: #FF0000;
     letter-spacing: 1px;
     cursor: pointer;
     transition: all 0.3s ease;
