@@ -154,6 +154,11 @@ body.light-theme .input-group input:focus {
     box-shadow: 0 0 5px rgba(30, 144, 255, 0.3);
 }
 
+body.light-theme .checkbox-group {
+    background: #4682B4;
+    border: 1px solid #FFFFFF;
+}
+
 body.light-theme .submit-btn, body.light-theme .clear-btn {
     background: #4682B4;
     border: 1px solid #FFFFFF;
@@ -444,7 +449,7 @@ input:checked + .slider:before {
 .submit-group {
     display: flex;
     
-    gap: 5px;
+    gap: 15px;
     margin-top: 10px;
 }
 
