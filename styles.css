@@ -448,7 +448,7 @@ input:checked + .slider:before {
 
 .submit-group {
     display: flex;    
-    gap: 35px;
+    gap: 55px;
     margin-top: 10px;
 }
 
@@ -626,7 +626,7 @@ input:checked + .slider:before {
 }
     .checkbox-group {
         margin-bottom: 5px;
-        font-size: 8px;
+        font-size: 10px;
         letter-spacing: 2px;
         color: #FFFFFF;
         text-align: left;
