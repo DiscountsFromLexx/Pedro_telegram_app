@@ -448,7 +448,7 @@ input:checked + .slider:before {
 
 .submit-group {
     display: flex;    
-    gap: 35px;
+    gap: 25px;
     margin-top: 10px;
 }
 
@@ -625,15 +625,15 @@ input:checked + .slider:before {
     margin-bottom: 5px;
 }
     .checkbox-group {
-        margin-bottom: 5px;
-        font-size: 10px;
-        letter-spacing: 2px;
-        color: #FFFFFF;
-        text-align: left;
-        position: left;
-        border: 1px solid #1E90FF;
-        border-radius: 8px;
-        padding: 10px 20px;
-        margin-bottom: 6px;
-    }
+    margin-bottom: 5px;
+    font-size: 10px;
+    letter-spacing: 2px;
+    color: #FFFFFF;
+    text-align: left;
+    position: left;
+    border: 1px solid #1E90FF;
+    border-radius: 8px;
+    padding: 10px 20px;
+    margin-bottom: 6px;
+}
 }
