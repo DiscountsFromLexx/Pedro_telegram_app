@@ -448,7 +448,7 @@ input:checked + .slider:before {
 
 .submit-group {
     display: flex;    
-    gap: 25px;
+    gap: 35px;
     margin-top: 10px;
 }
 
@@ -634,6 +634,6 @@ input:checked + .slider:before {
     border: 1px solid #1E90FF;
     border-radius: 8px;
     padding: 8px 15px;
-    margin-bottom: 6px;
+    margin-bottom: 2px;
 }
 }
