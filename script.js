@@ -165,7 +165,7 @@ document.addEventListener('DOMContentLoaded', () => {
     document.querySelector('.clear-btn').addEventListener('click', () => {
         form.reset();
         customNameGroup.style.display = 'none';
-        anonymousCheckbox.checked = false;
+        
         addLog('Form Cleared', { action: 'form reset' });
     });
 
