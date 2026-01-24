@@ -44,17 +44,7 @@ document.addEventListener('DOMContentLoaded', () => {
         document.querySelector('.theme-label-sun').classList.remove('active');
     }
 
-    // Логування ініціалізації
-    addLog('Telegram Web App', window.Telegram?.WebApp);
-    addLog('User Data', window.Object?.Data);
-    addLog('initData', window.Telegram?.WebApp?.initData);
-
-    // Ініціалізація Telegram Web App
-    if (window.Telegram) {
-        window.Telegram.WebApp.ready();
-        window.Telegram.WebApp?.expand();
-        addLog('WebApp initialized', { ready: true, expanded: true });
-    }
+    
 
     // Ініціалізація стану поля для імені
     customNameGroup.style.display = anonymousCheckbox.checked ? 'block' : 'none';
@@ -82,83 +72,6 @@ document.addEventListener('DOMContentLoaded', () => {
     anonymousCheckbox.addEventListener('change', (e) => {
         customNameGroup.style.display = e.target.checked ? 'block' : 'none';
         addLog('Anonymous Checkbox Changed', { state: e.target.checked });
-    });
-
-    // Обробка відправки форми
-    form.addEventListener('submit', async (event) => {
-        event.preventDefault();
-        const submitBtn = document.querySelector('.submit-btn');
-        submitBtn.disabled = true;
-        submitBtn.textContent = 'відправка...';
-    
-        const fields = ['field1', 'field4', 'field5', 'field3'].map(id => document.getElementById(id).value);
-        const anonymous = anonymousCheckbox.checked;
-        const customName = document.getElementById('customName').value.trim();
-    
-        addLog('Form Submission Started', { action: 'start' });
-        addLog('Anonymous', anonymous);
-        addLog('Custom Name', customName);
-        addLog('Form Fields', fields);
-    
-        const user = window.Telegram?.WebApp?.initDataUnsafe?.user;
-        addLog('User Object', user);
-    
-        let userName;
-        if (anonymous) {
-            userName = customName || 'Incognito'; // Якщо введено customName, використовуємо його, інакше "Incognito"
-            addLog('Anonymous Mode: userName set to', userName);
-        } else {
-            userName = user ? (user.first_name || (user.username ? `@${user.username}` : 'Incognito')) : 'Incognito';
-            addLog('Non-Anonymous Mode: userName set to', userName);
-            addLog('Username', user?.username);
-            addLog('First Name', user?.first_name);
-        }
-    
-        const data = {
-            price: fields[0] || 'Не вказано',
-            link: fields[1] || 'Не вказано',
-            comments: fields[2] || '',
-            conditions: fields[3] || '',
-            user_name: userName,
-            user_id: user?.id || null,
-            user_username: user?.username || null,
-            user_first_name: user?.first_name || null,
-            init_data: window.Telegram?.WebApp?.initData || '',
-            debug_log: logs.join('\n')
-        };
-    
-        addLog('Data to Send', data);
-        addLog('Fetch URL', 'https://d74e0fadbba0.ngrok-free.app/submit');
-    
-        try {
-            const response = await fetch('https://d74e0fadbba0.ngrok-free.app/submit', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(data)
-            });
-            addLog('Response Status', response.status);
-            addLog('Response OK', response.ok);
-            const result = await response.json();
-            addLog('Response Result', result);
-    
-            if (response.ok && result.success) {
-                alert(result.message);
-                form.reset();
-                customNameGroup.style.display = 'none';
-                anonymousCheckbox.checked = false;
-                addLog('Form Cleared', { action: 'form reset after success' });
-            } else {
-                const errorMessage = result.error || 'Невідома помилка сервера';
-                addLog('Server Error', errorMessage);
-                alert('Помилка: ' + errorMessage);
-            }
-        } catch (error) {
-            addLog('Fetch Error', error.message);
-            alert('Помилка при відправці: ' + error.message);
-        } finally {
-            submitBtn.disabled = false;
-            submitBtn.textContent = '☀ ПОДІЛИТИСЬ ☀';
-        }
     });
 
         // Очищення форми
