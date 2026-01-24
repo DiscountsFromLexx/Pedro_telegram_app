@@ -633,7 +633,7 @@ input:checked + .slider:before {
     position: left;
     border: 1px solid #1E90FF;
     border-radius: 8px;
-    padding: 10px 20px;
+    padding: 8px 15px;
     margin-bottom: 6px;
 }
 }
