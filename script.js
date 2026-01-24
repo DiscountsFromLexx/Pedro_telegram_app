@@ -183,7 +183,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // if (customNameGroup) customNameGroup.style.display = 'none';
     
         addLog('Form Cleared', { action: 'form reset + manual clear' });
-    
+        });
         // Опціонально: коротке візуальне підтвердження
         // const clearBtn = document.querySelector('.clear-btn');
         // clearBtn.textContent = 'ОЧИЩЕНО!';
