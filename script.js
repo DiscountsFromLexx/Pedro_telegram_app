@@ -162,34 +162,30 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // Очищення форми
-    document.querySelector('.clear-btn').addEventListener('click', () => {
-    const form = document.querySelector('#telegramForm');
+document.querySelector('.clear-btn').addEventListener('click', () => {
+    const form = document.getElementById('telegramForm');
 
-    // 1. Очищаємо всі текстові поля, textarea тощо
-    form.querySelectorAll('input[type="text"], input[type="url"], input[type="number"], textarea').forEach(el => {
-        el.value = '';
+    // Найнадійніший спосіб — спочатку reset(), потім примусово чистимо
+    form.reset();
+
+    // Додатково очищаємо текстові поля (на випадок, якщо reset() не спрацював)
+    form.querySelectorAll('input[type="text"]').forEach(input => {
+        input.value = '';
     });
 
-    // 2. Знімаємо галочки з усіх чекбоксів
-    form.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
-        checkbox.checked = false;
+    // Прибираємо можливі стани валідації браузера
+    form.querySelectorAll('input:invalid, textarea:invalid').forEach(el => {
+        el.setCustomValidity('');
     });
 
-    // 3. Якщо потрібно — можна ще й прибрати required-підсвітку
-    // form.querySelectorAll(':invalid').forEach(el => el.setCustomValidity(''));
+    // Якщо в майбутньому з'явиться customNameGroup — можна залишити цей рядок
+    // const customNameGroup = document.getElementById('customNameGroup');
+    // if (customNameGroup) customNameGroup.style.display = 'none';
 
-    // 4. Приховуємо додаткові блоки, якщо вони є
-    // document.querySelector('#customNameGroup')?.style.display = 'none';
+    addLog('Form Cleared', { action: 'form reset + manual clear' });
 
-    addLog('Form Cleared', { action: 'form reset' });
-    });
-
-
-    // Закриття клавіатури при кліку поза полями
-    document.addEventListener('click', (e) => {
-        if (!e.target.matches('input')) {
-            document.activeElement?.blur();
-            addLog('Click Outside Input', { action: 'hide keyboard' });
-        }
-    });
+    // Опціонально: коротке візуальне підтвердження
+    // const clearBtn = document.querySelector('.clear-btn');
+    // clearBtn.textContent = 'ОЧИЩЕНО!';
+    // setTimeout(() => { clearBtn.textContent = 'CLEAR'; }, 1200);
 });
