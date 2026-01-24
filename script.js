@@ -163,17 +163,26 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Очищення форми
     document.querySelector('.clear-btn').addEventListener('click', () => {
-    const form = document.getElementById('telegramForm');
+    const form = document.querySelector('#telegramForm');
 
-    form.reset();                     // скидає значення та чекбокси
-    form.querySelectorAll(':invalid').forEach(el => {
-        el.setCustomValidity('');     // прибирає червоні рамки валідації
+    // 1. Очищаємо всі текстові поля, textarea тощо
+    form.querySelectorAll('input[type="text"], input[type="url"], input[type="number"], textarea').forEach(el => {
+        el.value = '';
     });
 
-    // якщо є якийсь customNameGroup — приховуємо
-    document.querySelector('#customNameGroup, .custom-name-group')?.style.display = 'none';
+    // 2. Знімаємо галочки з усіх чекбоксів
+    form.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
+        checkbox.checked = false;
+    });
+
+    // 3. Якщо потрібно — можна ще й прибрати required-підсвітку
+    // form.querySelectorAll(':invalid').forEach(el => el.setCustomValidity(''));
+
+    // 4. Приховуємо додаткові блоки, якщо вони є
+    // document.querySelector('#customNameGroup')?.style.display = 'none';
 
     addLog('Form Cleared', { action: 'form reset' });
+    });
 
 
     // Закриття клавіатури при кліку поза полями
