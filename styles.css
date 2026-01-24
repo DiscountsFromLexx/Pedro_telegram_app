@@ -448,12 +448,12 @@ input:checked + .slider:before {
 
 .submit-group {
     display: flex;    
-    gap: 45px;
+    gap: 15px;
     margin-top: 10px;
 }
 
 .submit-btn {
-    padding: 4px;
+    padding: 14px;
     width: 50%;
     border-radius: 6px;
     font-size: 14px;
@@ -467,7 +467,7 @@ input:checked + .slider:before {
     box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
 }
 .clear-btn {
-    padding: 4px;
+    padding: 14px;
     width: 50%;
     border-radius: 6px;
     font-size: 14px;
