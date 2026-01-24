@@ -162,30 +162,38 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // Очищення форми
-document.querySelector('.clear-btn').addEventListener('click', () => {
-    const form = document.getElementById('telegramForm');
-
-    // Найнадійніший спосіб — спочатку reset(), потім примусово чистимо
-    form.reset();
-
-    // Додатково очищаємо текстові поля (на випадок, якщо reset() не спрацював)
-    form.querySelectorAll('input[type="text"]').forEach(input => {
-        input.value = '';
+    document.querySelector('.clear-btn').addEventListener('click', () => {
+        const form = document.getElementById('telegramForm');
+    
+        // Найнадійніший спосіб — спочатку reset(), потім примусово чистимо
+        form.reset();
+    
+        // Додатково очищаємо текстові поля (на випадок, якщо reset() не спрацював)
+        form.querySelectorAll('input[type="text"]').forEach(input => {
+            input.value = '';
+        });
+    
+        // Прибираємо можливі стани валідації браузера
+        form.querySelectorAll('input:invalid, textarea:invalid').forEach(el => {
+            el.setCustomValidity('');
+        });
+    
+        // Якщо в майбутньому з'явиться customNameGroup — можна залишити цей рядок
+        // const customNameGroup = document.getElementById('customNameGroup');
+        // if (customNameGroup) customNameGroup.style.display = 'none';
+    
+        addLog('Form Cleared', { action: 'form reset + manual clear' });
+    
+        // Опціонально: коротке візуальне підтвердження
+        // const clearBtn = document.querySelector('.clear-btn');
+        // clearBtn.textContent = 'ОЧИЩЕНО!';
+        // setTimeout(() => { clearBtn.textContent = 'CLEAR'; }, 1200);
     });
-
-    // Прибираємо можливі стани валідації браузера
-    form.querySelectorAll('input:invalid, textarea:invalid').forEach(el => {
-        el.setCustomValidity('');
+    // Закриття клавіатури при кліку поза полями
+    document.addEventListener('click', (e) => {
+        if (!e.target.matches('input')) {
+            document.activeElement?.blur();
+            addLog('Click Outside Input', { action: 'hide keyboard' });
+        }
     });
-
-    // Якщо в майбутньому з'явиться customNameGroup — можна залишити цей рядок
-    // const customNameGroup = document.getElementById('customNameGroup');
-    // if (customNameGroup) customNameGroup.style.display = 'none';
-
-    addLog('Form Cleared', { action: 'form reset + manual clear' });
-
-    // Опціонально: коротке візуальне підтвердження
-    // const clearBtn = document.querySelector('.clear-btn');
-    // clearBtn.textContent = 'ОЧИЩЕНО!';
-    // setTimeout(() => { clearBtn.textContent = 'CLEAR'; }, 1200);
 });
