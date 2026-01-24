@@ -14,6 +14,27 @@ document.addEventListener('DOMContentLoaded', () => {
         console.log(entry);
     };
 
+    // ─── Логіка чекбокса ALL ────────────────────────────────────────
+    const allCheckbox   = document.getElementById('all');
+    const otherCheckboxes = document.querySelectorAll('input[name="coins"]:not(#all)');
+    
+    if (allCheckbox) {
+        allCheckbox.addEventListener('change', (e) => {
+            const isChecked = e.target.checked;
+            otherCheckboxes.forEach(cb => {
+                cb.checked = isChecked;
+            });
+        });
+    }
+    
+    // Додатково: якщо знімають будь-який інший → знімаємо ALL
+    otherCheckboxes.forEach(cb => {
+        cb.addEventListener('change', () => {
+            const allChecked = Array.from(otherCheckboxes).every(c => c.checked);
+            allCheckbox.checked = allChecked;
+        });
+    });
+
     // ────────────────────────────────────────────────
     // Очищення форми — найнадійніший варіант
     if (clearBtn) {
@@ -60,26 +81,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // ─── Логіка чекбокса ALL ────────────────────────────────────────
-    const allCheckbox   = document.getElementById('all');
-    const otherCheckboxes = document.querySelectorAll('input[name="coins"]:not(#all)');
     
-    if (allCheckbox) {
-        allCheckbox.addEventListener('change', (e) => {
-            const isChecked = e.target.checked;
-            otherCheckboxes.forEach(cb => {
-                cb.checked = isChecked;
-            });
-        });
-    }
-    
-    // Додатково: якщо знімають будь-який інший → знімаємо ALL
-    otherCheckboxes.forEach(cb => {
-        cb.addEventListener('change', () => {
-            const allChecked = Array.from(otherCheckboxes).every(c => c.checked);
-            allCheckbox.checked = allChecked;
-        });
-    });
 
     // ────────────────────────────────────────────────
     // Інші обробники, які ти поки хочеш залишити
