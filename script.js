@@ -174,7 +174,7 @@ document.addEventListener('DOMContentLoaded', () => {
     document.querySelector('#customNameGroup, .custom-name-group')?.style.display = 'none';
 
     addLog('Form Cleared', { action: 'form reset' });
-});
+
 
     // Закриття клавіатури при кліку поза полями
     document.addEventListener('click', (e) => {
