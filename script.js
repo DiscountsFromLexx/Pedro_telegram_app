@@ -44,12 +44,6 @@ document.addEventListener('DOMContentLoaded', () => {
         document.querySelector('.theme-label-sun').classList.remove('active');
     }
 
-    
-
-    // Ініціалізація стану поля для імені
-    customNameGroup.style.display = anonymousCheckbox.checked ? 'block' : 'none';
-    addLog('Initial Anonymous Checkbox State', { checked: anonymousCheckbox.checked });
-
     // Обробка кліку на кнопку "Інструкції"
     instructionBtn.addEventListener('click', () => {
         document.getElementById('instructions').scrollIntoView({ behavior: 'smooth' });
@@ -68,10 +62,6 @@ document.addEventListener('DOMContentLoaded', () => {
         addLog('Scroll to top', { action: 'scroll to top' });
     };
 
-    // Показ/приховування поля для власного імені
-    anonymousCheckbox.addEventListener('change', (e) => {
-        customNameGroup.style.display = e.target.checked ? 'block' : 'none';
-        addLog('Anonymous Checkbox Changed', { state: e.target.checked });
     });
 
         // Очищення форми
