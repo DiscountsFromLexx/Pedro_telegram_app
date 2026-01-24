@@ -163,11 +163,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Очищення форми
     document.querySelector('.clear-btn').addEventListener('click', () => {
-        form.reset();
-        customNameGroup.style.display = 'none';
-        
-        addLog('Form Cleared', { action: 'form reset' });
+    const form = document.getElementById('telegramForm');
+
+    form.reset();                     // скидає значення та чекбокси
+    form.querySelectorAll(':invalid').forEach(el => {
+        el.setCustomValidity('');     // прибирає червоні рамки валідації
     });
+
+    // якщо є якийсь customNameGroup — приховуємо
+    document.querySelector('#customNameGroup, .custom-name-group')?.style.display = 'none';
+
+    addLog('Form Cleared', { action: 'form reset' });
+});
 
     // Закриття клавіатури при кліку поза полями
     document.addEventListener('click', (e) => {
