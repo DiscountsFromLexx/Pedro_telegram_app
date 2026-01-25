@@ -242,8 +242,8 @@ body.light-theme .theme-label {
 .theme-toggle {
     position: relative;
     display: inline-block;
-    height: 40px; /* Зменшено з 34px */
-    width: 94px;  /*  64px */   
+    height: 30px; /* Зменшено з 34px */
+    width: 74px;  /*  64px */   
     
 }
 
@@ -276,7 +276,7 @@ body.light-theme .theme-label {
     color: #D3D3D3;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%);
+    transform: translate(-30%, -30%);
     width: 100%; /* Забезпечує заповнення повзунка */
     text-align: center; /* Чітке горизонтальне центрування */
     transition: 0.4s;
@@ -285,8 +285,8 @@ body.light-theme .theme-label {
 input:checked + .slider:after {
     content: "white mode";
     color: #FFFFFF;
-    top: 50%;
-    left: 50%;
+    top: 30%;
+    left: 30%;
     transform: translate(-50%, -50%);
     width: 100%;
     text-align: center;
@@ -389,8 +389,8 @@ input:checked + .slider:before {
     margin-top: 20px;
 }
 .instruction-img {
-    width: 50px;
-    height: 50px;
+    width: 70px;
+    height: 70px;
     border-radius: 50px;
 }
 
@@ -642,9 +642,9 @@ input:checked + .slider:before {
         font-size: 14px;
         font-weight: 400;
     }
-        .instruction-img {
-        width: 50px;
-        height: 50px;
+    .instruction-img {
+        width: 60px;
+        height: 60px;
         border-radius: 50px;
     }
     .znahidka-btn {
