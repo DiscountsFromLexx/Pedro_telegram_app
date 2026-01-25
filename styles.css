@@ -291,10 +291,10 @@ input:checked + .slider:after {
 .slider:before {
     position: absolute;
     content: "";
-    height: 20px;             /* було 30px */
-    width: 20px;              /* було 30px */
+    height: 22px;             /* було 30px */
+    width: 22px;              /* було 30px */
     left: -15px;                /* скориговано з -30px → тепер всередині */
-    bottom: 5px;              /* було 2px */
+    bottom: 1px;              /* було 2px */
     background-color: transparent;
     border: 1px solid #FFFFFF;
     transition: 0.4s;
@@ -306,7 +306,7 @@ input:checked + .slider {
 }
 
 input:checked + .slider:before {
-    transform: translateX(26px);  /* було 119px → пропорційно зменшено */
+    transform: translateX(50px);  /* було 119px → пропорційно зменшено */
 }
 
 /* Очищаємо дублювання та конфліктні правила */
