@@ -652,7 +652,7 @@ input:checked + .slider:before {
         text-decoration: none;
     }
     .theme-toggle-container {
-        top: 20px;
+        top: 60px;
         right: 5px;
         gap: 1px;
     }
