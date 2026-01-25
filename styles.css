@@ -200,19 +200,20 @@ body.light-theme .theme-label {
 /* Стилі для перемикача тем (зменшений розмір, окремий контейнер, з написом) */
 .theme-toggle-container {
     position: absolute;
-    top: 60px; /* Нижче логотипу (80px висота + 10px відступ) */
-    right: 30px; /* Праворуч, як instruction-btn 36 */
+    top: 30px;                /* було 60px */
+    right: 15px;              /* було 30px */
     display: flex;
     align-items: center;
-    gap: 2px; /* 8зч */
+    gap: 4px;                 /* було 2px → трохи збільшено для кращого вигляду */
     z-index: 1000;
 }
 
 .theme-label {
-    font-size: 14px;
+    font-size: 11px;          /* було 14px / 16px */
     font-family: 'Montserrat', sans-serif;
     font-weight: 600;
     transition: font-size 0.3s ease;
+    letter-spacing: 0.5px;
 }
 
 body.dark-theme .theme-label {
@@ -224,27 +225,26 @@ body.light-theme .theme-label {
 }
 
 .theme-label-moon {
-    order: -1; /* Розташовуємо 🌙 ліворуч від перемикача */
+    order: -1;
 }
 
 .theme-label-sun {
-    order: 1; /* Розташовуємо 🔆 праворуч від перемикача */
+    order: 1;
 }
 
 .theme-label.active {
-    font-size: 18px; /* Більший розмір для активного режиму */
+    font-size: 13px;          /* було 18px */
 }
 
 .theme-label:not(.active) {
-    font-size: 12px; /* Менший розмір для неактивного режиму */
+    font-size: 9px;           /* було 12px */
 }
 
 .theme-toggle {
     position: relative;
     display: inline-block;
-    height: 40px; /* Зменшено з 34px */
-    width: 94px;  /*  64px */   
-    
+    height: 22px;             /* було 40px */
+    width: 48px;              /* було 94px */
 }
 
 .theme-toggle input {
@@ -260,47 +260,42 @@ body.light-theme .theme-label {
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: #000000; /* задній фон темного режиму */
+    background-color: #000000;
     transition: 0.4s;
     border: 1px solid #FFFFFF;
-    border-radius: 24px;
+    border-radius: 12px;      /* пропорційно зменшено з 24px */
 }
 
 /* Напис на повзунку */
 .slider:after {
     position: absolute;
     content: "темний режим";
-    font-size: 12px;
+    font-size: 8px;           /* було 12px */
     font-family: 'Montserrat', sans-serif;
     font-weight: 600;
     color: #D3D3D3;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: 100%; /* Забезпечує заповнення повзунка */
-    text-align: center; /* Чітке горизонтальне центрування */
+    width: 100%;
+    text-align: center;
     transition: 0.4s;
+    letter-spacing: 0.3px;
 }
 
 input:checked + .slider:after {
     content: "світлий режим";
     color: #FFFFFF;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 100%;
-    text-align: center;
 }
 
-/* Овальний перемикач */
 .slider:before {
     position: absolute;
     content: "";
-    height: 30px; /* 14px */
-    width: 30px; /* 14px */
-    left: -30px; /* Початкове положення 2 */
-    bottom: 2px; /* відстань перемикача знизу 11 */
-    background-color: transparent; /* Кольор овального перемикача */
+    height: 16px;             /* було 30px */
+    width: 16px;              /* було 30px */
+    left: 3px;                /* скориговано з -30px → тепер всередині */
+    bottom: 3px;              /* було 2px */
+    background-color: transparent;
     border: 1px solid #FFFFFF;
     transition: 0.4s;
     border-radius: 50%;
@@ -311,14 +306,15 @@ input:checked + .slider {
 }
 
 input:checked + .slider:before {
-    transform: translateX(119px); /* Відстань прокрутки перемикача 73 */
+    transform: translateX(26px);  /* було 119px → пропорційно зменшено */
 }
 
+/* Очищаємо дублювання та конфліктні правила */
 .theme-label {
-    font-size: 16px; /* Збільшив з 4px для читабельності */
-    font-family: 'Montserrat', sans-serif;
-    font-weight: 400;
-    letter-spacing: 1px;
+    /* це правило дублювало попереднє — обираємо одне */
+    font-size: 11px;
+    font-weight: 500;         /* трохи легше, ніж 600 */
+    letter-spacing: 0.5px;
 }
 
 /* Решта стилів зі старого styles.css */
