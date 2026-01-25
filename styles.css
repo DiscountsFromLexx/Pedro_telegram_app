@@ -291,10 +291,10 @@ input:checked + .slider:after {
 .slider:before {
     position: absolute;
     content: "";
-    height: 16px;             /* було 30px */
-    width: 16px;              /* було 30px */
+    height: 20px;             /* було 30px */
+    width: 20px;              /* було 30px */
     left: -15px;                /* скориговано з -30px → тепер всередині */
-    bottom: 3px;              /* було 2px */
+    bottom: 5px;              /* було 2px */
     background-color: transparent;
     border: 1px solid #FFFFFF;
     transition: 0.4s;
