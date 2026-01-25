@@ -643,8 +643,8 @@ input:checked + .slider:before {
         font-weight: 400;
     }
         .instruction-img {
-        width: 20px;
-        height: 20px;
+        width: 50px;
+        height: 50px;
         border-radius: 50px;
     }
     .znahidka-btn {
