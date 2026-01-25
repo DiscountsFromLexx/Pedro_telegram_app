@@ -200,7 +200,7 @@ body.light-theme .theme-label {
 /* Стилі для перемикача тем (зменшений розмір, окремий контейнер, з написом) */
 .theme-toggle-container {
     position: absolute;
-    top: 60px;                /* було 60px */
+    top: 90px;                /* було 60px */
     right: 15px;              /* було 30px */
     display: flex;
     align-items: center;
