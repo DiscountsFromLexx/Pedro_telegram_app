@@ -342,10 +342,10 @@ input:checked + .slider:before {
     right: 15px;
     background: transparent;
     color: #FFFFFF;
-    border: 2px solid #1E90FF;
+    border: 1px solid #1E90FF;
     border-radius: 8px;
     padding: 10px 20px;
-    font-size: 16px;
+    font-size: 10px;
     font-weight: 100;
     cursor: pointer;
     transition: all 0.3s ease;
@@ -364,10 +364,10 @@ input:checked + .slider:before {
     left: 15px;
     background: transparent;
     color: #FFFFFF;
-    border: 2px solid #1E90FF;
+    border: 1px solid #1E90FF;
     border-radius: 8px;
     padding: 10px 20px;
-    font-size: 16px;
+    font-size: 10px;
     font-weight: 100;
     cursor: pointer;
     text-decoration: none;
