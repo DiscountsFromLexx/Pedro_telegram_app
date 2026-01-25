@@ -642,6 +642,11 @@ input:checked + .slider:before {
         font-size: 14px;
         font-weight: 400;
     }
+        .instruction-img {
+        width: 20px;
+        height: 20px;
+        border-radius: 50px;
+    }
     .znahidka-btn {
         top: 10px;
         left: 10px;
