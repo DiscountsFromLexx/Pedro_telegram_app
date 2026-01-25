@@ -270,9 +270,9 @@ body.light-theme .theme-label {
 .slider:after {
     position: absolute;
     content: "dark mode";
-    font-size: 12px;
+    font-size: 8px;
     font-family: 'Montserrat', sans-serif;
-    font-weight: 600;
+    font-weight: 400;
     color: #D3D3D3;
     top: 50%;
     left: 50%;
