@@ -293,8 +293,8 @@ input:checked + .slider:after {
     content: "";
     height: 25px;             /* було 30px */
     width: 25px;              /* було 30px */
-    left: -18px;                /* скориговано з -30px → тепер всередині */
-    bottom: 1px;              /* було 2px */
+    left: -22px;                /* скориговано з -30px → тепер всередині */
+    bottom: 0.5px;              /* було 2px */
     background-color: transparent;
     border: 1px solid #FFFFFF;
     transition: 0.4s;
@@ -306,7 +306,7 @@ input:checked + .slider {
 }
 
 input:checked + .slider:before {
-    transform: translateX(55px);  /* було 119px → пропорційно зменшено */
+    transform: translateX(65px);  /* було 119px → пропорційно зменшено */
 }
 
 /* Очищаємо дублювання та конфліктні правила */
