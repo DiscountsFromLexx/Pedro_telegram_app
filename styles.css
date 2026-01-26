@@ -656,6 +656,10 @@ input:checked + .slider:before {
         right: 7px;
         gap: 1px;
     }
+    .theme-toggle {    
+    height: 37px;             /* було 40px height: 22px; */
+    width: 48px;              /* було 94px */
+}
     .theme-label {
         font-size: 6px; /* Зменшено з 14px */
         font-family: 'Montserrat', sans-serif;
