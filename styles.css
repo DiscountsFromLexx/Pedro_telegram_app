@@ -233,7 +233,7 @@ body.light-theme .theme-label {
 }
 
 .theme-label.active {
-    font-size: 14px;          /* було 13px */
+    font-size: 16px;          /* було 13px */
 }
 
 .theme-label:not(.active) {
@@ -657,8 +657,8 @@ input:checked + .slider:before {
         gap: 1px;
     }
     .theme-toggle {    
-    height: 37px;             /* було 40px height: 22px; */
-    width: 48px;              /* було 94px */
+        height: 37px;             /* було 40px height: 22px; */
+        width: 48px;              /* було 94px */
 }
     .theme-label {
         font-size: 6px; /* Зменшено з 14px */
