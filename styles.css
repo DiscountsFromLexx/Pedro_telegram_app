@@ -25,6 +25,7 @@ body.dark-theme .container {
 
 body.dark-theme .instruction-btn {
     background: transparent;
+    font-weight: 100;
     color: #FFFFFF;
     border: 1px solid #1E90FF;
 }
@@ -36,6 +37,7 @@ body.dark-theme .instruction-btn:hover {
 
 body.dark-theme .znahidka-btn {
     background: transparent;
+    font-weight: 100;
     color: #FFFFFF;
     border: 1px solid #1E90FF;
 }
@@ -657,7 +659,7 @@ input:checked + .slider:before {
         left: 10px;
         padding: 8px 15px;
         font-size: 14px;
-        font-weight: 100; /* було right: 7px;; */
+        font-weight: 100; /* 300; */
         text-decoration: none;
     }
     .theme-toggle-container {
