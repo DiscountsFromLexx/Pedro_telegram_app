@@ -309,7 +309,7 @@ input:checked + .slider:after {
     content: "";
     height: 25px;             /* було 30px */
     width: 30px;              /* було 30px */
-    left: -30px;                /* скориговано з -30px → тепер всередині */
+    left: -20px;                /* скориговано з -30px → тепер всередині */
     bottom: 0.5px;              /* було 2px */
     background-color: transparent;
     border: 0px solid #FFFFFF; /* було 1px solid #FFFFFF; */
