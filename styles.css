@@ -233,7 +233,7 @@ body.light-theme .theme-label {
 }
 
 .theme-label.active {
-    font-size: 13px;          /* було 18px */
+    font-size: 14px;          /* було 13px */
 }
 
 .theme-label:not(.active) {
