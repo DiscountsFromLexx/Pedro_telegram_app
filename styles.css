@@ -288,12 +288,12 @@ body.light-theme .theme-label {
     content: "ТЕМНИЙ РЕЖИМ";
     font-size: 8px;           /* було 12px */
     font-family: 'Montserrat', sans-serif;
-    font-weight: 600;
+    font-weight: 400;
     color: #D3D3D3;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: 110%;
+    width: 90%;
     text-align: center;
     transition: 0.4s;
     letter-spacing: 0.3px;
@@ -308,7 +308,7 @@ input:checked + .slider:after {
     position: absolute;
     content: "";
     height: 25px;             /* було 30px */
-    width: 25px;              /* було 30px */
+    width: 30px;              /* було 30px */
     left: -33px;                /* скориговано з -30px → тепер всередині */
     bottom: 0.5px;              /* було 2px */
     background-color: transparent;
