@@ -669,6 +669,7 @@ input:checked + .slider:before {
     .slider:before {
         
         height: 30px;             /* було 30px */
+        bottom: 1px;
         
     }    
      
