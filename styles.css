@@ -424,7 +424,7 @@ input:checked + .slider:before {
 .checkbox-group {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-    gap: 2px 4px; /* було 10px 16px; */
+    gap: 10px 16px; /* було 10px 16px; */
     padding: 12px 16px;
     border: 1px solid rgba(30, 144, 255, 0.25);
     border-radius: 10px;
@@ -436,13 +436,13 @@ input:checked + .slider:before {
 .checkbox-group label {
     display: flex;
     align-items: center;
-    gap: 2px; /* було 10px */
-    height: 10px;
+    gap: 1px; /* було 10px */
+    height: 2px; /* було 10px */
     cursor: pointer;
     user-select: none;
-    font-size: 13px;
+    font-size: 10px;
     color: #696969; /* було #e8e8ff; */
-    padding: 20px 10px;
+    padding: 10px 5px; /* було 20px 10px; */
     border-radius: 50px; /* було 6px */
     transition: background 0.15s;
     position: relative;
