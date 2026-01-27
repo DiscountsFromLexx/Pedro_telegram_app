@@ -667,10 +667,10 @@ input:checked + .slider:before {
     }
     .theme-toggle {    
         height: 37px;             /* було 40px height: 22px; */
-        width: 72px;              /* було 48px */
+        width: 75px;              /* було 48px */
 }
     .theme-label {
-        font-size: 6px; /* Зменшено з 14px */
+        font-size: 8px; /* 6px */
         font-family: 'Montserrat', sans-serif;
         font-weight: 100;
         color: #FF0000;
