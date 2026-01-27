@@ -423,7 +423,7 @@ input:checked + .slider:before {
 .checkbox-group {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-    grid-template-rows: repeat(3, minmax(36px, auto));   /* фіксовані 3 рядки */
+    grid-template-rows: repeat(3, minmax(16px, auto));   /* фіксовані 3 рядки 36px */
     gap: 10px 16px;
     padding: 12px 16px;
     border: 1px solid rgba(30, 144, 255, 0.25);
@@ -443,7 +443,7 @@ input:checked + .slider:before {
     cursor: pointer;
     user-select: none;
     font-size: 13px;              /* 10px — занадто мало, повертаємо до читабельного */
-    color: #FFFFFF;               /* повертаємо нормальний колір, #696969 погано читається */
+                                 /* повертаємо нормальний колір, #696969 погано читається */
     padding: 8px 12px;            /* було 20px 10px — зменшуємо, щоб не було зайвого простору */
     border-radius: 8px;           /* 50px робить дуже круглим — краще 8–12px */
     transition: background 0.15s;
