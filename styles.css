@@ -422,8 +422,8 @@ input:checked + .slider:before {
 
 .checkbox-group {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));  /* автоматично по ширині */
-    grid-auto-rows: minmax(36px, auto);                          /* висота рядка */
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    grid-template-rows: repeat(3, minmax(36px, auto));   /* фіксовані 3 рядки */
     gap: 10px 16px;
     padding: 12px 16px;
     border: 1px solid rgba(30, 144, 255, 0.25);
@@ -431,26 +431,25 @@ input:checked + .slider:before {
     background: rgba(20, 20, 50, 0.4);
     margin: 12px 0 20px;
 
-    /* Обмежуємо максимум 3 рядки */
-    grid-auto-flow: row;
-    max-height: 140px;                    /* ≈ 3 рядки × висота одного + gap */
-    overflow: hidden;                     /* якщо більше — ховаємо (або можна зробити scroll) */
+    /* Якщо елементів більше 6 — вони просто не помістяться, можна додати overflow */
+    overflow: hidden;   /* або auto, якщо хочеш скрол */
 }
 
 /* label вже не потребує flex-властивостей */
 .checkbox-group label {
     display: flex;
     align-items: center;
-    gap: 4px; /* було 10px */
-    height: 1px; /* було 10px */
+    gap: 8px;                     /* було 4px — трохи більше для зручності */
     cursor: pointer;
     user-select: none;
-    font-size: 10px;
-    color: #696969; /* було #e8e8ff; */
-    padding: 20px 10px; /* було 20px 10px; */
-    border-radius: 50px; /* було 6px */
+    font-size: 13px;              /* 10px — занадто мало, повертаємо до читабельного */
+    color: #e8e8ff;               /* повертаємо нормальний колір, #696969 погано читається */
+    padding: 8px 12px;            /* було 20px 10px — зменшуємо, щоб не було зайвого простору */
+    border-radius: 8px;           /* 50px робить дуже круглим — краще 8–12px */
     transition: background 0.15s;
     position: relative;
+    height: auto;                 /* прибираємо height:1px — це ламало все */
+    min-height: 36px;             /* мінімальна висота для зручного натискання */
 }
 
 .checkbox-group label:hover,
