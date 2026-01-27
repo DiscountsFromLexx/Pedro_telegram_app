@@ -293,7 +293,7 @@ body.light-theme .theme-label {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: 100%;
+    width: 110%;
     text-align: center;
     transition: 0.4s;
     letter-spacing: 0.3px;
@@ -437,6 +437,7 @@ input:checked + .slider:before {
     display: flex;
     align-items: center;
     gap: 10px;
+    height: 10px;
     cursor: pointer;
     user-select: none;
     font-size: 13px;
