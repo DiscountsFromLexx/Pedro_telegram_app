@@ -418,7 +418,7 @@ input:checked + .slider:before {
  
 .checkbox-group {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(50px, 1fr));
     gap: 10px 16px;
     padding: 12px 16px;
     border: 1px solid rgba(30, 144, 255, 0.25);
