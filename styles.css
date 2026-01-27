@@ -159,6 +159,7 @@ body.light-theme .input-group input:focus {
 body.light-theme .checkbox-group {
     background: #B0E0E6;   /* було #4682B4; */
     border: 1px solid #FFFFFF; 
+    color: #000000;
 }
 
 body.light-theme .submit-btn, body.light-theme .clear-btn {
@@ -435,7 +436,7 @@ input:checked + .slider:before {
     cursor: pointer;
     user-select: none;
     font-size: 13px;
-    color: #000000; /* було #e8e8ff; */
+    color: #e8e8ff; /* було #e8e8ff; */
     padding: 20px 10px;
     border-radius: 6px; /* було 6px */
     transition: background 0.15s;
