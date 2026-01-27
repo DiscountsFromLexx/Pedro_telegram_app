@@ -235,6 +235,15 @@ body.light-theme .theme-label {
 .theme-label.active {
     font-size: 16px;          /* було 13px */
 }
+.theme-label-moon,
+.theme-label-sun {
+    font-size: 1.5em;           /* трохи більші іконки для кращої видимості */
+    line-height: 1;
+    vertical-align: middle;
+    position: relative;
+    top: 6px;                   /* головний параметр — опускає іконки вниз */
+    margin-top: -2px;           /* компенсує, якщо є зайвий відступ зверху */
+}
 
 .theme-label:not(.active) {
     font-size: 9px;           /* було 12px */
