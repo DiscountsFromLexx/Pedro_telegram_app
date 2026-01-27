@@ -158,6 +158,10 @@ body.light-theme .checkbox-group {
     background: #4682B4;
     border: 1px solid #FFFFFF;
 }
+body.light-theme .checkbox-group2 {
+    background: #4682B4;
+    border: 1px solid #FFFFFF;
+}
 
 body.light-theme .submit-btn, body.light-theme .clear-btn {
     background: #4682B4;
@@ -405,6 +409,17 @@ input:checked + .slider:before {
 }
 
 .checkbox-group {
+    display: flex;
+    flex-direction: column;
+    margin-top: 5px;
+    gap: 8px;
+    padding: 12px 16px;
+    border: 1px solid rgba(30, 144, 255, 0.25);
+    border-radius: 10px;
+    background: rgba(20, 20, 50, 0.4);     /* легкий фон для темної теми */
+    margin: 12px 0 20px;
+}
+.checkbox-group2 {
     display: flex;
     flex-direction: column;
     margin-top: 5px;
