@@ -43,8 +43,7 @@ body.dark-theme .znahidka-btn {
 }
 
 body.dark-theme .checkbox-group {
-    background: #B0E0E6;   /* було #4682B4; */
-    border: 1px solid #FFFFFF; 
+    
     color: #FFFAF0;
 
 body.dark-theme .znahidka-btn:hover {
