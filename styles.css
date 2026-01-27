@@ -422,7 +422,7 @@ input:checked + .slider:before {
     gap: 10px 16px;
     padding: 12px 16px;
     border: 1px solid rgba(30, 144, 255, 0.25);
-    border-radius: 10px;
+    border-radius: 30px; /* було 10px */
     background: rgba(20, 20, 50, 0.4);
     margin: 12px 0 20px;
 }
@@ -435,9 +435,9 @@ input:checked + .slider:before {
     cursor: pointer;
     user-select: none;
     font-size: 13px;
-    color: #e8e8ff;
-    padding: 6px 10px;
-    border-radius: 6px;
+    color: #000000; /* було #e8e8ff; */
+    padding: 20px 10px;
+    border-radius: 6px; /* було 6px */
     transition: background 0.15s;
     position: relative;
 }
@@ -448,6 +448,7 @@ input:checked + .slider:before {
 }
 
 .input-group {
+    margin-top: 16px;
     margin-bottom: 16px;
     text-align: left;
 }
