@@ -233,7 +233,7 @@ body.light-theme .theme-label {
 }
 
 .theme-label.active {
-    font-size: 16px;          /* було 13px */
+    font-size: 18px;          /* було 13px */
 }
 .theme-label-moon,
 .theme-label-sun {
