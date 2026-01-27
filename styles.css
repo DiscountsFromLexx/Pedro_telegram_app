@@ -218,7 +218,7 @@ body.light-theme .theme-label {
 .theme-label {
     font-size: 11px;          /* було 14px / 16px */
     font-family: 'Montserrat', sans-serif;
-    font-weight: 600;
+    font-weight: 500;
     transition: font-size 0.3s ease;
     letter-spacing: 0.5px;
 }
@@ -260,7 +260,7 @@ body.light-theme .theme-label {
     position: relative;
     display: inline-block;
     height: 30px;             /* було height: 35px; */
-    width: 60px;              /* було 55px */
+    width: 70px;              /* було 55px */
 }
 
 .theme-toggle input {
