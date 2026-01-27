@@ -253,7 +253,7 @@ body.light-theme .theme-label {
     position: relative;
     display: inline-block;
     height: 35px;             /* було 40px height: 22px; */
-    width: 58px;              /* було 48px */
+    width: 78px;              /* було 48px */
 }
 
 .theme-toggle input {
