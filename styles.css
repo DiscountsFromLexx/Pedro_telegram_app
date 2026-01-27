@@ -126,7 +126,7 @@ body.light-theme .znahidka-btn {
     background: transparent;
     color: #4682B4;
     border: 1px solid #000080;
-    font-weight: 300;
+    font-weight: 100; /* було 300px */
 }
 
 body.light-theme .znahidka-btn:hover {
@@ -657,7 +657,7 @@ input:checked + .slider:before {
         left: 10px;
         padding: 8px 15px;
         font-size: 14px;
-        font-weight: 400;
+        font-weight: 100; /* було right: 7px;; */
         text-decoration: none;
     }
     .theme-toggle-container {
