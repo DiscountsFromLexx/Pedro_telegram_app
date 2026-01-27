@@ -437,7 +437,7 @@ input:checked + .slider:before {
     display: flex;
     align-items: center;
     gap: 4px; /* було 10px */
-    height: 2px; /* було 10px */
+    height: 1px; /* було 10px */
     cursor: pointer;
     user-select: none;
     font-size: 10px;
