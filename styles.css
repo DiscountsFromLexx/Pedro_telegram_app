@@ -310,7 +310,7 @@ input:checked + .slider {
 }
 
 input:checked + .slider:before {
-    transform: translateX(65px);  /* було 119px → пропорційно зменшено */
+    transform: translateX(67px);  /* було 119px → пропорційно зменшено */
 }
 
 /* Очищаємо дублювання та конфліктні правила */
