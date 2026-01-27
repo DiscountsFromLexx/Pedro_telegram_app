@@ -253,7 +253,7 @@ body.light-theme .theme-label {
     position: relative;
     display: inline-block;
     height: 35px;             /* було 40px height: 22px; */
-    width: 78px;              /* було 48px */
+    width: 48px;              /* було 48px */
 }
 
 .theme-toggle input {
@@ -662,12 +662,12 @@ input:checked + .slider:before {
     }
     .theme-toggle-container {
         top: 62px;
-        right: 7px;
+        right: 7px;    /* було right: 7px;; */
         gap: 1px;
     }
     .theme-toggle {    
         height: 37px;             /* було 40px height: 22px; */
-        width: 48px;              /* було 94px */
+        width: 68px;              /* було 48px */
 }
     .theme-label {
         font-size: 6px; /* Зменшено з 14px */
