@@ -16,7 +16,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // ─── Логіка чекбокса ALL ────────────────────────────────────────
     const allCheckbox   = document.getElementById('all');
-    const otherCheckboxes = document.querySelectorAll('input[name="all"]:not(#all)');
+    const otherCheckboxes = document.querySelectorAll('input[name="check"]:not(#all)');
     
     if (allCheckbox) {
         allCheckbox.addEventListener('change', (e) => {
