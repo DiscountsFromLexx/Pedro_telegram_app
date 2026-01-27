@@ -285,7 +285,7 @@ body.light-theme .theme-label {
 /* Напис на повзунку */
 .slider:after {
     position: absolute;
-    content: "темний режим";
+    content: "ТЕМНИЙ РЕЖИМ";
     font-size: 8px;           /* було 12px */
     font-family: 'Montserrat', sans-serif;
     font-weight: 600;
@@ -300,7 +300,7 @@ body.light-theme .theme-label {
 }
 
 input:checked + .slider:after {
-    content: "світлий режим";
+    content: "СВІТЛИЙ РЕЖИМ";
     color: #FFFFFF;
 }
 
