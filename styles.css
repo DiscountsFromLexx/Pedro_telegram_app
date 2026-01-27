@@ -423,11 +423,11 @@ input:checked + .slider:before {
  
 .checkbox-group {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(10px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
     gap: 10px 16px;
     padding: 12px 16px;
     border: 1px solid rgba(30, 144, 255, 0.25);
-    border-radius: 50px; /* було 10px */
+    border-radius: 10px;
     background: rgba(20, 20, 50, 0.4);
     margin: 12px 0 20px;
 }
