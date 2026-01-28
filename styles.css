@@ -240,7 +240,7 @@ body.light-theme .theme-label {
 }
 
 .theme-label.active {
-    font-size: 18px;          /* було 13px */
+    font-size: 15px;          /* було 13px */
 }
 .theme-label-moon,
 .theme-label-sun {
@@ -318,7 +318,7 @@ input:checked + .slider:after {
 }
 
 input:checked + .slider {
-    background-color: #1E90FF;
+    background-color: #B0E0E6; /* було #1E90FF; */
 }
 
 input:checked + .slider:before {
@@ -442,7 +442,7 @@ input:checked + .slider:before {
     gap: 8px;                     /* було 4px — трохи більше для зручності */
     cursor: pointer;
     user-select: none;
-    font-size: 13px;              /* 10px — занадто мало, повертаємо до читабельного */
+    font-size: 8px;              /* 10px — занадто мало, повертаємо до читабельного */
                                  /* повертаємо нормальний колір, #696969 погано читається */
     padding: 8px 12px;            /* було 20px 10px — зменшуємо, щоб не було зайвого простору */
     border-radius: 8px;           /* 50px робить дуже круглим — краще 8–12px */
