@@ -492,26 +492,20 @@ input:checked + .slider:before {
     background: rgba(30, 144, 255, 0.12);
 }
 
+
 .input-group {
     height: auto;
     margin-top: 16px;
     margin-bottom: 16px;
     text-align: left;
 }
-
 .input-group label {
     display: block;
     font-size: 14px;
     font-weight: 400;
     font-family: 'Montserrat', sans-serif;
-    letter-spacing: 0.5px;          /* значно зменшено — 2px було забагато */
-    line-height: 1.4;               /* додано — міжрядковий інтервал для читабельності */
-    margin-bottom: 8px;             /* трохи більше відступу до input */
-    word-wrap: break-word;          /* або word-break: break-word; */
-    hyphens: auto;                  /* автоматичні переносы для української/англійської */
-    overflow-wrap: break-word;      /* сучасний аналог word-wrap */
-    white-space: normal;            /* явно дозволяємо переносити текст */
-    max-width: 100%;                /* не виходить за межі контейнера */
+    letter-spacing: 2px;
+    margin-bottom: 5px;
 }
 .input-group input {
     width: 100%;
@@ -543,7 +537,7 @@ input:checked + .slider:before {
 
 .result input {
     width: 100%;
-    height: auto;
+    height: 300%;
     padding: 10px;
     border-radius: 6px;
     font-size: 10px;
