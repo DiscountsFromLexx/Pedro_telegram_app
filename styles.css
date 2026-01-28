@@ -536,12 +536,12 @@ input:checked + .slider:before {
 }
 
 .slogan-text {
-    margin-top: 50px;
-    font-size: 16px;
-    font-weight: 200;
+    margin-top: 6px;
+    font-size: 10px;
+    font-weight: 600;
     font-family: 'Montserrat', sans-serif;
     -webkit-tap-highlight-color: transparent;
-    letter-spacing: 1px;
+    letter-spacing: 2px;
     text-align: left;
 }
 
