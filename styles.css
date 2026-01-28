@@ -449,6 +449,7 @@ input:checked + .slider:before {
     transition: background 0.15s;
     position: relative;
     height: 1px;                 /* прибираємо height:1px — це ламало все */
+    width: 10px;
     min-height: 10px;             /* мінімальна висота для зручного натискання 16px */
 }
 
