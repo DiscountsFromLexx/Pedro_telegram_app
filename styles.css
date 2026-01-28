@@ -79,6 +79,9 @@ body.dark-theme .submit-btn:hover, body.dark-theme .clear-btn:hover {
     background: linear-gradient(to bottom, #4682B4, #1E90FF);
 }
 
+body.dark-theme .slogan-text {
+    color: #FFFFFF;
+}
 body.dark-theme .channels-text {
     color: #FFFFFF;
 }
@@ -176,6 +179,11 @@ body.light-theme .submit-btn:hover, body.light-theme .clear-btn:hover {
 }
 
 body.light-theme .channels-text {
+    color: #000000;
+    font-weight: 300;
+}
+
+body.light-theme .slogan-text {
     color: #000000;
     font-weight: 300;
 }
@@ -525,6 +533,16 @@ input:checked + .slider:before {
 .submit-btn:active, .clear-btn:active {
     transform: translateY(0);
     box-shadow: 0 1px 5px rgba(0, 0, 0, 0.2);
+}
+
+.slogan-text {
+    margin-top: 60px;
+    font-size: 16px;
+    font-weight: 200;
+    font-family: 'Montserrat', sans-serif;
+    -webkit-tap-highlight-color: transparent;
+    letter-spacing: 1px;
+    text-align: left;
 }
 
 .channels-text {
