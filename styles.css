@@ -59,13 +59,28 @@ body.dark-theme .input-group label {
     color: #FFFFFF;
 }
 
+body.dark-theme .result label {
+    color: #FFFFFF;
+}
+
 body.dark-theme .input-group input {
     border: 1px solid #4682B4;
     color: #FFFFFF;
     background: #000000;
 }
 
+body.dark-theme .result input {
+    border: 1px solid #4682B4;
+    color: #FFFFFF;
+    background: #000000;
+}
+
 body.dark-theme .input-group input:focus {
+    border-color: #1E90FF;
+    box-shadow: 0 0 5px rgba(30, 144, 255, 0.3);
+}
+
+body.dark-theme .result input:focus {
     border-color: #1E90FF;
     box-shadow: 0 0 5px rgba(30, 144, 255, 0.3);
 }
@@ -151,14 +166,26 @@ body.light-theme .header-text {
 body.light-theme .input-group label {
     color: #000000;
 }
+body.light-theme .result label {
+    color: #000000;
+}
 
 body.light-theme .input-group input {
     border: 0px solid #000080;
     color: #000000;
     background: #F5F5F5;
 }
+body.light-theme .result input {
+    border: 0px solid #000080;
+    color: #000000;
+    background: #F5F5F5;
+}
 
 body.light-theme .input-group input:focus {
+    border-color: #1E90FF;
+    box-shadow: 0 0 5px rgba(30, 144, 255, 0.3);
+}
+body.light-theme .result input:focus {
     border-color: #1E90FF;
     box-shadow: 0 0 5px rgba(30, 144, 255, 0.3);
 }
@@ -491,6 +518,35 @@ input:checked + .slider:before {
     transition: border-color 0.3s ease;
 }
 
+
+
+.result {
+    margin-top: 16px;
+    margin-bottom: 16px;
+    text-align: left;
+}
+
+.result label {
+    display: block;
+    font-size: 14px;
+    font-weight: 400;
+    font-family: 'Montserrat', sans-serif;
+    letter-spacing: 2px;
+    margin-bottom: 5px;
+}
+
+.result input {
+    width: 100%;
+    height: auto;
+    padding: 10px;
+    border-radius: 6px;
+    font-size: 10px;
+    font-weight: 400;
+    font-family: 'Montserrat', sans-serif;
+    letter-spacing: 2px;
+    transition: border-color 0.3s ease;
+}
+
 .submit-group {
     display: flex;    
     gap: 5px;
@@ -681,6 +737,19 @@ input:checked + .slider:before {
         font-weight: 500;
     }
      .input-group label {
+        display: block;
+        font-size: 8px;
+        font-weight: 400;
+        font-family: 'Montserrat', sans-serif;
+        letter-spacing: 2px;
+        margin-bottom: 5px;
+    }
+    .result input {
+        font-size: 10px;
+        font-family: 'Montserrat', sans-serif;
+        font-weight: 500;
+    }
+     .result label {
         display: block;
         font-size: 8px;
         font-weight: 400;
