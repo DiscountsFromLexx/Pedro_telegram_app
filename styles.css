@@ -493,6 +493,7 @@ input:checked + .slider:before {
 }
 
 .input-group {
+    height: auto;
     margin-top: 16px;
     margin-bottom: 16px;
     text-align: left;
