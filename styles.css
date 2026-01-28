@@ -439,7 +439,7 @@ input:checked + .slider:before {
 .checkbox-group label {
     display: flex;
     align-items: center;
-    gap: 8px;                     /* було 4px — трохи більше для зручності */
+    gap: 4px;                     /* було 4px — трохи більше для зручності */
     cursor: pointer;
     user-select: none;
     font-size: 8px;              /* 10px — занадто мало, повертаємо до читабельного */
@@ -449,7 +449,7 @@ input:checked + .slider:before {
     transition: background 0.15s;
     position: relative;
     height: 1px;                 /* прибираємо height:1px — це ламало все */
-    min-height: 16px;             /* мінімальна висота для зручного натискання 36px */
+    min-height: 16px;             /* мінімальна висота для зручного натискання 16px */
 }
 
 .checkbox-group label:hover,
