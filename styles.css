@@ -444,12 +444,12 @@ input:checked + .slider:before {
     user-select: none;
     font-size: 8px;              /* 10px — занадто мало, повертаємо до читабельного */
                                  /* повертаємо нормальний колір, #696969 погано читається */
-    padding: 8px 12px;            /* було 8px 12px — зменшуємо, щоб не було зайвого простору */
+    padding: 4px 6px;            /* було 8px 12px — зменшуємо, щоб не було зайвого простору */
     border-radius: 8px;           /* 50px робить дуже круглим — краще 8–12px */
     transition: background 0.15s;
     position: relative;
     height: 1px;                 /* прибираємо height:1px — це ламало все */
-    width: 10px;
+    width: 20px;
     min-height: 10px;             /* мінімальна висота для зручного натискання 16px */
 }
 
