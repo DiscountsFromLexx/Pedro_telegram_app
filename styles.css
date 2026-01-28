@@ -513,6 +513,16 @@ input:checked + .slider:before {
     white-space: normal;            /* явно дозволяємо переносити текст */
     max-width: 100%;                /* не виходить за межі контейнера */
 }
+.input-group input {
+    width: 100%;
+    padding: 10px;
+    border-radius: 6px;
+    font-size: 10px;
+    font-weight: 400;
+    font-family: 'Montserrat', sans-serif;
+    letter-spacing: 2px;
+    transition: border-color 0.3s ease;
+}
 
 
 
