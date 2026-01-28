@@ -536,7 +536,7 @@ input:checked + .slider:before {
 }
 
 .slogan-text {
-    margin-top: -16px;
+    margin-top: -20px;
     font-size: 10px;
     font-weight: 600;
     font-family: 'Montserrat', sans-serif;
