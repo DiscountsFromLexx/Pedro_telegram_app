@@ -423,7 +423,7 @@ input:checked + .slider:before {
 .checkbox-group {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-    grid-template-rows: repeat(3, minmax(16px, auto));   /* фіксовані 3 рядки 36px */
+    grid-template-rows: repeat(3, minmax(16px, 10px));   /* фіксовані 3 рядки 36px, auto */
     gap: 6px 8px; /* було gap: 10px 16px; */
     padding: 12px 16px;
     border: 1px solid rgba(30, 144, 255, 0.25);
