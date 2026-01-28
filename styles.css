@@ -521,47 +521,28 @@ input:checked + .slider:before {
 
 
 .result {
-    margin-top: 20px;
-    margin-bottom: 20px;
-    text-align: left;
+    margin-top: 16px;
+    margin-bottom: 16px;
+    text-align: left;
 }
-
 .result label {
-    display: block;
-    font-size: 15px;
-    font-weight: 500;
-    font-family: 'Montserrat', sans-serif;
-    letter-spacing: 0.4px;          /* значно менше, ніж 2px */
-    color: #e0e0ff;                 /* гарний колір для темної теми */
-    margin-bottom: 8px;
+    display: block;
+    font-size: 14px;
+    font-weight: 400;
+    font-family: 'Montserrat', sans-serif;
+    letter-spacing: 2px;
+    margin-bottom: 5px;
 }
-
 .result input {
-    width: 100%;
-    min-height: 300px;              /* min-height, щоб не стискалося */
-    height: auto;                   /* дозволяє рости */
-    padding: 14px 16px;
-    border-radius: 8px;
-    font-size: 13px;                /* більший і комфортніший розмір */
-    font-weight: 400;
-    font-family: 'Montserrat', sans-serif;
-    letter-spacing: 0.3px;          /* або взагалі 0 */
-    line-height: 1.6;               /* міжрядковий інтервал — ключ до гарного вигляду */
-    background: rgba(20, 20, 50, 0.6);
-    color: #f0f0ff;
-    border: 1px solid rgba(30, 144, 255, 0.4);
-    transition: border-color 0.3s ease, box-shadow 0.3s ease;
-    resize: vertical;               /* користувач може розтягувати поле */
-    white-space: pre-wrap;          /* !!! головна властивість */
-    overflow-wrap: break-word;      /* розбиває дуже довгі слова/посилання */
-    word-break: break-all;          /* або break-word, якщо хочеш м'якше */
-}
-
-/* Фокус — для краси */
-.result input:focus {
-    outline: none;
-    border-color: #1e90ff;
-    box-shadow: 0 0 0 3px rgba(30, 144, 255, 0.25);
+    width: 100%;
+    height: 300px;
+    padding: 10px;
+    border-radius: 6px;
+    font-size: 10px;
+    font-weight: 400;
+    font-family: 'Montserrat', sans-serif;
+    letter-spacing: 2px;
+    transition: border-color 0.3s ease;
 }
 
 
