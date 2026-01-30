@@ -387,29 +387,18 @@ input:checked + .slider:before {
     position: relative;
 }
 
-.coupons-btn {
+.top-buttons {
     position: absolute;
-    top: 15px;                    /* верхня кнопка */
+    top: 15px;
     left: 15px;
-    background: transparent;
-    color: #FFFFFF;
-    border: 1px solid #1E90FF;
-    border-radius: 8px;
-    padding: 8px 16px;            /* зменшив padding, бо font-size дуже малий */
-    font-size: 14px;              /* 5px — це майже нечитабельно, рекомендую 13–15px */
-    font-weight: 400;
-    cursor: pointer;
-    text-decoration: none;
-    transition: all 0.3s ease;
     z-index: 1000;
-    font-family: 'Montserrat', sans-serif;
-    letter-spacing: 1px;          /* 4px — надто сильно розтягує */
+    display: flex;
+    flex-direction: column;     /* один під одним */
+    gap: 12px;                  /* відстань між кнопками */
 }
 
+.coupons-btn,
 .instruction-btn {
-    position: absolute;
-    top: 60px;                    /* головна зміна — зсуваємо вниз (15px + висота кнопки + відступ) */
-    left: 15px;
     background: transparent;
     color: #FFFFFF;
     border: 1px solid #1E90FF;
@@ -419,12 +408,13 @@ input:checked + .slider:before {
     font-weight: 400;
     cursor: pointer;
     transition: all 0.3s ease;
-    z-index: 1000;
     font-family: 'Montserrat', sans-serif;
     letter-spacing: 1px;
+    text-decoration: none;      /* тільки для <a> */
+    text-align: center;
+    min-width: 120px;           /* щоб кнопки були однакової ширини */
 }
 
-/* hover для обох */
 .coupons-btn:hover,
 .instruction-btn:hover {
     background: #1E90FF;
