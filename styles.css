@@ -599,7 +599,7 @@ input:checked + .slider:before {
     font-family: 'Montserrat', sans-serif;
     -webkit-tap-highlight-color: transparent;
     letter-spacing: 2px;
-    text-align: left;
+    text-align: center;
 }
 
 .channels-text {
