@@ -395,32 +395,33 @@ input:checked + .slider:before {
     z-index: 1000;
     display: flex;
     flex-direction: column;
-    gap: 6px;                     /* відстань між кнопками — можна залишити або зменшити до 4–5px */
+    gap: 8px;                     /* відстань між кнопками */
 }
 
 .coupons-btn,
 .instruction-btn {
+    /* однакові стилі для обох кнопок */
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    min-width: 80px;              /* було 100px → зменшено на ~20–25% */
-    height: 24px;                 /* було 32px → зменшено на 25% */
-    padding: 0 10px;              /* було 0 14px → зменшено */
+    min-width: 100px;             /* однакова мінімальна ширина */
+    height: 28px;                 /* компактна висота */
+    padding: 0 14px;
     background: transparent;
     color: #FFFFFF;
     border: 1px solid #1E90FF;
-    border-radius: 6px;           /* трохи зменшено радіус для пропорційності */
+    border-radius: 6px;
     font-family: 'Montserrat', sans-serif;
-    font-size: 11px;              /* було 13px → зменшено на ~15–20% */
+    font-size: 12px;              /* невеликий, але читабельний розмір */
     font-weight: 400;
-    letter-spacing: 0.8px;        /* було 1px → трохи зменшено */
+    letter-spacing: 1px;
     text-decoration: none;
     text-align: center;
     cursor: pointer;
     transition: all 0.25s ease;
     -webkit-tap-highlight-color: transparent;
     box-sizing: border-box;
-    line-height: 1;               /* щоб текст не "плив" вертикально */
+    line-height: 1;
 }
 
 .coupons-btn:hover,
