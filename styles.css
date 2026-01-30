@@ -390,7 +390,8 @@ input:checked + .slider:before {
 
 .top-buttons {
     position: absolute;
-    top: 15px;
+    gap: 4px;                     /* відстань між кнопками */
+    top: 10px;
     left: 15px;
     z-index: 1000;
     display: flex;
@@ -407,9 +408,9 @@ input:checked + .slider:before {
 .coupons-btn,
 .instruction-btn {
     /* однакові стилі для обох кнопок */
-    gap: 12px;                     /* відстань між кнопками */
+    
     min-width: 100px;             /* однакова мінімальна ширина */
-    height: 20px;                 /* компактна висота */
+    height: 18px;                 /* компактна висота */
     display: inline-flex;
     align-items: center;
     justify-content: center;
