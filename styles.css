@@ -242,7 +242,7 @@ body.light-theme .theme-label {
 /* Стилі для перемикача тем (зменшений розмір, окремий контейнер, з написом) */
 .theme-toggle-container {
     position: absolute;
-    top: 15px;                /* було 90px */
+    top: -15px;                /* було 90px */
     right: 20px;              /* було 30px */
     display: flex;
     align-items: center;
@@ -404,7 +404,7 @@ input:checked + .slider:before {
     color: #FFFFFF;
     border: 1px solid #1E90FF;
     border-radius: 8px;
-    padding: 8px 16px;
+    padding: 2px 4px; /* було 8px 16px; */
     font-size: 6px;
     height: 8px;
     font-weight: 100;
