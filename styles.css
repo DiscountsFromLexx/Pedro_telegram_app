@@ -436,6 +436,7 @@ input:checked + .slider:before {
 
 
 .image {
+    position: absolute;
     left: 115px;
     width: 70px;
     height: 70px;
