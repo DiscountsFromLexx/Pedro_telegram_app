@@ -35,7 +35,7 @@ body.dark-theme .instruction-btn:hover {
     color: #ffffff;
 }
 
-body.dark-theme .znahidka-btn {
+body.dark-theme .coupons-btn {
     background: transparent;
     font-weight: 100;
     color: #FFFFFF;
@@ -46,7 +46,7 @@ body.dark-theme .checkbox-group {
     
     color: #FFFFFF;
 }
-body.dark-theme .znahidka-btn:hover {
+body.dark-theme .coupons-btn:hover {
     background: #1E90FF;
     color: #ffffff;
 }
@@ -146,14 +146,14 @@ body.light-theme .instruction-btn:hover {
     color: #ffffff;
 }
 
-body.light-theme .znahidka-btn {
+body.light-theme .coupons-btn {
     background: transparent;
     color: #4682B4;
     border: 1px solid #000080;
     font-weight: 100; /* було 300px */
 }
 
-body.light-theme .znahidka-btn:hover {
+body.light-theme .coupons-btn:hover {
     background: #1E90FF;
     color: #ffffff;
 }
@@ -409,7 +409,7 @@ input:checked + .slider:before {
     background: #1E90FF;
     color: #ffffff;
 }
-.znahidka-btn {
+.coupons-btn {
     position: absolute;
     top: 15px;
     left: 15px;
@@ -428,7 +428,7 @@ input:checked + .slider:before {
     -webkit-tap-highlight-color: transparent;
     letter-spacing: 2px;
 }
-.znahidka-btn:hover {
+.coupons-btn:hover {
     background: #1E90FF;
     color: #ffffff;
 }
@@ -696,7 +696,7 @@ input:checked + .slider:before {
         height: 60px;
         border-radius: 50px;
     }
-    .znahidka-btn {
+    .coupons-btn {
         top: 10px;
         left: 10px;
         padding: 8px 15px;
