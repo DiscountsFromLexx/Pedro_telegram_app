@@ -407,7 +407,7 @@ input:checked + .slider:before {
 .coupons-btn,
 .instruction-btn {
     /* однакові стилі для обох кнопок */
-    gap: 8px;                     /* відстань між кнопками */
+    gap: 12px;                     /* відстань між кнопками */
     min-width: 100px;             /* однакова мінімальна ширина */
     height: 20px;                 /* компактна висота */
     display: inline-flex;
