@@ -388,55 +388,45 @@ input:checked + .slider:before {
 }
 
 .top-buttons {
-    position: absolute; /* було position: absolute; */
+    position: absolute;
     top: 15px;
     left: 15px;
-    
     z-index: 1000;
     display: flex;
-    flex-direction: column;     /* один під одним */
-    gap: 6px;                  /* відстань між кнопками 10px; */
+    flex-direction: column;
+    gap: 8px;                    /* відстань між кнопками — налаштуй під себе */
 }
 
-.coupons-btn {
-    background: transparent;
-    color: #FFFFFF;
-    border: 1px solid #1E90FF;
-    border-radius: 8px;
-     /* було padding: 2px 4px; */
-    font-size: 10px;
-    height: 20px;
-    font-weight: 100;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    font-family: 'Montserrat', sans-serif;
-    letter-spacing: 2px;
-    text-decoration: none;      /* тільки для <a> */
-    text-align: center;
-    min-width: 100px;           /* щоб кнопки були однакової ширини */
-}
+.coupons-btn,
 .instruction-btn {
+    /* спільні стилі для обох кнопок */
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 110px;             /* фіксована мінімальна ширина */
+    height: 32px;                 /* комфортна висота — замість 20px */
+    padding: 0 14px;              /* внутрішні відступи */
     background: transparent;
     color: #FFFFFF;
     border: 1px solid #1E90FF;
     border-radius: 8px;
-     /* було padding: 2px 4px; */
-    font-size: 10px;
-    height: 20px;
-    font-weight: 100;
-    cursor: pointer;
-    transition: all 0.3s ease;
     font-family: 'Montserrat', sans-serif;
-    letter-spacing: 2px;
-    text-decoration: none;      /* тільки для <a> */
+    font-size: 13px;              /* 10px — замало, важко читати */
+    font-weight: 400;             /* 100 — надто тонкий, краще 300–500 */
+    letter-spacing: 1px;          /* 2px — надто сильно розтягує */
+    text-decoration: none;
     text-align: center;
-    min-width: 100px;           /* щоб кнопки були однакової ширини */
+    cursor: pointer;
+    transition: all 0.25s ease;
+    -webkit-tap-highlight-color: transparent;
+    box-sizing: border-box;       /* важливо! щоб padding не збільшував розмір */
 }
 
 .coupons-btn:hover,
 .instruction-btn:hover {
     background: #1E90FF;
     color: #ffffff;
+    border-color: #1E90FF;
 }
 
 
