@@ -390,7 +390,7 @@ input:checked + .slider:before {
 .instruction-btn {
     position: absolute;
     height: 10px;
-    top: 190px;
+    top: 15px;
     left: 15px;
     background: transparent;
     color: #FFFFFF;
@@ -428,7 +428,7 @@ input:checked + .slider:before {
     z-index: 1000;
     font-family: 'Montserrat', sans-serif;
     -webkit-tap-highlight-color: transparent;
-    letter-spacing: 2px;
+    letter-spacing: 4px;
 }
 .coupons-btn:hover {
     background: #1E90FF;
