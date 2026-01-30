@@ -1,6 +1,758 @@
+RESRV
+
+
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    font-family: Helvetica, Arial, sans-serif;
+    -webkit-tap-highlight-color: transparent;
+}
+
+/* Темний режим (старий styles.css) */
+body.dark-theme {
+    background: linear-gradient(to bottom, #000000, #191970);
+}
+
+body.dark-theme .container {
+    background: linear-gradient(to bottom, #000000, #191970);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+body.dark-theme .instruction-btn {
+    background: transparent;
+    font-weight: 100;
+    color: #FFFFFF;
+    border: 1px solid #1E90FF;
+}
+
+body.dark-theme .instruction-btn:hover {
+    background: #1E90FF;
+    color: #ffffff;
+}
+
+body.dark-theme .coupons-btn {
+    background: transparent;
+    font-weight: 100;
+    color: #FFFFFF;
+    border: 1px solid #1E90FF;
+}
+
+body.dark-theme .checkbox-group {
+    
+    color: #FFFFFF;
+}
+body.dark-theme .coupons-btn:hover {
+    background: #1E90FF;
+    color: #ffffff;
+}
+
+body.dark-theme .header-text {
+    color: #FFFFFF;
+}
+
+body.dark-theme .input-group label {
+    color: #FFFFFF;
+}
+
+body.dark-theme .result label {
+    color: #FFFFFF;
+}
+
+body.dark-theme .input-group input {
+    border: 1px solid #4682B4;
+    color: #FFFFFF;
+    background: #000000;
+}
+
+body.dark-theme .result input {
+    border: 1px solid #4682B4;
+    color: #FFFFFF;
+    background: #000000;
+}
+
+body.dark-theme .input-group input:focus {
+    border-color: #1E90FF;
+    box-shadow: 0 0 5px rgba(30, 144, 255, 0.3);
+}
+
+body.dark-theme .result input:focus {
+    border-color: #1E90FF;
+    box-shadow: 0 0 5px rgba(30, 144, 255, 0.3);
+}
+
+body.dark-theme .submit-btn, body.dark-theme .clear-btn {
+    background: linear-gradient(to bottom, #4682B4, #4682B4);
+    border: 1px solid #1E90FF;
+}
+
+body.dark-theme .submit-btn:hover, body.dark-theme .clear-btn:hover {
+    background: linear-gradient(to bottom, #4682B4, #1E90FF);
+}
+
+body.dark-theme .slogan-text {
+    color: #FFFFFF;
+}
+body.dark-theme .channels-text {
+    color: #FFFFFF;
+}
+
+body.dark-theme .tgkch-text {
+    color: #FFFFFF;
+}
+
+body.dark-theme .iheader-text {
+    color: #FFFFFF;
+}
+
+body.dark-theme .instructions-text {
+    color: #FFFFFF;
+}
+
+body.dark-theme .instructions-text a {
+    color: #00BFFF;
+}
+
+body.dark-theme .instructions-text a:hover {
+    color: #B2EBF2;
+}
+
+body.dark-theme .theme-label {
+    color: #FFFFFF;
+}
+
+/* Світлий режим (на основі наданого коду) */
+body.light-theme {
+    background: transparent;
+}
+
+body.light-theme .container {
+    background: #B0E0E6;
+}
+
+body.light-theme .instruction-btn {
+    background: transparent;
+    color: #4682B4;
+    border: 1px solid #000080;
+    font-weight: 300;
+}
+
+body.light-theme .instruction-btn:hover {
+    background: #191970;
+    color: #ffffff;
+}
+
+body.light-theme .coupons-btn {
+    background: transparent;
+    color: #4682B4;
+    border: 1px solid #000080;
+    font-weight: 100; /* було 300px */
+}
+
+body.light-theme .coupons-btn:hover {
+    background: #1E90FF;
+    color: #ffffff;
+}
+
+body.light-theme .header-text {
+    color: #000000;
+    font-weight: 500;
+}
+
+body.light-theme .input-group label {
+    color: #000000;
+}
+body.light-theme .result label {
+    color: #000000;
+}
+
+body.light-theme .input-group input {
+    border: 0px solid #000080;
+    color: #000000;
+    background: #F5F5F5;
+}
+body.light-theme .result input {
+    border: 0px solid #000080;
+    color: #000000;
+    background: #F5F5F5;
+}
+
+body.light-theme .input-group input:focus {
+    border-color: #1E90FF;
+    box-shadow: 0 0 5px rgba(30, 144, 255, 0.3);
+}
+body.light-theme .result input:focus {
+    border-color: #1E90FF;
+    box-shadow: 0 0 5px rgba(30, 144, 255, 0.3);
+}
+
+body.light-theme .checkbox-group {
+    background: #B0E0E6;   /* було #4682B4; */
+    border: 1px solid #FFFFFF; 
+    color: #000000;
+}
+
+body.light-theme .submit-btn, body.light-theme .clear-btn {
+    background: #4682B4;
+    border: 1px solid #FFFFFF;
+}
+
+body.light-theme .submit-btn:hover, body.light-theme .clear-btn:hover {
+    background: linear-gradient(to bottom, #4682B4, #1E90FF);
+}
+
+body.light-theme .channels-text {
+    color: #000000;
+    font-weight: 300;
+}
+
+body.light-theme .slogan-text {
+    color: #000000;
+    font-weight: 300;
+}
+
+body.light-theme .tgkch-text {
+    color: #000000;
+}
+
+body.light-theme .iheader-text {
+    color: #000000;
+}
+
+body.light-theme .instructions-text {
+    color: #000000;
+}
+
+body.light-theme .instructions-text a {
+    color: #000000;
+}
+
+body.light-theme .instructions-text a:hover {
+    color: #B2EBF2;
+}
+
+body.light-theme .theme-label {
+    color: #000000;
+}
+
+/* Стилі для перемикача тем (зменшений розмір, окремий контейнер, з написом) */
+.theme-toggle-container {
+    position: absolute;
+    top: 90px;                /* було 60px */
+    right: 20px;              /* було 30px */
+    display: flex;
+    align-items: center;
+    gap: 4px;                 /* було 2px → трохи збільшено для кращого вигляду */
+    z-index: 1000;
+}
+
+.theme-label {
+    font-size: 11px;          /* було 14px / 16px */
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 500;
+    transition: font-size 0.3s ease;
+    letter-spacing: 0.5px;
+}
+
+body.dark-theme .theme-label {
+    color: #FFFFFF;
+}
+
+body.light-theme .theme-label {
+    color: #000000;
+}
+
+.theme-label-moon {
+    order: -1;
+}
+
+.theme-label-sun {
+    order: 1;
+}
+
+.theme-label.active {
+    font-size: 15px;          /* було 13px */
+}
+.theme-label-moon,
+.theme-label-sun {
+    font-size: 1.5em;           /* трохи більші іконки для кращої видимості */
+    line-height: 1;
+    vertical-align: middle;
+    position: relative;
+    top: 6px;                   /* головний параметр — опускає іконки вниз */
+    margin-top: -2px;           /* компенсує, якщо є зайвий відступ зверху */
+}
+
+.theme-label:not(.active) {
+    font-size: 9px;           /* було 12px */
+}
+
+.theme-toggle {
+    position: relative;
+    display: inline-block;
+    height: 30px;             /* було height: 35px; */
+    width: 70px;              /* було 55px */
+}
+
+.theme-toggle input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 8px;   /* було top: 0; */
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #000000;
+    transition: 0.4s;
+    border: 1px solid #FFFFFF;
+    border-radius: 12px;      /* пропорційно зменшено з 24px */
+}
+
+/* Напис на повзунку */
+.slider:after {
+    position: absolute;
+    content: "ТЕМНИЙ РЕЖИМ";
+    font-size: 8px;           /* було 12px */
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 400;
+    color: #D3D3D3;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 90%;
+    text-align: center;
+    transition: 0.4s;
+    letter-spacing: 0.3px;
+}
+
+input:checked + .slider:after {
+    content: "СВІТЛИЙ РЕЖИМ";
+    color: #FF8C00; /* було #FFFFFF; */
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 25px;             /* було 30px */
+    width: 30px;              /* було 30px */
+    left: -20px;                /* скориговано з -30px → тепер всередині */
+    bottom: 0.5px;              /* було 2px */
+    background-color: transparent;
+    border: 0px solid #FFFFFF; /* було 1px solid #FFFFFF; */
+    transition: 0.4s;
+    border-radius: 50%;
+}
+
+input:checked + .slider {
+    background-color: #B0E0E6; /* було #1E90FF; */
+}
+
+input:checked + .slider:before {
+    transform: translateX(75px);  /* було 119px → пропорційно зменшено */
+}
+
+/* Очищаємо дублювання та конфліктні правила */
+.theme-label {
+    /* це правило дублювало попереднє — обираємо одне */
+    font-size: 11px;
+    font-weight: 500;         /* трохи легше, ніж 600 */
+    letter-spacing: 0.5px;
+}
+
+/* Решта стилів зі старого styles.css */
+.main-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 90%;
+    min-width: 300px;
+    max-width: 600px;
+    padding: 20px;
+}
+
+.container {
+    width: 100%;
+    padding: 20px;
+    border-radius: 12px;
+    text-align: center;
+    position: relative;
+}
+
+.top-buttons {
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;     /* один під одним */
+    gap: 12px;                  /* відстань між кнопками */
+}
+
+.coupons-btn,
+.instruction-btn {
+    background: transparent;
+    color: #FFFFFF;
+    border: 1px solid #1E90FF;
+    border-radius: 8px;
+    padding: 8px 16px;
+    font-size: 14px;
+    font-weight: 400;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-family: 'Montserrat', sans-serif;
+    letter-spacing: 1px;
+    text-decoration: none;      /* тільки для <a> */
+    text-align: center;
+    min-width: 120px;           /* щоб кнопки були однакової ширини */
+}
+
+.coupons-btn:hover,
+.instruction-btn:hover {
+    background: #1E90FF;
+    color: #ffffff;
+}
+
+.instruction-img-link {
+    margin-top: 20px;
+}
+.instruction-img {
+    width: 70px;
+    height: 70px;
+    border-radius: 50px;
+}
+
+.header-text {
+    margin-top: 20px;
+    font-size: 20px;
+    font-weight: 300;
+    font-family: 'Montserrat', sans-serif;
+    letter-spacing: 2px;
+    text-align: center;
+}
+
+.block-form {
+    margin-top: 20px;
+    padding: 10px;
+}
+
+.checkbox-group {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); /* було repeat(auto-fit, minmax(140px, 1fr)); */
+    grid-template-rows: repeat(3, minmax(16px, 5px));   /* фіксовані 3 рядки 36px, auto */
+    gap: 6px 8px; /* було gap: 10px 16px; */
+    padding: 12px 16px;
+    border: 1px solid rgba(30, 144, 255, 0.25);
+    border-radius: 10px;
+    background: rgba(20, 20, 50, 0.4);
+    margin: 6px 0 10px; /* було 12px 0 20px; */
+
+    /* Якщо елементів більше 6 — вони просто не помістяться, можна додати overflow */
+    overflow: hidden;   /* або auto, якщо хочеш скрол */
+}
+
+/* label вже не потребує flex-властивостей */
+.checkbox-group label {
+    display: flex;
+    align-items: center;
+    gap: 4px;                     /* було 4px — трохи більше для зручності */
+    cursor: pointer;
+    user-select: none;
+    font-size: 8px;              /* 10px — занадто мало, повертаємо до читабельного */
+                                 /* повертаємо нормальний колір, #696969 погано читається */
+    padding: 4px 6px;            /* було 8px 12px — зменшуємо, щоб не було зайвого простору */
+    border-radius: 8px;           /* 50px робить дуже круглим — краще 8–12px */
+    transition: background 0.15s;
+    position: relative;
+    height: 1px;                 /* прибираємо height:1px — це ламало все */
+    min-height: 10px;             /* мінімальна висота для зручного натискання 16px */
+}
+
+.checkbox-group label:hover,
+.checkbox-group label:active {
+    background: rgba(30, 144, 255, 0.12);
+}
+
+
+.input-group {
+    height: auto;
+    margin-top: 16px;
+    margin-bottom: 16px;
+    text-align: left;
+}
+.input-group label {
+    display: block;
+    font-size: 14px;
+    font-weight: 400;
+    font-family: 'Montserrat', sans-serif;
+    letter-spacing: 2px;
+    margin-bottom: 5px;
+}
+.input-group input {
+    width: 100%;
+    padding: 10px;
+    border-radius: 6px;
+    font-size: 10px;
+    font-weight: 400;
+    font-family: 'Montserrat', sans-serif;
+    letter-spacing: 2px;
+    transition: border-color 0.3s ease;
+}
+
+
+.result {
+    margin-top: 16px;
+    margin-bottom: 16px;
+    text-align: left;
+}
+.result label {
+    display: block;
+    font-size: 14px;
+    font-weight: 400;
+    font-family: 'Montserrat', sans-serif;
+    letter-spacing: 2px;
+    margin-bottom: 5px;
+}
+.result input {
+    width: 100%;
+    height: 300px;
+    padding: 10px;
+    border-radius: 6px;
+    font-size: 10px;
+    font-weight: 400;
+    font-family: 'Montserrat', sans-serif;
+    letter-spacing: 2px;
+    transition: border-color 0.3s ease;
+}
+
+
+
+.submit-group {
+    display: flex;    
+    gap: 5px;
+    margin-top: 10px;
+}
+
+.submit-btn {
+    padding: 8px;
+    width: 50%;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 300;
+    font-family: 'Montserrat', sans-serif;
+    -webkit-tap-highlight-color: transparent;
+    color: #FFFFFF;
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+}
+.clear-btn {
+    padding: 8px;
+    width: 50%;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 300;
+    font-family: 'Montserrat', sans-serif;
+    -webkit-tap-highlight-color: transparent;
+    letter-spacing: 1px;
+    color: #FFFFFF;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+}
+
+.submit-btn:hover, .clear-btn:hover {
+    transform: translateY(-2px);
+}
+
+.submit-btn:active, .clear-btn:active {
+    transform: translateY(0);
+    box-shadow: 0 1px 5px rgba(0, 0, 0, 0.2);
+}
+
+.slogan-text {
+    margin-top: -20px;
+    font-size: 10px;
+    font-weight: 600;
+    font-family: 'Montserrat', sans-serif;
+    -webkit-tap-highlight-color: transparent;
+    letter-spacing: 2px;
+    text-align: left;
+}
+
+.channels-text {
+    margin-top: 30px;
+    font-size: 16px;
+    font-weight: 200;
+    font-family: 'Montserrat', sans-serif;
+    -webkit-tap-highlight-color: transparent;
+    letter-spacing: 1px;
+    text-align: left;
+}
+
+.tgkch-text {
+    font-size: 18px;
+    font-weight: 900;
+    font-family: 'Montserrat', sans-serif;
+    -webkit-tap-highlight-color: transparent;
+    letter-spacing: 1px;
+    margin-bottom: 10px;
+}
+
+.channels-text a {
+    color: #1E90FF;
+    text-decoration: none;
+}
+
+.channels-text a:hover {
+    text-decoration: underline;
+}
+
+.iheader-text {
+    margin-top: 40px;
+    font-size: 22px;
+    font-weight: 900;
+    font-family: 'Montserrat', sans-serif;
+    -webkit-tap-highlight-color: transparent;
+    text-align: left;
+}
+
+.instructions-text {
+    margin-top: 10px;
+    font-size: 16px;
+    font-weight: 400;
+    font-family: 'Montserrat', sans-serif;
+    -webkit-tap-highlight-color: transparent;
+    letter-spacing: 1px;
+    text-align: left;
+    line-height: 1.5;
+}
+
+.instructions-text a {
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.scroll-top-btn {
+    display: none;
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: #FF7F50;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 50px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    z-index: 1000;
+}
+
+.scroll-top-btn:hover {
+    background: #FF6347;
+    transform: scale(1.1);
+}
+
+@media (max-width: 800px) {  
+    .main-container {
+        padding: 4px;
+        width: 100%;
+    }
+    .container {
+        padding: 6px;
+        width: 100%;
+    }
+    .instruction-btn {
+        top: 20px;
+        left: 10px;
+        padding: 8px 15px;
+        font-size: 14px;
+        font-weight: 400;
+    }
+    .instruction-img {
+        width: 60px;
+        height: 60px;
+        border-radius: 50px;
+    }
+    .coupons-btn {
+        top: 10px;
+        left: 10px;
+        padding: 8px 15px;
+        font-size: 14px;
+        font-weight: 100; /* 300; */
+        text-decoration: none;
+    }
+    .theme-toggle-container {
+        top: 62px;
+        right: 10px;    /* було right: 7px;; */
+        gap: 1px;
+    }
+    .theme-toggle {    
+        height: 37px;             /* було 40px height: 22px; */
+        width: 75px;              /* було 48px */
+}
+    .theme-label {
+        font-size: 8px; /* 6px */
+        font-family: 'Montserrat', sans-serif;
+        font-weight: 100;
+        color: #FF0000;
+
+    .theme-label.active {
+        font-size: 10px;
+    }
+    .theme-label:not(.active) {
+        font-size: 5px;
+    }
+    
+    .header-text {
+        font-size: 18px;
+        font-weight: 200;
+    }
+    .input-group input {
+        font-size: 10px;
+        font-family: 'Montserrat', sans-serif;
+        font-weight: 500;
+    }
+     .input-group label {
+        display: block;
+        font-size: 8px;
+        font-weight: 400;
+        font-family: 'Montserrat', sans-serif;
+        letter-spacing: 2px;
+        margin-bottom: 5px;
+    }
+    .result input {
+        font-size: 10px;
+        font-family: 'Montserrat', sans-serif;
+        font-weight: 500;
+    }
+     .result label {
+        display: block;
+        font-size: 8px;
+        font-weight: 400;
+        font-family: 'Montserrat', sans-serif;
+        letter-spacing: 2px;
+        margin-bottom: 5px;
+    }
+    .slider:before {
+        
+        height: 30px;             /* було 30px */
+        bottom: 2px;
+        
+    }    
+     
+}
