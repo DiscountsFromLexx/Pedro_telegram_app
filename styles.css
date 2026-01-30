@@ -404,7 +404,7 @@ input:checked + .slider:before {
     color: #FFFFFF;
     border: 1px solid #1E90FF;
     border-radius: 8px;
-    padding: 2px 4px; /* було 8px 16px; */
+     /* було padding: 2px 4px; */
     font-size: 6px;
     height: 8px;
     font-weight: 100;
