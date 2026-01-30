@@ -243,7 +243,7 @@ body.light-theme .theme-label {
 .theme-toggle-container {
     position: absolute;
     top: 15px;                /* було 90px */
-    right: 20px;              /* було 30px */
+    right: 25%;              /* було 20px */
     display: flex;
     align-items: center;
     gap: 4px;                 /* було 2px → трохи збільшено для кращого вигляду */
@@ -434,13 +434,13 @@ input:checked + .slider:before {
 }
 
 
-
 .image {
     position: absolute;
-    left: 115px;
+    left: 50%;
+    transform: translateX(-50%);
     width: 70px;
     height: 70px;
-    border-radius: 50px;
+    border-radius: 50%;
 }
 
 .header-text {
