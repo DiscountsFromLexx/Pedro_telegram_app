@@ -409,7 +409,7 @@ input:checked + .slider:before {
 .instruction-btn {
     /* однакові стилі для обох кнопок */
     
-    min-width: 100px;             /* однакова мінімальна ширина */
+    min-width: 80px;             /* однакова мінімальна ширина */
     height: 18px;                 /* компактна висота */
     display: inline-flex;
     align-items: center;
