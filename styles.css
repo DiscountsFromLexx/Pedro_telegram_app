@@ -397,7 +397,7 @@ input:checked + .slider:before {
     flex-direction: column;
     gap: 8px;                     /* відстань між кнопками */
     min-width: 100px;             /* однакова мінімальна ширина */
-    height: 50px;                 /* компактна висота */
+    height: 60px;                 /* компактна висота */
     font-family: 'Montserrat', sans-serif;
     font-size: 12px;              /* невеликий, але читабельний розмір */
     font-weight: 200;
