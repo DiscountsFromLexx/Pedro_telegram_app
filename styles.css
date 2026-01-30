@@ -394,7 +394,7 @@ input:checked + .slider:before {
     z-index: 1000;
     display: flex;
     flex-direction: column;
-    gap: 8px;                    /* відстань між кнопками — налаштуй під себе */
+    gap: 4px;                    /* відстань між кнопками — налаштуй під себе */
 }
 
 .coupons-btn,
@@ -404,15 +404,15 @@ input:checked + .slider:before {
     align-items: center;
     justify-content: center;
     min-width: 110px;             /* фіксована мінімальна ширина */
-    height: 32px;                 /* комфортна висота — замість 20px */
+    height: 22px;                 /* комфортна висота —  32px */
     padding: 0 14px;              /* внутрішні відступи */
     background: transparent;
     color: #FFFFFF;
     border: 1px solid #1E90FF;
     border-radius: 8px;
     font-family: 'Montserrat', sans-serif;
-    font-size: 13px;              /* 10px — замало, важко читати */
-    font-weight: 400;             /* 100 — надто тонкий, краще 300–500 */
+    font-size: 8px;              /* 13px; */
+    font-weight: 100;             /* 400 — надто тонкий, краще 300–500 */
     letter-spacing: 1px;          /* 2px — надто сильно розтягує */
     text-decoration: none;
     text-align: center;
