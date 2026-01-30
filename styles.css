@@ -387,6 +387,7 @@ input:checked + .slider:before {
     position: relative;
 }
 
+
 .top-buttons {
     position: absolute;
     top: 15px;
@@ -394,32 +395,32 @@ input:checked + .slider:before {
     z-index: 1000;
     display: flex;
     flex-direction: column;
-    gap: 4px;                    /* відстань між кнопками — налаштуй під себе */
+    gap: 6px;                     /* відстань між кнопками — можна залишити або зменшити до 4–5px */
 }
 
 .coupons-btn,
 .instruction-btn {
-    /* спільні стилі для обох кнопок */
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    min-width: 110px;             /* фіксована мінімальна ширина */
-    height: 22px;                 /* комфортна висота —  32px */
-    padding: 0 14px;              /* внутрішні відступи */
+    min-width: 80px;              /* було 100px → зменшено на ~20–25% */
+    height: 24px;                 /* було 32px → зменшено на 25% */
+    padding: 0 10px;              /* було 0 14px → зменшено */
     background: transparent;
     color: #FFFFFF;
     border: 1px solid #1E90FF;
-    border-radius: 8px;
+    border-radius: 6px;           /* трохи зменшено радіус для пропорційності */
     font-family: 'Montserrat', sans-serif;
-    font-size: 8px;              /* 13px; */
-    font-weight: 100;             /* 400 — надто тонкий, краще 300–500 */
-    letter-spacing: 1px;          /* 2px — надто сильно розтягує */
+    font-size: 11px;              /* було 13px → зменшено на ~15–20% */
+    font-weight: 400;
+    letter-spacing: 0.8px;        /* було 1px → трохи зменшено */
     text-decoration: none;
     text-align: center;
     cursor: pointer;
     transition: all 0.25s ease;
     -webkit-tap-highlight-color: transparent;
-    box-sizing: border-box;       /* важливо! щоб padding не збільшував розмір */
+    box-sizing: border-box;
+    line-height: 1;               /* щоб текст не "плив" вертикально */
 }
 
 .coupons-btn:hover,
