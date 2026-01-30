@@ -390,7 +390,7 @@ input:checked + .slider:before {
 .instruction-btn {
     position: absolute;
     height: 20px;
-    top: 60px;
+    top: 90px;
     left: 15px;
     background: transparent;
     color: #FFFFFF;
