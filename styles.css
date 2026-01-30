@@ -387,53 +387,50 @@ input:checked + .slider:before {
     position: relative;
 }
 
-.instruction-btn {
-    position: absolute;
-    height: 10px;
-    margin-top: 15px;
-    left: 15px;
-    background: transparent;
-    color: #FFFFFF;
-    border: 1px solid #1E90FF;
-    border-radius: 8px;
-    padding: 10px 20px;
-    font-size: 5px;
-    font-weight: 100;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    z-index: 1000;
-    font-family: 'Montserrat', sans-serif;
-    -webkit-tap-highlight-color: transparent;
-    letter-spacing: 4px;
-}
-.instruction-btn:hover {
-    background: #1E90FF;
-    color: #ffffff;
-}
 .coupons-btn {
     position: absolute;
-    top: 15px;
-    height: 10px;    
+    top: 15px;                    /* верхня кнопка */
     left: 15px;
     background: transparent;
     color: #FFFFFF;
     border: 1px solid #1E90FF;
     border-radius: 8px;
-    padding: 10px 20px;
-    font-size: 5px;
-    font-weight: 100;
+    padding: 8px 16px;            /* зменшив padding, бо font-size дуже малий */
+    font-size: 14px;              /* 5px — це майже нечитабельно, рекомендую 13–15px */
+    font-weight: 400;
     cursor: pointer;
     text-decoration: none;
     transition: all 0.3s ease;
     z-index: 1000;
     font-family: 'Montserrat', sans-serif;
-    -webkit-tap-highlight-color: transparent;
-    letter-spacing: 4px;
+    letter-spacing: 1px;          /* 4px — надто сильно розтягує */
 }
-.coupons-btn:hover {
+
+.instruction-btn {
+    position: absolute;
+    top: 60px;                    /* головна зміна — зсуваємо вниз (15px + висота кнопки + відступ) */
+    left: 15px;
+    background: transparent;
+    color: #FFFFFF;
+    border: 1px solid #1E90FF;
+    border-radius: 8px;
+    padding: 8px 16px;
+    font-size: 14px;
+    font-weight: 400;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    z-index: 1000;
+    font-family: 'Montserrat', sans-serif;
+    letter-spacing: 1px;
+}
+
+/* hover для обох */
+.coupons-btn:hover,
+.instruction-btn:hover {
     background: #1E90FF;
     color: #ffffff;
 }
+
 .instruction-img-link {
     margin-top: 20px;
 }
