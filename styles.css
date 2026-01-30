@@ -413,7 +413,7 @@ input:checked + .slider:before {
 .coupons-btn {
     position: absolute;
     height: 10px;
-    top: 15px;
+    margin-top: 15px;
     left: 15px;
     background: transparent;
     color: #FFFFFF;
