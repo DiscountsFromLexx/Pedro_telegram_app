@@ -398,15 +398,14 @@ input:checked + .slider:before {
     gap: 5px;                  /* відстань між кнопками 10px; */
 }
 
-.coupons-btn,
-.instruction-btn {
+.coupons-btn, .instruction-btn {
     background: transparent;
     color: #FFFFFF;
     border: 1px solid #1E90FF;
     border-radius: 8px;
      /* було padding: 2px 4px; */
     font-size: 10px;
-    height: 12px;
+    height: 16px;
     font-weight: 100;
     cursor: pointer;
     transition: all 0.3s ease;
@@ -414,7 +413,7 @@ input:checked + .slider:before {
     letter-spacing: 2px;
     text-decoration: none;      /* тільки для <a> */
     text-align: center;
-    min-width: 120px;           /* щоб кнопки були однакової ширини */
+    min-width: 100px;           /* щоб кнопки були однакової ширини */
 }
 
 .coupons-btn:hover,
