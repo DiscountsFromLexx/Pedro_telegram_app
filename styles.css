@@ -395,9 +395,7 @@ input:checked + .slider:before {
     z-index: 1000;
     display: flex;
     flex-direction: column;
-    gap: 8px;                     /* відстань між кнопками */
-    min-width: 100px;             /* однакова мінімальна ширина */
-    height: 60px;                 /* компактна висота */
+    
     font-family: 'Montserrat', sans-serif;
     font-size: 12px;              /* невеликий, але читабельний розмір */
     font-weight: 200;
@@ -409,6 +407,9 @@ input:checked + .slider:before {
 .coupons-btn,
 .instruction-btn {
     /* однакові стилі для обох кнопок */
+    gap: 8px;                     /* відстань між кнопками */
+    min-width: 100px;             /* однакова мінімальна ширина */
+    height: 60px;                 /* компактна висота */
     display: inline-flex;
     align-items: center;
     justify-content: center;
