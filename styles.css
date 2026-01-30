@@ -689,22 +689,7 @@ input:checked + .slider:before {
         height: 60px;
         border-radius: 50px;
     }
-    /* 
-    .instruction-btn {
-        top: 20px;
-        left: 10px;
-        padding: 8px 15px;
-        font-size: 14px;
-        font-weight: 400;
-    }
-    .coupons-btn {
-        top: 10px;
-        left: 10px;
-        padding: 8px 15px;
-        font-size: 14px;
-        font-weight: 100; /* 300; */
-        text-decoration: none;
-    } */
+    
     
     .theme-toggle-container {
         top: 62px;
