@@ -388,7 +388,7 @@ input:checked + .slider:before {
 }
 
 .top-buttons {
-    /* було position: absolute; */
+    position: left; /* було position: absolute; */
     top: 15px;
     left: 15px;
     
@@ -405,7 +405,7 @@ input:checked + .slider:before {
     border: 1px solid #1E90FF;
     border-radius: 8px;
      /* було padding: 2px 4px; */
-    font-size: 6px;
+    font-size: 4px;
     height: 8px;
     font-weight: 100;
     cursor: pointer;
