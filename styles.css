@@ -426,8 +426,8 @@ input:checked + .slider:before {
     position: center;
 }
 
-image
-.instruction-img {
+
+.image {
     width: 70px;
     height: 70px;
     border-radius: 50px;
