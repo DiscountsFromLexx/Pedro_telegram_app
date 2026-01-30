@@ -396,6 +396,14 @@ input:checked + .slider:before {
     display: flex;
     flex-direction: column;
     gap: 8px;                     /* відстань між кнопками */
+    min-width: 100px;             /* однакова мінімальна ширина */
+    height: 28px;                 /* компактна висота */
+    font-family: 'Montserrat', sans-serif;
+    font-size: 12px;              /* невеликий, але читабельний розмір */
+    font-weight: 400;
+    letter-spacing: 1px;
+    text-decoration: none;
+    text-align: center;
 }
 
 .coupons-btn,
@@ -404,19 +412,13 @@ input:checked + .slider:before {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    min-width: 100px;             /* однакова мінімальна ширина */
-    height: 28px;                 /* компактна висота */
+    
     padding: 0 14px;
     background: transparent;
     color: #FFFFFF;
     border: 1px solid #1E90FF;
     border-radius: 6px;
-    font-family: 'Montserrat', sans-serif;
-    font-size: 12px;              /* невеликий, але читабельний розмір */
-    font-weight: 400;
-    letter-spacing: 1px;
-    text-decoration: none;
-    text-align: center;
+    
     cursor: pointer;
     transition: all 0.25s ease;
     -webkit-tap-highlight-color: transparent;
@@ -748,6 +750,20 @@ input:checked + .slider:before {
         height: 30px;             /* було 30px */
         bottom: 2px;
         
-    }    
+    }
+    .instruction-btn {
+        top: 20px;
+        left: 10px;
+        padding: 8px 15px;
+        font-size: 10px;
+        font-weight: 400;
+    }
+    .coupons-btn {
+        top: 10px;
+        left: 10px;
+        padding: 8px 15px;
+        font-size: 10px;
+        font-weight: 100; /* 300; */
+        text-decoration: none;
      
 }
