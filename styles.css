@@ -394,7 +394,7 @@ input:checked + .slider:before {
     z-index: 1000;
     display: flex;
     flex-direction: column;     /* один під одним */
-    gap: 10px;                  /* відстань між кнопками */
+    gap: 5px;                  /* відстань між кнопками 10px; */
 }
 
 .coupons-btn,
@@ -404,7 +404,7 @@ input:checked + .slider:before {
     border: 1px solid #1E90FF;
     border-radius: 8px;
     padding: 8px 16px;
-    font-size: 10px;
+    font-size: 8px;
     font-weight: 200;
     cursor: pointer;
     transition: all 0.3s ease;
@@ -422,7 +422,8 @@ input:checked + .slider:before {
 }
 
 .instruction-img-link {
-    margin-top: 20px;
+    top: 20px; /* було margin-top: 20px; */
+    position: center;
 }
 .instruction-img {
     width: 70px;
@@ -441,7 +442,7 @@ input:checked + .slider:before {
 
 .block-form {
     margin-top: 100px; /* було 20px */
-    padding: 10px;
+    padding: 15px; /* було 10px */
 }
 
 .checkbox-group {
