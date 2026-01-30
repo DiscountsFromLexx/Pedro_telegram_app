@@ -389,8 +389,8 @@ input:checked + .slider:before {
 
 .instruction-btn {
     position: absolute;
-    height: 20px;
-    top: 90px;
+    height: 10px;
+    top: 190px;
     left: 15px;
     background: transparent;
     color: #FFFFFF;
@@ -412,7 +412,7 @@ input:checked + .slider:before {
 }
 .coupons-btn {
     position: absolute;
-    height: 30px;
+    height: 10px;
     top: 15px;
     left: 15px;
     background: transparent;
