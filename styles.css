@@ -243,7 +243,7 @@ body.light-theme .theme-label {
 .theme-toggle-container {
     position: absolute;
     top: 15px;                /* було 90px */
-    right: 25%;              /* було 20px */
+    right: 15px;              /* було 20px */
     display: flex;
     align-items: center;
     gap: 4px;                 /* було 2px → трохи збільшено для кращого вигляду */
@@ -409,7 +409,7 @@ input:checked + .slider:before {
     /* однакові стилі для обох кнопок */
     gap: 8px;                     /* відстань між кнопками */
     min-width: 100px;             /* однакова мінімальна ширина */
-    height: 60px;                 /* компактна висота */
+    height: 20px;                 /* компактна висота */
     display: inline-flex;
     align-items: center;
     justify-content: center;
