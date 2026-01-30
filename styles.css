@@ -683,6 +683,13 @@ input:checked + .slider:before {
         padding: 6px;
         width: 100%;
     }
+    
+    .instruction-img {
+        width: 60px;
+        height: 60px;
+        border-radius: 50px;
+    }
+    /* 
     .instruction-btn {
         top: 20px;
         left: 10px;
@@ -690,12 +697,7 @@ input:checked + .slider:before {
         font-size: 14px;
         font-weight: 400;
     }
-    .instruction-img {
-        width: 60px;
-        height: 60px;
-        border-radius: 50px;
-    }
-    /* .coupons-btn {
+    .coupons-btn {
         top: 10px;
         left: 10px;
         padding: 8px 15px;
