@@ -421,13 +421,10 @@ input:checked + .slider:before {
     color: #ffffff;
 }
 
-.instruction-img-link {
-    top: 20px; /* було margin-top: 20px; */
-    position: center;
-}
 
 
 .image {
+    position: center;
     width: 70px;
     height: 70px;
     border-radius: 50px;
