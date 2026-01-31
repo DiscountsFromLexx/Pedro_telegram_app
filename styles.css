@@ -489,7 +489,7 @@ input:checked + .slider:before {
     position: relative;
     height: 1px;                 /* прибираємо height:1px — це ламало все */
     min-height: 10px;             /* мінімальна висота для зручного натискання 16px */
-    width: 90px;  /* не було */
+   
 }
 
 .checkbox-group label:hover,
