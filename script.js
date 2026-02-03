@@ -4,25 +4,22 @@ document.addEventListener('DOMContentLoaded', () => {
     const field4 = document.getElementById('field4');
     const field1 = document.getElementById('field1');
     const clearBtn = document.querySelector('.clear-btn');
-    const themeToggle = document.getElementById('themeToggle');
 
-    // Логування
+    // Логування (можна прибрати)
+    const logs = [];
     const addLog = (msg, data = {}) => console.log(`${msg}:`, data);
 
     // ─── Логіка чекбокса ALL ────────────────────────────────────────
-    const allCheckbox   = document.getElementById('all');
+    const allCheckbox = document.getElementById('all');
     const otherCheckboxes = document.querySelectorAll('input[name="check"]:not(#all)');
-    
+
     if (allCheckbox) {
         allCheckbox.addEventListener('change', (e) => {
             const isChecked = e.target.checked;
-            otherCheckboxes.forEach(cb => {
-                cb.checked = isChecked;
-            });
+            otherCheckboxes.forEach(cb => cb.checked = isChecked);
         });
     }
-    
-    // Додатково: якщо знімають будь-який інший → знімаємо ALL
+
     otherCheckboxes.forEach(cb => {
         cb.addEventListener('change', () => {
             const allChecked = Array.from(otherCheckboxes).every(c => c.checked);
@@ -30,48 +27,21 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // ────────────────────────────────────────────────
-    // Очищення форми — найнадійніший варіант
+    // ─── Очищення форми ─────────────────────────────────────────────
     if (clearBtn) {
         clearBtn.addEventListener('click', () => {
-            if (!form) return;
-
-            form.reset();  // це повинно зняти всі чекбокси та очистити текстові поля
-
-            // Додаткова страховка (деякі браузери/WebView глючать)
-            form.querySelectorAll('input[type="text"], input[type="url"]').forEach(el => {
-                el.value = '';
-            });
-
-            // Прибираємо стан валідації браузера (червоні рамки)
-            form.querySelectorAll(':invalid').forEach(el => el.setCustomValidity(''));
-
+            form.reset();
+            field4.value = '';
+            field1.value = '';
+            field1.placeholder = "Тут буде магія...";
             addLog('Форма очищена');
-            // clearBtn.textContent = 'ОЧИЩЕНО!';   // можна додати фідбек
-            // setTimeout(() => clearBtn.textContent = 'CLEAR', 1000);
-        });
-    }
-
-    if (field4) {
-        field4.addEventListener('focus', async () => {
-            try {
-                // Запитуємо дозвіл на читання буфера (працює в Telegram Web App)
-                const text = await navigator.clipboard.readText();
-                if (text && text.includes('aliexpress.com') || text.includes('s.click.aliexpress.com')) {
-                    field4.value = text.trim();
-                    addLog('Посилання вставлено з буфера обміну', { url: text });
-                }
-            } catch (err) {
-                console.warn('Не вдалося прочитати буфер обміну:', err);
-                // Якщо помилка — просто залишаємо поле порожнім або з плейсхолдером
-            }
         });
     }
 
     // ─── Обробка submit ──────────────────────────────────────────────
     if (form) {
         form.addEventListener('submit', async (e) => {
-            e.preventDefault(); // блокуємо стандартну відправку
+            e.preventDefault(); // блокуємо стандартну відправку форми
 
             let link = field4.value.trim();
 
@@ -138,6 +108,12 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     }
+
+    // ─── Інші обробники (тема, скрол тощо) ────────────────────────────
+    // ... твій попередній код теми, скролу, інструкцій ...
+
+    console.log("Скрипт Педро завантажився");
+});
     // ────────────────────────────────────────────────
     // Перемикання теми (спрощено + виправлено)
     if (themeToggle) {
