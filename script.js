@@ -1,17 +1,16 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // ────────────────────────────────────────────────
-    // Основні елементи
     const form = document.getElementById('telegramForm');
+    const submitBtn = document.querySelector('.submit-btn');
+    const field4 = document.getElementById('field4');
+    const field1 = document.getElementById('field1');
     const clearBtn = document.querySelector('.clear-btn');
     const themeToggle = document.getElementById('themeToggle');
 
-    // ────────────────────────────────────────────────
-    // Функція логування (можна прибрати пізніше)
+    // Логування (можна прибрати)
     const logs = [];
     const addLog = (msg, data = {}) => {
-        const entry = `${msg}: ${JSON.stringify(data)}`;
-        logs.push(entry);
-        console.log(entry);
+        console.log(`${msg}:`, data);
+        logs.push(`${msg}: ${JSON.stringify(data)}`);
     };
 
     // ─── Логіка чекбокса ALL ────────────────────────────────────────
@@ -57,6 +56,65 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // ─── Автоматична вставка з буфера обміну при фокусі на field4 ──
+    if (field4) {
+        field4.addEventListener('focus', async () => {
+            try {
+                // Запитуємо дозвіл на читання буфера (працює в Telegram Web App)
+                const text = await navigator.clipboard.readText();
+                if (text && text.includes('aliexpress.com') || text.includes('s.click.aliexpress.com')) {
+                    field4.value = text.trim();
+                    addLog('Посилання вставлено з буфера обміну', { url: text });
+                }
+            } catch (err) {
+                console.warn('Не вдалося прочитати буфер обміну:', err);
+                // Якщо помилка — просто залишаємо поле порожнім або з плейсхолдером
+            }
+        });
+    }
+    if (form) {
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const link = field4.value.trim();
+            if (!link) {
+                field1.value = "Вставте посилання!";
+                field1.style.color = 'red';
+                return;
+            }
+
+            // Показуємо, що йде обробка
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Обробка...';
+            field1.value = 'Зачекайте...';
+            field1.style.color = 'inherit';
+
+            try {
+                const response = await fetch('https://lexxexpress.click/pedro/submit', {  // ← твій шлях на сервері
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ link: link })
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    field1.value = data.result || 'Готово! Результат у полі.';
+                    field1.style.color = 'green';
+                } else {
+                    field1.value = data.error || 'Помилка обробки';
+                    field1.style.color = 'red';
+                }
+            } catch (err) {
+                field1.value = 'Помилка з’єднання з сервером';
+                field1.style.color = 'red';
+                console.error(err);
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'INSERT AND START';
+            }
+        });
+    }
     // ────────────────────────────────────────────────
     // Перемикання теми (спрощено + виправлено)
     if (themeToggle) {
