@@ -4,6 +4,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const field4 = document.getElementById('field4');
     const field1 = document.getElementById('field1');
     const clearBtn = document.querySelector('.clear-btn');
+    const themeToggle = document.getElementById('themeToggle');
 
     // Логування (можна прибрати)
     const logs = [];
@@ -38,76 +39,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // ─── Обробка submit ──────────────────────────────────────────────
-    if (form) {
-        form.addEventListener('submit', async (e) => {
-    e.preventDefault();
-
-    let link = field4.value.trim();
-
-    // Автоматична вставка з буфера обміну, якщо поле порожнє
-    if (!link) {
-        try {
-            link = await navigator.clipboard.readText();
-            link = link.trim();
-            if (link && (link.includes('aliexpress.com') || link.includes('s.click.aliexpress.com'))) {
-                field4.value = link;
-                console.log('Автоматично вставлено з буфера:', link);
-            } else {
-                field1.value = 'У буфері немає посилання з AliExpress';
-                field1.style.color = 'red';
-                return;
-            }
-        } catch (err) {
-            field1.value = 'Не вдалося прочитати буфер обміну. Вставте вручну.';
-            field1.style.color = 'red';
-            return;
-        }
-    }
-
-    // Перевірка валідності
-    if (!link.includes('aliexpress.com') && !link.includes('s.click.aliexpress.com')) {
-        field1.value = 'Це не посилання AliExpress';
-        field1.style.color = 'red';
-        return;
-    }
-
-    submitBtn.disabled = true;
-    submitBtn.textContent = 'Обробка...';
-    field1.value = 'Зачекайте...';
-    field1.style.color = 'inherit';
-
-    try {
-        const response = await fetch('https://lexxexpress.click/pedro/submit', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ link: link })
-        });
-
-        if (!response.ok) {
-            throw new Error(`Помилка: ${response.status}`);
-        }
-
-        const data = await response.json();
-
-        if (data.success) {
-            field1.value = data.result || 'Готово!';
-            field1.style.color = 'green';
-        } else {
-            field1.value = data.error || 'Помилка на сервері';
-            field1.style.color = 'red';
-        }
-    } catch (err) {
-        field1.value = 'Помилка з’єднання';
-        field1.style.color = 'red';
-        console.error(err);
-    } finally {
-        submitBtn.disabled = false;
-        submitBtn.textContent = 'INSERT AND START';
-    }
-});
-    // ────────────────────────────────────────────────
-    // Перемикання теми (спрощено + виправлено)
+    // ─── Перемикання теми (твоя логіка повністю) ────────────────────
     if (themeToggle) {
         // Завантаження збереженої теми
         const saved = localStorage.getItem('theme') || 'dark';
@@ -122,18 +54,84 @@ document.addEventListener('DOMContentLoaded', () => {
             document.body.classList.toggle('dark-theme', !isLight);
             localStorage.setItem('theme', isLight ? 'light' : 'dark');
 
-            // Оновлення активності іконок (якщо вони є)
+            // Оновлення активності іконок
             document.querySelector('.theme-label-moon')?.classList.toggle('active', !isLight);
             document.querySelector('.theme-label-sun')?.classList.toggle('active', isLight);
-
             addLog('Тема змінена', { theme: isLight ? 'light' : 'dark' });
         });
     }
 
-    
+    // ─── Обробка submit ──────────────────────────────────────────────
+    if (form) {
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
 
-    // ────────────────────────────────────────────────
-    // Інші обробники, які ти поки хочеш залишити
+            let link = field4.value.trim();
+
+            // Якщо поле порожнє — беремо з буфера обміну
+            if (!link) {
+                try {
+                    link = await navigator.clipboard.readText();
+                    link = link.trim();
+                    if (link && (link.includes('aliexpress.com') || link.includes('s.click.aliexpress.com'))) {
+                        field4.value = link;
+                        console.log('Автоматично вставлено з буфера:', link);
+                    } else {
+                        field1.value = 'У буфері немає посилання з AliExpress';
+                        field1.style.color = 'red';
+                        return;
+                    }
+                } catch (err) {
+                    field1.value = 'Не вдалося прочитати буфер обміну.\nВставте посилання вручну.';
+                    field1.style.color = 'red';
+                    return;
+                }
+            }
+
+            // Перевірка валідності посилання
+            if (!link.includes('aliexpress.com') && !link.includes('s.click.aliexpress.com')) {
+                field1.value = 'Це не посилання AliExpress';
+                field1.style.color = 'red';
+                return;
+            }
+
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Обробка...';
+            field1.value = 'Зачекайте...';
+            field1.style.color = 'inherit';
+
+            try {
+                const response = await fetch('https://lexxexpress.click/pedro/submit', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ link: link })
+                });
+
+                if (!response.ok) {
+                    throw new Error(`Помилка: ${response.status}`);
+                }
+
+                const data = await response.json();
+
+                if (data.success) {
+                    field1.value = data.result || 'Готово!';
+                    field1.style.color = 'green';
+                } else {
+                    field1.value = data.error || 'Помилка на сервері';
+                    field1.style.color = 'red';
+                }
+            } catch (err) {
+                field1.value = 'Помилка з’єднання з сервером';
+                field1.style.color = 'red';
+                console.error('Fetch error:', err);
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'INSERT AND START';
+            }
+        });
+    }
+
+    // ─── Інші обробники ──────────────────────────────────────────────
     document.querySelector('.instruction-btn')?.addEventListener('click', () => {
         document.getElementById('instructions')?.scrollIntoView({ behavior: 'smooth' });
     });
@@ -147,5 +145,5 @@ document.addEventListener('DOMContentLoaded', () => {
         if (btn) btn.style.display = window.scrollY > 300 ? 'block' : 'none';
     });
 
-    console.log("Скрипт завантажився");
+    console.log("Скрипт Педро завантажився");
 });
