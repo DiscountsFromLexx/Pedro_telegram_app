@@ -7,7 +7,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const themeToggle = document.getElementById('themeToggle');
 
     // Логування
-    const logs = [];
     const addLog = (msg, data = {}) => console.log(`${msg}:`, data);
 
     // ─── Логіка чекбокса ALL ────────────────────────────────────────
@@ -39,36 +38,33 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // ─── Перемикання теми (твоя логіка повністю) ────────────────────
+    // ─── Перемикання теми ───────────────────────────────────────────
     if (themeToggle) {
-        // Завантаження збереженої теми
         const saved = localStorage.getItem('theme') || 'dark';
         document.body.classList.toggle('light-theme', saved === 'light');
         document.body.classList.toggle('dark-theme', saved !== 'light');
         themeToggle.checked = saved === 'light';
 
-        // Обробник зміни
         themeToggle.addEventListener('change', () => {
             const isLight = themeToggle.checked;
             document.body.classList.toggle('light-theme', isLight);
             document.body.classList.toggle('dark-theme', !isLight);
             localStorage.setItem('theme', isLight ? 'light' : 'dark');
 
-            // Оновлення активності іконок
             document.querySelector('.theme-label-moon')?.classList.toggle('active', !isLight);
             document.querySelector('.theme-label-sun')?.classList.toggle('active', isLight);
             addLog('Тема змінена', { theme: isLight ? 'light' : 'dark' });
         });
     }
 
-    // ─── Обробка submit ──────────────────────────────────────────────
-    if (form) {
-        form.addEventListener('submit', async (e) => {
-            e.preventDefault();
+    // ─── Обробка натискання кнопки ──────────────────────────────────
+    if (submitBtn) {
+        submitBtn.addEventListener('click', async (e) => {
+            e.preventDefault(); // блокуємо стандартну відправку
 
             let link = field4.value.trim();
 
-            // Якщо поле порожнє — беремо з буфера обміну
+            // Якщо поле порожнє — беремо з буфера
             if (!link) {
                 try {
                     link = await navigator.clipboard.readText();
