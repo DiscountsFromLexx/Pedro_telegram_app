@@ -56,51 +56,42 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    if (field4) {
+        field4.addEventListener('focus', async () => {
+            try {
+                // Запитуємо дозвіл на читання буфера (працює в Telegram Web App)
+                const text = await navigator.clipboard.readText();
+                if (text && text.includes('aliexpress.com') || text.includes('s.click.aliexpress.com')) {
+                    field4.value = text.trim();
+                    addLog('Посилання вставлено з буфера обміну', { url: text });
+                }
+            } catch (err) {
+                console.warn('Не вдалося прочитати буфер обміну:', err);
+                // Якщо помилка — просто залишаємо поле порожнім або з плейсхолдером
+            }
+        });
+    }
+
+    // ─── Обробка submit ──────────────────────────────────────────────
     if (form) {
         form.addEventListener('submit', async (e) => {
             e.preventDefault();
 
-            // Спочатку намагаємося взяти посилання з буфера обміну
-            let link = field4.value.trim();
-
+            const link = field4.value.trim();
             if (!link) {
-                try {
-                    link = await navigator.clipboard.readText();
-                    link = link.trim();
-                    if (link && (link.includes('aliexpress.com') || link.includes('s.click.aliexpress.com'))) {
-                        field4.value = link;
-                        addLog('Посилання автоматично взято з буфера обміну', { url: link });
-                    } else {
-                        field1.value = 'У буфері обміну немає посилання з AliExpress';
-                        field1.style.color = 'red';
-                        submitBtn.disabled = false;
-                        submitBtn.textContent = 'INSERT AND START';
-                        return;
-                    }
-                } catch (err) {
-                    field1.value = 'Не вдалося прочитати буфер обміну. Вставте посилання вручну.';
-                    field1.style.color = 'red';
-                    submitBtn.disabled = false;
-                    submitBtn.textContent = 'INSERT AND START';
-                    return;
-                }
-            }
-
-            // Перевірка, чи посилання виглядає валідним
-            if (!link.includes('aliexpress.com') && !link.includes('s.click.aliexpress.com')) {
-                field1.value = 'Це не схоже на посилання AliExpress';
+                field1.value = "Вставте посилання!";
                 field1.style.color = 'red';
                 return;
             }
 
-            // Блокуємо кнопку та показуємо статус
+            // Показуємо, що йде обробка
             submitBtn.disabled = true;
             submitBtn.textContent = 'Обробка...';
-            field1.value = 'Зачекайте, йде обробка...';
+            field1.value = 'Зачекайте...';
             field1.style.color = 'inherit';
 
             try {
-                const response = await fetch('https://lexxexpress.click/pedro/submit', {
+                const response = await fetch('https://lexxexpress.click/pedro/submit', {  // ← твій шлях на сервері
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ link: link })
@@ -109,10 +100,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 const data = await response.json();
 
                 if (data.success) {
-                    field1.value = data.result || 'Готово! Результат отримано.';
+                    field1.value = data.result || 'Готово! Результат у полі.';
                     field1.style.color = 'green';
                 } else {
-                    field1.value = data.error || 'Помилка обробки на сервері';
+                    field1.value = data.error || 'Помилка обробки';
                     field1.style.color = 'red';
                 }
             } catch (err) {
