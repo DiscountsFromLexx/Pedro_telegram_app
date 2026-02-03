@@ -6,7 +6,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const clearBtn = document.querySelector('.clear-btn');
     const themeToggle = document.getElementById('themeToggle');
 
-    // Логування (можна прибрати)
+    // Логування
     const logs = [];
     const addLog = (msg, data = {}) => console.log(`${msg}:`, data);
 
@@ -88,7 +88,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             }
 
-            // Перевірка валідності посилання
+            // Перевірка валідності
             if (!link.includes('aliexpress.com') && !link.includes('s.click.aliexpress.com')) {
                 field1.value = 'Це не посилання AliExpress';
                 field1.style.color = 'red';
