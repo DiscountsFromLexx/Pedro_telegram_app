@@ -8,7 +8,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Логування (можна прибрати)
     const logs = [];
-    const addLog = (msg, data = {}) => console.log(`${msg}:`, data);
+    const addLog = (msg, data = {}) => {
+        console.log(`${msg}:`, data);
+        logs.push(`${msg}: ${JSON.stringify(data)}`);
+    };
 
     // ─── Логіка чекбокса ALL ────────────────────────────────────────
     const allCheckbox   = document.getElementById('all');
