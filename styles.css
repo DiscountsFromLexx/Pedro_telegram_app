@@ -440,8 +440,8 @@ input:checked + .slider:before {
     position: absolute;
     left: 50%;
     transform: translateX(-50%);
-    width: 70px;
-    height: 70px;
+    width: 20px;
+    height: 20px;
     border-radius: 50%;
 }
 
@@ -695,7 +695,14 @@ input:checked + .slider:before {
         height: 60px;
         border-radius: 50px;
     }
-    
+
+    .image {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
     
     .theme-toggle-container {
         top: 10px;
