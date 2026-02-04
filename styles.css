@@ -166,8 +166,17 @@ body.light-theme .header-text {
 body.light-theme .input-group label {
     color: #000000;
 }
-body.light-theme .result-text label {
-    color: #000000;
+body.light-theme .result-text {
+    background: rgba(240, 248, 255, 0.9);
+    color: #1a1a3d; /* темний синій/чорний */
+    box-shadow: inset 0 2px 8px rgba(0,0,0,0.1);
+}
+
+/* Плейсхолдер */
+.result-text:empty:before {
+    content: "Тут буде магія...";
+    color: #888;
+    font-style: italic;
 }
 
 body.light-theme .input-group input {
@@ -175,20 +184,13 @@ body.light-theme .input-group input {
     color: #000000;
     background: #F5F5F5;
 }
-body.light-theme .result-text input {
-    border: 0px solid #000080;
-    color: #000000;
-    background: #F5F5F5;
-}
+
 
 body.light-theme .input-group input:focus {
     border-color: #1E90FF;
     box-shadow: 0 0 5px rgba(30, 144, 255, 0.3);
 }
-body.light-theme .result-text input:focus {
-    border-color: #1E90FF;
-    box-shadow: 0 0 5px rgba(30, 144, 255, 0.3);
-}
+
 .result-text:empty:before {
     content: "Тут буде магія...";
     color: #888;
@@ -544,17 +546,17 @@ input:checked + .slider:before {
 
 .result-text {
     width: 100%;
-    min-height: 180px; /* або 220px, якщо хочеш більше місця */
+    min-height: 180px;
     padding: 16px;
-    background: rgba(30, 30, 50, 0.6); /* напівпрозорий темний фон */
+    background: rgba(30, 30, 50, 0.6);
     border-radius: 12px;
-    border: none; /* прибираємо рамку */
-    color: #e0e0ff; /* світлий текст для темної теми */
+    border: none;
+    color: #e0e0ff; /* білий/світло-блакитний для темної теми */
     font-family: 'Montserrat', sans-serif;
     font-size: 14px;
     line-height: 1.6;
-    white-space: pre-wrap; /* зберігає переноси рядків */
-    overflow-y: auto; /* скрол, якщо текст довгий */
+    white-space: pre-wrap;
+    overflow-y: auto;
     box-shadow: inset 0 2px 8px rgba(0,0,0,0.3);
 }
 
