@@ -156,7 +156,7 @@ document.addEventListener('DOMContentLoaded', () => {
             console.error('Fetch error:', err);
         } finally {
             submitBtn.disabled = false;
-            submitBtn.textContent = 'INSERT AND START';
+            submitBtn.textContent = 'START';
         }
     };
 
