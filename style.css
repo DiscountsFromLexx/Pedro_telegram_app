@@ -756,3 +756,130 @@ input:checked + .slider:before {
     }    
      
 }
+
+
+indexs
+
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>Telegram Mini App - Педро помічник</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:sans-serif,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <!-- Додаємо Telegram Web Apps SDK -->
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+</head>
+<body class="dark-theme">
+    <div class="main-container">
+        
+
+        <div class="container">         
+            
+            <div class="image">
+            <img src="https://raw.githubusercontent.com/DiscountsFromAli/X-CUBOT/main/images/pedro.jpeg" alt="Знахідки" class="instruction-img">
+            </div>
+            <div class="top-buttons">
+                    <a href="https://t.me/+Nmsg2YySEj8zYTVi" target="_blank" class="coupons-btn">COUPONS</a>
+                    <button type="button" class="instruction-btn">HOW TO</button>               
+            </div>
+            
+            <div class="block-form">
+                <form id="telegramForm">
+                    <div class="slogan-text">                        
+                        <p>シ Педро помічник - ділить ціни на три!</p>
+                    </div>
+                    <div class="checkbox-group">
+                        <label>
+                            <input type="checkbox" id="all" name="all"> ALL 
+                        </label>
+                        <label>
+                            <input type="checkbox" id="coins" name="check"> COINS 
+                        </label>
+                        <label>
+                            <input type="checkbox" id="crystal" name="check"> CRYSTALS 
+                        </label>
+                        <label>
+                            <input type="checkbox" id="prizeland" name="check"> PRIZE LAND
+                        </label>
+                        <label>
+                            <input type="checkbox" id="bigsave" name="check"> BIG SAVE 
+                        </label>
+                        <label>
+                            <input type="checkbox" id="superdeals" name="check"> SUPERDEALS 
+                        </label>
+
+                        <label>
+                            <input type="checkbox" id="early" name="check"> РАННЯ УГОДА 
+                        </label>
+                        
+                        <label>
+                            <input type="checkbox" id="limited" name="check"> LIMITEDDEALS 
+                        </label>
+                    </div>                    
+                    
+                    <div class="input-group">
+                        <label for="field4">Посилання на товар</label>
+                        <input type="text" id="field4" name="field4" placeholder="Insert a link https://a.aliexpress.com/...">
+                    </div>
+                    <div class="submit-group">
+                        <button type="submit" class="submit-btn">INSERT AND START</button> 
+                        <button type="button" class="clear-btn">CLEAR</button>
+                    </div>
+                    <div class="result">
+                        <label for="resultText"><br>RESULT:</label>
+                        <div id="resultText" class="result-text" placeholder="Тут буде магія..."></div>
+                    </div>                    
+                     </form>                  
+                    
+                    
+                </form>
+            </div>
+            <div class="channels-text">
+                <div class="tgkch-text">🔆 НАШІ ТЕЛЕГРАМ КАНАЛИ</div>
+                <p>
+                    🌶 <strong>𝐀ʟì↻ᴀᴛട 🐾</strong> - товари за ціною більше 100 грн.<br>
+                    <a href="https://t.me/+7dNuLBNGj244MWU6" target="_blank">https://t.me/+7dNuLBNGj244MWU6</a>
+                </p>
+                <p>
+                    💸 <strong>Аліекспрес - ШАРА НА ШАРУ!</strong> - товари дешевше 100 грн.<br>
+                    <a href="https://t.me/+96EuuIO84_I3NDU6" target="_blank">https://t.me/+96EuuIO84_I3NDU6</a>
+                </p>
+                <p>
+                    🔥 <strong>Сховище промокодів з AliExpress</strong> - купуйте дешевше з промокодами.<br>
+                    <a href="https://t.me/+TSjki0TSVRI4YzYy" target="_blank">https://t.me/+TSjki0TSVRI4YzYy</a>
+                </p>
+                <p>シ Ми працюємо для вас та завдяки вам!♥️</p>
+            </div>
+            <div class="iheader-text" id="instructions">Інструкції</div>
+            <div class="instructions-text">
+                <p>✅ У полі "Ціна" вказуйте тільки ціну, округлену без десятих.</p>
+                <p>✅ У полі "Посилання" вставляйте посилання з мобільного додатку ("https://a.aliexpress.com/...; https://s.click.aliexpress.com/...") або сайту ("https://www.aliexpress.com/...").</p>
+                <p>✅ Поле "Характеристики" необов’язкове, вказуйте назву або інші характеристики (кількість, колір тощо)</p>
+                <p>✅ Поле "Додаткові умови" необов’язкове, вказуйте розділ (монети, рання тощо), купони чи інші умови.</p><br>             
+                <p>♥️ Діліться товаром, щоб зробити когось таким же щасливчиком, як ви!</p>
+                <p>
+                    <strong>Ваш товар буде опубліковано на каналі ЗНАХІДКИ</strong>
+                    <a href="https://t.me/+Nmsg2YySEj8zYTVi" target="_blank">https://t.me/+Nmsg2YySEj8zYTVi</a>
+                </p>
+                <p><br>シ Гарного настрою!</p>
+            </div>
+        </div>
+        <!-- Перемикач тем у окремому контейнері -->
+        <div class="theme-toggle-container">
+            <label class="theme-toggle">
+                <input type="checkbox" id="themeToggle">
+                <span class="slider"></span>
+            </label>
+            <span class="theme-label theme-label-moon">🌙</span>
+            <span class="theme-label theme-label-sun">🔆</span>
+        </div>
+        <button class="scroll-top-btn" onclick="scrollToTop()">Вгору</button>
+    </div>
+    <!-- Підключаємо script.js після SDK -->
+    <script src="script.js"></script>
+</body>
+</html>
