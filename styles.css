@@ -777,6 +777,28 @@ input:checked + .slider:before {
         font-weight: 100; /* 300; */
         text-decoration: none;
     }
+
+@media (max-width: 1200px) {  
+    .main-container {
+        padding: 4px;
+        width: 100%;
+    }
+    .container {
+        padding: 6px;
+        width: 100%;
+    }
+    
+    
+
+    .image {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    
+    
     
      
 }
