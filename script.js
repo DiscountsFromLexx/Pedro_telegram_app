@@ -71,6 +71,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 const trimmed = text.trim();
                 if (trimmed && (trimmed.includes('aliexpress.com') || trimmed.includes('s.click.aliexpress.com'))) {
                     field4.value = trimmed;
+                    field4.readOnly = true;
                     field4.select(); // виділяємо весь текст
                     field4.focus();  // ще раз фокусуємо
     
@@ -178,6 +179,7 @@ document.addEventListener('DOMContentLoaded', () => {
         } finally {
             submitBtn.disabled = false;
             submitBtn.textContent = 'START';
+            field4.readOnly = false; // повертаємо можливість редагувати
         }
     };
 
