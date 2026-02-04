@@ -860,6 +860,45 @@ body.light-theme .result-text strong {
     color: #1a1a3d; /* темно-синій/чорний */
 }
 
+/* Промокод і весь текст після нього — завжди контрастний */
+.promo-code,
+.promo-code ~ * {
+    color: #ffeb3b !important;  /* світло-жовтий — ідеально видно на чорному */
+}
+
+/* Світла тема — темніший колір */
+body.light-theme .promo-code,
+body.light-theme .promo-code ~ * {
+    color: #ef6c00 !important;  /* помаранчевий */
+}
+
+/* Сам промокод (span.promo-code) — фон + бордер + hover */
+.promo-code {
+    background: rgba(255, 193, 7, 0.18);
+    color: #fff9c4 !important;
+    padding: 4px 10px;
+    border-radius: 6px;
+    border: 1px solid rgba(255, 193, 7, 0.4);
+    cursor: pointer;
+    font-family: 'Courier New', monospace;
+    font-weight: 600;
+    user-select: none;
+    transition: all 0.2s;
+    display: inline-block;
+}
+
+.promo-code:hover {
+    background: rgba(255, 193, 7, 0.35);
+    transform: scale(1.03);
+    box-shadow: 0 2px 8px rgba(255, 193, 7, 0.3);
+}
+
+/* Текст після промокоду (якщо є додатковий текст після span) */
+.result-text .promo-code + * {
+    margin-top: 8px;
+    color: inherit !important;
+}
+
 @media (max-width: 800px) {  
     .main-container {
         padding: 4px;
