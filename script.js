@@ -108,11 +108,12 @@ document.addEventListener('DOMContentLoaded', () => {
             if (data.success) {
                 let html = '';
                 if (data.image_url) {
-                    html += `<img src="${data.image_url}" alt="Товар" style="max-width: 100%; height: auto; border-radius: 12px; margin-bottom: 12px; display: block;">`;
+                    html += `<img src="${data.image_url}" alt="Товар" style="max-width: 120px; height: auto; border-radius: 12px; margin: 0 auto 12px; display: block; box-shadow: 0 4px 12px rgba(0,0,0,0.3);">`;
                 }
                 html += data.result || 'Готово!';
                 resultText.innerHTML = html;
-                resultText.style.color = 'green';
+                resultText.style.color = 'inherit'; // скидаємо колір на дефолтний
+                field4.value = ''; // очищаємо поле вводу після успішної відправки
             } else {
                 resultText.innerHTML = data.error || 'Помилка на сервері';
                 resultText.style.color = 'red';
