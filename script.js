@@ -73,8 +73,12 @@ document.addEventListener('DOMContentLoaded', () => {
                     field4.value = trimmed;
                     field4.select(); // виділяємо весь текст
                     field4.focus();  // ще раз фокусуємо
-                    resultText.innerHTML = 'Посилання вставлено!<br>Тепер натисніть START';
-                    resultText.style.color = '#008B8B';
+    
+                    resultText.innerHTML = 'Посилання вставлено!<br>Обробка запускається автоматично...';
+                    resultText.style.color = '#00ff88';
+    
+                    // Автоматично запускаємо обробку (START)
+                    await sendForm();
                 } else {
                     resultText.innerHTML = 'У буфері немає валідного посилання з AliExpress';
                     resultText.style.color = 'orange';
