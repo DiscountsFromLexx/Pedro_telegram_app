@@ -899,6 +899,48 @@ body.light-theme .promo-code ~ * {
     color: inherit !important;
 }
 
+/* Усі тексти всередині blockquote — завжди контрастні */
+blockquote,
+blockquote * {
+    color: #f0f4f8 !important; /* світлий білий/сірий — видно на темному фоні */
+}
+
+/* Світла тема */
+body.light-theme blockquote,
+body.light-theme blockquote * {
+    color: #1a2533 !important; /* темно-синій/сірий */
+}
+
+/* Промокод і його сусіди — перекриваємо все */
+.promo-code,
+.promo-code ~ *,
+blockquote .promo-code ~ * {
+    color: #ffeb3b !important;
+}
+
+body.light-theme .promo-code,
+body.light-theme .promo-code ~ *,
+body.light-theme blockquote .promo-code ~ * {
+    color: #ef6c00 !important;
+}
+
+/* Підказка *Клікніть...* — сіра */
+blockquote i {
+    color: #b0bec5 !important;
+    font-size: 13px;
+}
+
+body.light-theme blockquote i {
+    color: #455a64 !important;
+}
+
+/* Якщо текст після промокоду все ще темний — примусово білий */
+.result-text blockquote p,
+.result-text blockquote div,
+.result-text blockquote span:not(.promo-code) {
+    color: inherit !important;
+}
+
 @media (max-width: 800px) {  
     .main-container {
         padding: 4px;
