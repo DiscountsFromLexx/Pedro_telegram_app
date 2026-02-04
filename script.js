@@ -81,42 +81,66 @@ document.addEventListener('DOMContentLoaded', () => {
         const sendForm = async () => {
         let link = field4.value.trim();
     
-        // Якщо поле порожнє — намагаємося взяти з буфера
+        // Якщо поле порожнє — намагаємося прочитати буфер
         if (!link) {
             try {
                 link = await navigator.clipboard.readText();
                 link = link.trim();
+    
                 if (link && (link.includes('aliexpress.com') || link.includes('s.click.aliexpress.com'))) {
                     field4.value = link;
-                    console.log('Автоматично вставлено з буфера:', link);
+                    field4.select();
+                    field4.focus();
+    
                     resultText.innerHTML = 'Посилання вставлено з буфера!<br>Обробка...';
                     resultText.style.color = '#00ff88';
+    
+                    // Автоматично запускаємо обробку
+                    await processLink(link);
                 } else {
-                    resultText.innerHTML = 'У буфері немає валідного посилання з AliExpress.<br>Вставте вручну.';
+                    resultText.innerHTML = 'У буфері немає валідного посилання з AliExpress';
                     resultText.style.color = 'orange';
                     return;
                 }
             } catch (err) {
-                resultText.innerHTML = '<b>Не вдалося прочитати буфер обміну.</b><br>Вставте посилання вручну в поле нижче і натисніть INSERT AND START.';
+                // На iOS показуємо інструкцію
+                resultText.innerHTML = '<b>Натисніть «Вставити» у панелі, що з’явилася</b><br>Після цього обробка запуститься автоматично';
                 resultText.style.color = '#ffcc00';
-            
-                submitBtn.style.background = 'linear-gradient(to bottom, #ffcc00, #ff9900)';
-                submitBtn.style.boxShadow = '0 0 15px rgba(255,204,0,0.6)';
-                setTimeout(() => {
-                    submitBtn.style.background = '';
-                    submitBtn.style.boxShadow = '';
-                }, 3000); // 3 секунди підсвітки
+    
+                // Фокусуємо поле, щоб панель «Вставити» з’явилася
+                field4.focus();
+    
+                // Чекаємо 1 секунду і пробуємо ще раз прочитати (на iOS це спрацює після підтвердження)
+                setTimeout(async () => {
+                    try {
+                        link = await navigator.clipboard.readText();
+                        link = link.trim();
+                        if (link && (link.includes('aliexpress.com') || link.includes('s.click.aliexpress.com'))) {
+                            field4.value = link;
+                            field4.select();
+                            field4.focus();
+    
+                            resultText.innerHTML = 'Посилання вставлено!<br>Обробка...';
+                            resultText.style.color = '#00ff88';
+    
+                            await processLink(link);
+                        }
+                    } catch (retryErr) {
+                        resultText.innerHTML += '<br><br>Не вдалося прочитати буфер після підтвердження.<br>Вставте вручну і натисніть кнопку ще раз.';
+                    }
+                }, 1000); // 1 секунда — щоб користувач встиг натиснути «Вставити»
+    
+                return;
             }
         }
     
-        // Перевірка валідності (якщо посилання вже є або вставилося)
+        // Якщо посилання вже є в полі — просто обробляємо
         if (!link.includes('aliexpress.com') && !link.includes('s.click.aliexpress.com')) {
             resultText.innerHTML = 'Це не посилання AliExpress';
             resultText.style.color = 'red';
             return;
         }
     
-        // Запускаємо обробку
         submitBtn.disabled = true;
         submitBtn.textContent = 'Обробка...';
         resultText.innerHTML = '<span class="loading-text">Зачекайте...</span>';
@@ -142,7 +166,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 html += data.result || 'Готово!';
                 resultText.innerHTML = html;
                 resultText.style.color = 'inherit';
-                field4.value = ''; // очищаємо після успіху
+                field4.value = '';
                 field4.readOnly = false;
             } else {
                 resultText.innerHTML = data.error || 'Помилка на сервері';
