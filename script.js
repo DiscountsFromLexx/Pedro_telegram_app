@@ -86,6 +86,25 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     }
+    // Новий обробник для промокодів
+    document.addEventListener('click', function(e) {
+        if (e.target.classList.contains('promo-code')) {
+            const promoText = e.target.textContent.trim(); // беремо текст промокоду
+
+            navigator.clipboard.writeText(promoText).then(() => {
+                // Показуємо повідомлення прямо в resultText
+                resultText.innerHTML += '<br><small style="color:#00ff88; font-style:italic;">Промокод скопійовано!</small>';
+            }).catch(err => {
+                console.error('Помилка копіювання:', err);
+                resultText.innerHTML += '<br><small style="color:#ff5555;">Не вдалося скопіювати</small>';
+            });
+
+            // Опціонально: візуальний фідбек (наприклад, підсвітка)
+            e.target.style.background = 'rgba(0,255,136,0.3)';
+            setTimeout(() => { e.target.style.background = ''; }, 500);
+        }
+    });
+
     // ─── Функція відправки форми (використовується і з кнопки, і з Enter) ──
     const sendForm = async () => {
         let link = field4.value.trim();
