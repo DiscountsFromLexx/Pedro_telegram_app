@@ -71,23 +71,35 @@ document.addEventListener('DOMContentLoaded', () => {
                 const trimmed = text.trim();
                 if (trimmed && (trimmed.includes('aliexpress.com') || trimmed.includes('s.click.aliexpress.com'))) {
                     field4.value = trimmed;
-                    field4.readOnly = true;
-                    field4.select(); // виділяємо весь текст
-                    field4.focus();  // ще раз фокусуємо
+                    field4.readOnly = true; // блокуємо редагування після вставки
+                    field4.select();
+                    field4.focus();
     
                     resultText.innerHTML = 'Посилання вставлено!<br>Обробка запускається автоматично...';
                     resultText.style.color = '#00ff88';
     
-                    // Автоматично запускаємо обробку (START)
+                    // Ховаємо кнопку "Вставити з буфера"
+                    pasteBtn.style.display = 'none';
+    
+                    // Автоматично запускаємо обробку
                     await sendForm();
                 } else {
                     resultText.innerHTML = 'У буфері немає валідного посилання з AliExpress';
                     resultText.style.color = 'orange';
                 }
             } catch (err) {
-                // На iOS показуємо інструкцію
+                // На iOS показуємо інструкцію і ховаємо кнопку
                 resultText.innerHTML = '<b>На iOS вставте вручну:</b><br>1. Натисніть довго на поле нижче<br>2. Оберіть «Вставити» у панелі, що з’явилася<br>3. Натисніть START';
                 resultText.style.color = '#ffcc00';
+    
+                // Ховаємо кнопку "Вставити з буфера" — вона більше не потрібна
+                pasteBtn.style.display = 'none';
+                submitBtn.style.background = 'linear-gradient(to bottom, #00ff88, #00cc66)';
+                submitBtn.style.boxShadow = '0 0 15px rgba(0,255,136,0.6)';
+                setTimeout(() => {
+                    submitBtn.style.background = ''; // повертаємо оригінальний стиль
+                    submitBtn.style.boxShadow = '';
+                }, 2000); // 2 секунди підсвітки
             }
         });
     }
