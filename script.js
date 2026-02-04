@@ -108,7 +108,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (data.success) {
                 let html = '';
                 if (data.image_url) {
-                    html += `<img src="${data.image_url}" alt="Товар" style="max-width: 120px; height: auto; border-radius: 12px; margin: 0 auto 12px; display: block; box-shadow: 0 4px 12px rgba(0,0,0,0.3);">`;
+                    html += `<img src="${data.image_url}" alt="Товар" style="max-width: 90px; height: auto; border-radius: 12px; margin: 0 auto 12px; display: block; box-shadow: 0 4px 12px rgba(0,0,0,0.3);">`;
                 }
                 html += data.result || 'Готово!';
                 resultText.innerHTML = html;
