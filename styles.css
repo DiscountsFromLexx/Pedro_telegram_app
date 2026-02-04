@@ -250,6 +250,73 @@ body.light-theme .theme-label {
     color: #000000;
 }
 
+/* Універсальні кольори для результату в обох темах */
+
+/* Заголовки розділів */
+.moneti-title {
+    color: #ffd700; /* золотистий жовтий — добре видно на темному і світлому */
+}
+.crystal-title {
+    color: #40c4ff; /* м'який блакитний */
+}
+.prizi-title {
+    color: #4caf50; /* приємний зелений */
+}
+
+/* Посилання — адаптивні під теми */
+.moneti-link {
+    color: #ffeb3b; /* яскравий жовтий для темної теми */
+    text-decoration: underline;
+}
+body.light-theme .moneti-link {
+    color: #f57c00; /* помаранчевий для світлої теми */
+}
+
+.crystal-link {
+    color: #4fc3f7; /* м'який блакитний */
+    text-decoration: underline;
+}
+body.light-theme .crystal-link {
+    color: #0288d1; /* темніший блакитний */
+}
+
+.prizi-link {
+    color: #66bb6a; /* зелений */
+    text-decoration: underline;
+}
+body.light-theme .prizi-link {
+    color: #388e3c; /* темніший зелений */
+}
+
+/* Підказка внизу */
+.hint {
+    color: #aaaaaa; /* сірий — добре видно на темному */
+    font-size: 13px;
+}
+body.light-theme .hint {
+    color: #666666; /* темніший сірий */
+}
+
+/* Загальний текст результату (якщо потрібно) */
+.result-text {
+    color: #e0e0ff; /* світло-білий для темної */
+}
+body.light-theme .result-text {
+    color: #1a1a3d; /* темно-синій/чорний для світлої */
+}
+
+blockquote {
+    background: rgba(255,255,255,0.08);
+    border-left: 4px solid #1E90FF;
+    padding: 12px;
+    margin: 12px 0;
+    border-radius: 6px;
+}
+body.light-theme blockquote {
+    background: rgba(0,0,0,0.05);
+    border-left-color: #0288d1;
+}
+
 /* Стилі для перемикача тем (зменшений розмір, окремий контейнер, з написом) */
 .theme-toggle-container {
     position: absolute;
