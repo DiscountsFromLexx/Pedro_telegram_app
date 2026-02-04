@@ -57,23 +57,34 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // ─── Кнопка "Вставити з буфера" ─────────────────────────────────
+    pasteBtn.addEventListener('click', async () => {
+    // Вібрація на iOS (працює тільки якщо дозволено)
+    if (navigator.vibrate) navigator.vibrate(50);
+    // ... решта коду
+});
     const pasteBtn = document.getElementById('pasteBtn');
     if (pasteBtn) {
         pasteBtn.addEventListener('click', async () => {
+            // Спочатку фокусуємо поле — це найважливіше для iOS
+            field4.focus();
+    
             try {
                 const text = await navigator.clipboard.readText();
                 const trimmed = text.trim();
                 if (trimmed && (trimmed.includes('aliexpress.com') || trimmed.includes('s.click.aliexpress.com'))) {
                     field4.value = trimmed;
-                    resultText.innerHTML = 'Посилання вставлено!<br>Тепер натисніть INSERT AND START';
+                    field4.select(); // виділяє весь текст
+                    field4.focus();
+                    resultText.innerHTML = 'Посилання вставлено!<br>Тепер натисніть START';
                     resultText.style.color = '#00ff88';
                 } else {
                     resultText.innerHTML = 'У буфері немає валідного посилання з AliExpress';
                     resultText.style.color = 'orange';
                 }
             } catch (err) {
-                resultText.innerHTML = 'Не вдалося прочитати буфер обміну.<br>Спробуйте вставити вручну';
-                resultText.style.color = 'red';
+                // На iOS показуємо інструкцію з емодзі та жирним текстом
+                resultText.innerHTML = '<b>На iOS потрібно вставити вручну:</b><br>1. Натисніть довго на поле нижче<br>2. Оберіть «Вставити» у панелі, що з’явилася<br>3. Потім натисніть INSERT AND START';
+                resultText.style.color = '#ffcc00'; // жовтий для уваги
             }
         });
     }
