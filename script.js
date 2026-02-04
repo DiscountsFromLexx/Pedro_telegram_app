@@ -110,11 +110,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 const data = await response.json();
 
                 if (data.success) {
-                    field1.value = data.result || 'Готово!';
-                    field1.style.color = 'green';
+                    document.getElementById('resultText').innerHTML = data.result || 'Готово!';
+                    document.getElementById('resultText').style.color = '#00ff88'; // зелений для успіху
                 } else {
-                    field1.value = data.error || 'Помилка на сервері';
-                    field1.style.color = 'red';
+                    document.getElementById('resultText').innerHTML = data.error || 'Помилка на сервері';
+                    document.getElementById('resultText').style.color = '#ff5555'; // червоний для помилки
                 }
             } catch (err) {
                 field1.value = 'Помилка з’єднання з сервером';
