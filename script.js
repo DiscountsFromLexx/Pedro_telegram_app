@@ -111,7 +111,7 @@ document.addEventListener('DOMContentLoaded', () => {
     
         // Перевірка валідності (якщо посилання вже є або вставилося)
         if (!link.includes('aliexpress.com') && !link.includes('s.click.aliexpress.com')) {
-            resultText.innerHTML = 'Це не посилання AliExpress';
+            resultText.innerHTML = 'Вставте посилання вручну в поле "Посилання на товар" і натисніть INSERT AND START.';
             resultText.style.color = 'red';
             return;
         }
