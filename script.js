@@ -87,10 +87,10 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
+        // Перед відправкою запиту
         submitBtn.disabled = true;
         submitBtn.textContent = 'Обробка...';
-        resultText.innerHTML = 'Зачекайте...';
-        resultText.style.color = 'inherit';
+        resultText.innerHTML = '<span class="loading-text">Зачекайте...</span>';
 
         try {
             const response = await fetch('https://lexxexpress.click/pedro/submit', {
