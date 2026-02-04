@@ -56,11 +56,14 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // ─── Кнопка "Вставити з буфера" ─────────────────────────────────    
+    // ─── Кнопка "Вставити з буфера" ─────────────────────────────────
     const pasteBtn = document.getElementById('pasteBtn');
     if (pasteBtn) {
         pasteBtn.addEventListener('click', async () => {
-            // Спочатку фокусуємо поле — це найважливіше для iOS
+            // Вібрація (якщо підтримується)
+            if (navigator.vibrate) navigator.vibrate(50);
+    
+            // Фокус на поле — критично для iOS
             field4.focus();
     
             try {
@@ -68,8 +71,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 const trimmed = text.trim();
                 if (trimmed && (trimmed.includes('aliexpress.com') || trimmed.includes('s.click.aliexpress.com'))) {
                     field4.value = trimmed;
-                    field4.select(); // виділяє весь текст
-                    field4.focus();
+                    field4.select(); // виділяємо весь текст
+                    field4.focus();  // ще раз фокусуємо
                     resultText.innerHTML = 'Посилання вставлено!<br>Тепер натисніть START';
                     resultText.style.color = '#00ff88';
                 } else {
@@ -77,9 +80,9 @@ document.addEventListener('DOMContentLoaded', () => {
                     resultText.style.color = 'orange';
                 }
             } catch (err) {
-                // На iOS показуємо інструкцію з емодзі та жирним текстом
-                resultText.innerHTML = '<b>На iOS потрібно вставити вручну:</b><br>1. Натисніть довго на поле нижче<br>2. Оберіть «Вставити» у панелі, що з’явилася<br>3. Потім натисніть INSERT AND START';
-                resultText.style.color = '#ffcc00'; // жовтий для уваги
+                // На iOS показуємо інструкцію
+                resultText.innerHTML = '<b>На iOS вставте вручну:</b><br>1. Натисніть довго на поле нижче<br>2. Оберіть «Вставити» у панелі, що з’явилася<br>3. Натисніть START';
+                resultText.style.color = '#ffcc00';
             }
         });
     }
