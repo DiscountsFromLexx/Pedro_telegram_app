@@ -56,49 +56,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // ─── Кнопка "Вставити з буфера" ─────────────────────────────────
-    const pasteBtn = document.getElementById('pasteBtn');
-    if (pasteBtn) {
-        pasteBtn.addEventListener('click', async () => {
-            if (navigator.vibrate) navigator.vibrate(50);
     
-            field4.focus();
-    
-            try {
-                const text = await navigator.clipboard.readText();
-                const trimmed = text.trim();
-                if (trimmed && (trimmed.includes('aliexpress.com') || trimmed.includes('s.click.aliexpress.com'))) {
-                    field4.value = trimmed;
-                    field4.readOnly = true;
-                    field4.select();
-                    field4.focus();
-    
-                    resultText.innerHTML = 'Посилання вставлено!<br>Обробка запускається автоматично...';
-                    resultText.style.color = '#00ff88';
-    
-                    pasteBtn.style.display = 'none';
-    
-                    await sendForm();
-                } else {
-                    resultText.innerHTML = 'У буфері немає валідного посилання з AliExpress';
-                    resultText.style.color = 'orange';
-                }
-            } catch (err) {
-                resultText.innerHTML = '<b>На iOS вставте вручну:</b><br>1. Натисніть довго на поле нижче<br>2. Оберіть «Вставити» у панелі, що з’явилася<br>3. Натисніть START';
-                resultText.style.color = '#ffcc00';
-    
-                pasteBtn.style.display = 'none';
-    
-                // Підсвітка кнопки START
-                submitBtn.style.background = 'linear-gradient(to bottom, #00ff88, #00cc66)';
-                submitBtn.style.boxShadow = '0 0 15px rgba(0,255,136,0.6)';
-                setTimeout(() => {
-                    submitBtn.style.background = '';
-                    submitBtn.style.boxShadow = '';
-                }, 2000);
-            }
-        });
-    }
     // Новий обробник для промокодів
     document.addEventListener('click', function(e) {
         if (e.target.classList.contains('promo-code')) {
@@ -120,10 +78,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
     
     // ─── Функція відправки форми (використовується і з кнопки, і з Enter) ──
-    const sendForm = async () => {
+        const sendForm = async () => {
         let link = field4.value.trim();
-
-        // Якщо поле порожнє — беремо з буфера
+    
+        // Якщо поле порожнє — намагаємося взяти з буфера
         if (!link) {
             try {
                 link = await navigator.clipboard.readText();
@@ -131,43 +89,45 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (link && (link.includes('aliexpress.com') || link.includes('s.click.aliexpress.com'))) {
                     field4.value = link;
                     console.log('Автоматично вставлено з буфера:', link);
+                    resultText.innerHTML = 'Посилання вставлено з буфера!<br>Обробка...';
+                    resultText.style.color = '#00ff88';
                 } else {
-                    resultText.innerHTML = 'У буфері немає посилання з AliExpress';
-                    resultText.style.color = 'red';
+                    resultText.innerHTML = 'У буфері немає валідного посилання з AliExpress.<br>Вставте вручну.';
+                    resultText.style.color = 'orange';
                     return;
                 }
             } catch (err) {
-                resultText.innerHTML = 'Не вдалося прочитати буфер обміну.<br>Вставте посилання вручну.';
-                resultText.style.color = 'red';
+                resultText.innerHTML = '<b>Не вдалося прочитати буфер обміну.</b><br>Вставте посилання вручну в поле нижче і натисніть START.';
+                resultText.style.color = '#ffcc00';
                 return;
             }
         }
-
-        // Перевірка валідності
+    
+        // Перевірка валідності (якщо посилання вже є або вставилося)
         if (!link.includes('aliexpress.com') && !link.includes('s.click.aliexpress.com')) {
             resultText.innerHTML = 'Це не посилання AliExpress';
             resultText.style.color = 'red';
             return;
         }
-
-        // Перед відправкою запиту
+    
+        // Запускаємо обробку
         submitBtn.disabled = true;
         submitBtn.textContent = 'Обробка...';
         resultText.innerHTML = '<span class="loading-text">Зачекайте...</span>';
-
+    
         try {
             const response = await fetch('https://lexxexpress.click/pedro/submit', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ link: link })
             });
-
+    
             if (!response.ok) {
                 throw new Error(`Помилка: ${response.status}`);
             }
-
+    
             const data = await response.json();
-
+    
             if (data.success) {
                 let html = '';
                 if (data.image_url) {
@@ -175,8 +135,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
                 html += data.result || 'Готово!';
                 resultText.innerHTML = html;
-                resultText.style.color = 'inherit'; // скидаємо колір на дефолтний
-                field4.value = ''; // очищаємо поле вводу після успішної відправки
+                resultText.style.color = 'inherit';
+                field4.value = ''; // очищаємо після успіху
+                field4.readOnly = false;
             } else {
                 resultText.innerHTML = data.error || 'Помилка на сервері';
                 resultText.style.color = 'red';
@@ -188,7 +149,6 @@ document.addEventListener('DOMContentLoaded', () => {
         } finally {
             submitBtn.disabled = false;
             submitBtn.textContent = 'START';
-            field4.readOnly = false; // повертаємо можливість редагувати
         }
     };
 
