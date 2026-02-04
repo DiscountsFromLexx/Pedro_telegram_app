@@ -848,6 +848,18 @@ input:checked + .slider:before {
 .paste-btn:hover {
     background: #00bfff;
 }
+/* Усі жирні тексти в результаті — білі в темній темі */
+.result-text b,
+.result-text strong {
+    color: #ffffff; /* чистий білий — ідеально видно на темному */
+    font-weight: 600; /* трохи жирніше, щоб виділявся */
+}
+
+/* Світла тема — темний жирний текст */
+body.light-theme .result-text b,
+body.light-theme .result-text strong {
+    color: #1a1a3d; /* темно-синій/чорний */
+}
 
 @media (max-width: 800px) {  
     .main-container {
