@@ -110,6 +110,9 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
+    setTimeout(async () => {
+        await sendForm();
+    }, 800); // 0.8 секунди
     // ─── Функція відправки форми (використовується і з кнопки, і з Enter) ──
     const sendForm = async () => {
         let link = field4.value.trim();
