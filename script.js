@@ -56,6 +56,27 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // ─── Кнопка "Вставити з буфера" ─────────────────────────────────
+    const pasteBtn = document.getElementById('pasteBtn');
+    if (pasteBtn) {
+        pasteBtn.addEventListener('click', async () => {
+            try {
+                const text = await navigator.clipboard.readText();
+                const trimmed = text.trim();
+                if (trimmed && (trimmed.includes('aliexpress.com') || trimmed.includes('s.click.aliexpress.com'))) {
+                    field4.value = trimmed;
+                    resultText.innerHTML = 'Посилання вставлено!<br>Тепер натисніть INSERT AND START';
+                    resultText.style.color = '#00ff88';
+                } else {
+                    resultText.innerHTML = 'У буфері немає валідного посилання з AliExpress';
+                    resultText.style.color = 'orange';
+                }
+            } catch (err) {
+                resultText.innerHTML = 'Не вдалося прочитати буфер обміну.<br>Спробуйте вставити вручну';
+                resultText.style.color = 'red';
+            }
+        });
+    }
     // ─── Функція відправки форми (використовується і з кнопки, і з Enter) ──
     const sendForm = async () => {
         let link = field4.value.trim();
