@@ -134,6 +134,10 @@ body.light-theme .container {
     background: #B0E0E6;
 }
 
+body.light-theme .loading-text {
+    color: #006600; /* темно-зелений або #1a3d5a для контрасту */
+}
+
 body.light-theme .instruction-btn {
     background: transparent;
     color: #4682B4;
@@ -394,6 +398,19 @@ input:checked + .slider:before {
     position: relative;
 }
 
+/* Стилі для "Зачекайте..." */
+.loading-text {
+    color: #00ff88;
+    font-weight: 500;
+    font-style: italic;
+    display: inline-block;
+    animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.4; }
+}
 
 .top-buttons {
     position: absolute;
