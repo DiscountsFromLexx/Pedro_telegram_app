@@ -274,49 +274,68 @@ body.light-theme .promo-code {
     color: #ef6c00; /* темніший жовтий/помаранчевий для світлої теми */
 }
 
-/* Універсальні кольори для результату в обох темах */
+/* Універсальні кольори для заголовків і посилань */
 
 /* Заголовки розділів */
 .moneti-title {
-    color: #F4A460; /* золотистий жовтий — добре видно на темному і світлому */
+    color: #ffeb3b; /* золотистий жовтий — видно на темному */
 }
+body.light-theme .moneti-title {
+    color: #f57c00; /* помаранчевий для світлої */
+}
+
 .crystal-title {
-    color: #40c4ff; /* м'який блакитний */
+    color: #81d4fa; /* м'який блакитний */
 }
-.prizi-title {
-    color: #4caf50; /* приємний зелений */
-}
-
-/* Посилання — адаптивні під теми */
-.moneti-link {
-    color: #ffeb3b; /* яскравий жовтий для темної теми */
-    text-decoration: underline;
-}
-body.light-theme .moneti-link {
-    color: #f57c00; /* помаранчевий для світлої теми */
-}
-
-.crystal-link {
-    color: #4fc3f7; /* м'який блакитний */
-    text-decoration: underline;
-}
-body.light-theme .crystal-link {
+body.light-theme .crystal-title {
     color: #0288d1; /* темніший блакитний */
 }
 
-.prizi-link {
-    color: #66bb6a; /* зелений */
-    text-decoration: underline;
+.prizi-title {
+    color: #a5d6a7; /* м'який зелений */
 }
-body.light-theme .prizi-link {
+body.light-theme .prizi-title {
     color: #388e3c; /* темніший зелений */
 }
 
-/* Підказка внизу */
-.hint {
-    color: #aaaaaa; /* сірий — добре видно на темному */
-    font-size: 13px;
+/* Посилання */
+.moneti-link {
+    color: #fff176; /* світло-жовтий */
 }
+body.light-theme .moneti-link {
+    color: #ef6c00;
+}
+
+.crystal-link {
+    color: #4fc3f7;
+}
+body.light-theme .crystal-link {
+    color: #0277bd;
+}
+
+.prizi-link {
+    color: #81c784;
+}
+body.light-theme .prizi-link {
+    color: #2e7d32;
+}
+
+/* Загальний текст результату (якщо потрібно) */
+.result-text {
+    color: #f0f4f8; /* дуже світлий сіро-білий — ідеально на темному */
+}
+body.light-theme .result-text {
+    color: #1a2533; /* темно-синій/сірий для світлої */
+}
+
+/* Підказка */
+.hint {
+    color: #b0bec5;
+}
+body.light-theme .hint {
+    color: #455a64;
+}
+
 body.light-theme .hint {
     color: #666666; /* темніший сірий */
 }
