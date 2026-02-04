@@ -93,7 +93,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             navigator.clipboard.writeText(promoText).then(() => {
                 // Показуємо повідомлення прямо в resultText
-                resultText.innerHTML += '<br><small style="color:#00ff88; font-style:italic;">Промокод скопійовано!</small>';
+                resultText.innerHTML += '<br><small style="color:#FF0000; font-style:italic;">Промокод скопійовано!</small>';
             }).catch(err => {
                 console.error('Помилка копіювання:', err);
                 resultText.innerHTML += '<br><small style="color:#ff5555;">Не вдалося скопіювати</small>';
