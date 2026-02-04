@@ -56,7 +56,75 @@ document.addEventListener('DOMContentLoaded', () => {
             addLog('Тема змінена', { theme: isLight ? 'light' : 'dark' });
         });
     }
-
+    // ─── Обробка submit ──────────────────────────────────────────────
+    if (form) {
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+    
+            let link = field4.value.trim();
+    
+            // Якщо поле порожнє — беремо з буфера
+            if (!link) {
+                try {
+                    link = await navigator.clipboard.readText();
+                    link = link.trim();
+                    if (link && (link.includes('aliexpress.com') || link.includes('s.click.aliexpress.com'))) {
+                        field4.value = link;
+                        console.log('Автоматично вставлено з буфера:', link);
+                    } else {
+                        document.getElementById('resultText').innerHTML = 'У буфері немає посилання з AliExpress';
+                        document.getElementById('resultText').style.color = 'red';
+                        return;
+                    }
+                } catch (err) {
+                    document.getElementById('resultText').innerHTML = 'Не вдалося прочитати буфер обміну.<br>Вставте посилання вручну.';
+                    document.getElementById('resultText').style.color = 'red';
+                    return;
+                }
+            }
+    
+            // Перевірка валідності
+            if (!link.includes('aliexpress.com') && !link.includes('s.click.aliexpress.com')) {
+                document.getElementById('resultText').innerHTML = 'Це не посилання AliExpress';
+                document.getElementById('resultText').style.color = 'red';
+                return;
+            }
+    
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Обробка...';
+            document.getElementById('resultText').innerHTML = 'Зачекайте...';
+            document.getElementById('resultText').style.color = 'inherit';
+    
+            try {
+                const response = await fetch('https://lexxexpress.click/pedro/submit', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ link: link })
+                });
+    
+                if (!response.ok) {
+                    throw new Error(`Помилка: ${response.status}`);
+                }
+    
+                const data = await response.json();
+    
+                if (data.success) {
+                    document.getElementById('resultText').innerHTML = data.result || 'Готово!';
+                    document.getElementById('resultText').style.color = 'green';
+                } else {
+                    document.getElementById('resultText').innerHTML = data.error || 'Помилка на сервері';
+                    document.getElementById('resultText').style.color = 'red';
+                }
+            } catch (err) {
+                document.getElementById('resultText').innerHTML = 'Помилка з’єднання з сервером';
+                document.getElementById('resultText').style.color = 'red';
+                console.error('Fetch error:', err);
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'INSERT AND START';
+            }
+        });
+    }
     // ─── Обробка натискання кнопки ──────────────────────────────────
     if (submitBtn) {
         submitBtn.addEventListener('click', async (e) => {
