@@ -110,11 +110,19 @@ document.addEventListener('DOMContentLoaded', () => {
                 const data = await response.json();
 
                 if (data.success) {
-                    document.getElementById('resultText').innerHTML = data.result || 'Готово!';
-                    document.getElementById('resultText').style.color = '#00ff88'; // зелений для успіху
+                    const resultDiv = document.getElementById('resultText');
+                    
+                    let html = '';
+                    if (data.image_url) {
+                        html += `<img src="${data.image_url}" alt="Товар" style="max-width: 100%; height: auto; border-radius: 12px; margin-bottom: 12px; display: block;">`;
+                    }
+                    html += data.result || 'Готово!';
+                    
+                    resultDiv.innerHTML = html;
+                    resultDiv.style.color = '#00ff88';
                 } else {
                     document.getElementById('resultText').innerHTML = data.error || 'Помилка на сервері';
-                    document.getElementById('resultText').style.color = '#ff5555'; // червоний для помилки
+                    document.getElementById('resultText').style.color = '#ff5555';
                 }
             } catch (err) {
                 field1.value = 'Помилка з’єднання з сервером';
