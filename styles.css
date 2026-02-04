@@ -251,24 +251,22 @@ body.light-theme .theme-label {
 }
 
 /* Текст після промокоду (code + звичайний текст) */
-.promo-code,
-.promo-code + * {
-    color: #ffeb3b !important; /* світло-жовтий, добре видно на темному */
+.promo-code {
+    background: rgba(255, 193, 7, 0.15); /* легкий жовтий фон */
+    color: #ffeb3b;                      /* жовтий текст для темної теми */
+    padding: 4px 8px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-family: monospace;
+    font-weight: 600;
+    user-select: none;
+    transition: all 0.2s ease;
+    display: inline-block;
 }
 
-/* Світла тема */
-body.light-theme .promo-code,
-body.light-theme .promo-code + * {
-    color: #ef6c00 !important; /* помаранчевий для світлої */
-}
-
-/* Сам <code> — monospace + фон */
-.result-text code {
-    background: rgba(255, 193, 7, 0.2);
-    padding: 2px 6px;
-    border-radius: 4px;
-    font-family: 'Courier New', monospace;
-    color: inherit; /* успадковує колір від батьківського елемента */
+.promo-code:hover {
+    background: rgba(255, 193, 7, 0.3);
+    transform: scale(1.05);
 }
 
 /* Універсальні кольори для заголовків і посилань */
