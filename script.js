@@ -97,9 +97,15 @@ document.addEventListener('DOMContentLoaded', () => {
                     return;
                 }
             } catch (err) {
-                resultText.innerHTML = '<b>Не вдалося прочитати буфер обміну.</b><br>Вставте посилання вручну в поле нижче і натисніть START.';
+                resultText.innerHTML = '<b>Не вдалося прочитати буфер обміну.</b><br>Вставте посилання вручну в поле нижче і натисніть INSERT AND START.';
                 resultText.style.color = '#ffcc00';
-                return;
+            
+                submitBtn.style.background = 'linear-gradient(to bottom, #ffcc00, #ff9900)';
+                submitBtn.style.boxShadow = '0 0 15px rgba(255,204,0,0.6)';
+                setTimeout(() => {
+                    submitBtn.style.background = '';
+                    submitBtn.style.boxShadow = '';
+                }, 3000); // 3 секунди підсвітки
             }
         }
     
