@@ -2,7 +2,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const form = document.getElementById('telegramForm');
     const submitBtn = document.querySelector('.submit-btn');
     const field4 = document.getElementById('field4');
-    const field1 = document.getElementById('field1');
+    const resultText = document.getElementById('resultText');
     const clearBtn = document.querySelector('.clear-btn');
     const themeToggle = document.getElementById('themeToggle');
 
@@ -32,8 +32,7 @@ document.addEventListener('DOMContentLoaded', () => {
         clearBtn.addEventListener('click', () => {
             form.reset();
             field4.value = '';
-            field1.value = '';
-            field1.placeholder = "Тут буде магія...";
+            resultText.innerHTML = '';
             addLog('Форма очищена');
         });
     }
@@ -56,149 +55,100 @@ document.addEventListener('DOMContentLoaded', () => {
             addLog('Тема змінена', { theme: isLight ? 'light' : 'dark' });
         });
     }
-    // ─── Обробка submit ──────────────────────────────────────────────
+
+    // ─── Функція відправки форми (використовується і з кнопки, і з Enter) ──
+    const sendForm = async () => {
+        let link = field4.value.trim();
+
+        // Якщо поле порожнє — беремо з буфера
+        if (!link) {
+            try {
+                link = await navigator.clipboard.readText();
+                link = link.trim();
+                if (link && (link.includes('aliexpress.com') || link.includes('s.click.aliexpress.com'))) {
+                    field4.value = link;
+                    console.log('Автоматично вставлено з буфера:', link);
+                } else {
+                    resultText.innerHTML = 'У буфері немає посилання з AliExpress';
+                    resultText.style.color = 'red';
+                    return;
+                }
+            } catch (err) {
+                resultText.innerHTML = 'Не вдалося прочитати буфер обміну.<br>Вставте посилання вручну.';
+                resultText.style.color = 'red';
+                return;
+            }
+        }
+
+        // Перевірка валідності
+        if (!link.includes('aliexpress.com') && !link.includes('s.click.aliexpress.com')) {
+            resultText.innerHTML = 'Це не посилання AliExpress';
+            resultText.style.color = 'red';
+            return;
+        }
+
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Обробка...';
+        resultText.innerHTML = 'Зачекайте...';
+        resultText.style.color = 'inherit';
+
+        try {
+            const response = await fetch('https://lexxexpress.click/pedro/submit', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ link: link })
+            });
+
+            if (!response.ok) {
+                throw new Error(`Помилка: ${response.status}`);
+            }
+
+            const data = await response.json();
+
+            if (data.success) {
+                let html = '';
+                if (data.image_url) {
+                    html += `<img src="${data.image_url}" alt="Товар" style="max-width: 100%; height: auto; border-radius: 12px; margin-bottom: 12px; display: block;">`;
+                }
+                html += data.result || 'Готово!';
+                resultText.innerHTML = html;
+                resultText.style.color = 'green';
+            } else {
+                resultText.innerHTML = data.error || 'Помилка на сервері';
+                resultText.style.color = 'red';
+            }
+        } catch (err) {
+            resultText.innerHTML = 'Помилка з’єднання з сервером';
+            resultText.style.color = 'red';
+            console.error('Fetch error:', err);
+        } finally {
+            submitBtn.disabled = false;
+            submitBtn.textContent = 'INSERT AND START';
+        }
+    };
+
+    // ─── Обробка submit форми ────────────────────────────────────────
     if (form) {
         form.addEventListener('submit', async (e) => {
             e.preventDefault();
-    
-            let link = field4.value.trim();
-    
-            // Якщо поле порожнє — беремо з буфера
-            if (!link) {
-                try {
-                    link = await navigator.clipboard.readText();
-                    link = link.trim();
-                    if (link && (link.includes('aliexpress.com') || link.includes('s.click.aliexpress.com'))) {
-                        field4.value = link;
-                        console.log('Автоматично вставлено з буфера:', link);
-                    } else {
-                        document.getElementById('resultText').innerHTML = 'У буфері немає посилання з AliExpress';
-                        document.getElementById('resultText').style.color = 'red';
-                        return;
-                    }
-                } catch (err) {
-                    document.getElementById('resultText').innerHTML = 'Не вдалося прочитати буфер обміну.<br>Вставте посилання вручну.';
-                    document.getElementById('resultText').style.color = 'red';
-                    return;
-                }
-            }
-    
-            // Перевірка валідності
-            if (!link.includes('aliexpress.com') && !link.includes('s.click.aliexpress.com')) {
-                document.getElementById('resultText').innerHTML = 'Це не посилання AliExpress';
-                document.getElementById('resultText').style.color = 'red';
-                return;
-            }
-    
-            submitBtn.disabled = true;
-            submitBtn.textContent = 'Обробка...';
-            document.getElementById('resultText').innerHTML = 'Зачекайте...';
-            document.getElementById('resultText').style.color = 'inherit';
-    
-            try {
-                const response = await fetch('https://lexxexpress.click/pedro/submit', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ link: link })
-                });
-    
-                if (!response.ok) {
-                    throw new Error(`Помилка: ${response.status}`);
-                }
-    
-                const data = await response.json();
-    
-                if (data.success) {
-                    document.getElementById('resultText').innerHTML = data.result || 'Готово!';
-                    document.getElementById('resultText').style.color = 'green';
-                } else {
-                    document.getElementById('resultText').innerHTML = data.error || 'Помилка на сервері';
-                    document.getElementById('resultText').style.color = 'red';
-                }
-            } catch (err) {
-                document.getElementById('resultText').innerHTML = 'Помилка з’єднання з сервером';
-                document.getElementById('resultText').style.color = 'red';
-                console.error('Fetch error:', err);
-            } finally {
-                submitBtn.disabled = false;
-                submitBtn.textContent = 'INSERT AND START';
-            }
+            await sendForm();
         });
     }
-    // ─── Обробка натискання кнопки ──────────────────────────────────
+
+    // ─── Обробка кліку по кнопці (основний шлях) ─────────────────────
     if (submitBtn) {
         submitBtn.addEventListener('click', async (e) => {
-            e.preventDefault(); // блокуємо стандартну відправку
+            e.preventDefault();
+            await sendForm();
+        });
+    }
 
-            let link = field4.value.trim();
-
-            // Якщо поле порожнє — беремо з буфера
-            if (!link) {
-                try {
-                    link = await navigator.clipboard.readText();
-                    link = link.trim();
-                    if (link && (link.includes('aliexpress.com') || link.includes('s.click.aliexpress.com'))) {
-                        field4.value = link;
-                        console.log('Автоматично вставлено з буфера:', link);
-                    } else {
-                        field1.value = 'У буфері немає посилання з AliExpress';
-                        field1.style.color = 'red';
-                        return;
-                    }
-                } catch (err) {
-                    field1.value = 'Не вдалося прочитати буфер обміну.\nВставте посилання вручну.';
-                    field1.style.color = 'red';
-                    return;
-                }
-            }
-
-            // Перевірка валідності
-            if (!link.includes('aliexpress.com') && !link.includes('s.click.aliexpress.com')) {
-                field1.value = 'Це не посилання AliExpress';
-                field1.style.color = 'red';
-                return;
-            }
-
-            submitBtn.disabled = true;
-            submitBtn.textContent = 'Обробка...';
-            field1.value = 'Зачекайте...';
-            field1.style.color = 'inherit';
-
-            try {
-                const response = await fetch('https://lexxexpress.click/pedro/submit', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ link: link })
-                });
-
-                if (!response.ok) {
-                    throw new Error(`Помилка: ${response.status}`);
-                }
-
-                const data = await response.json();
-
-                if (data.success) {
-                    const resultDiv = document.getElementById('resultText');
-                    
-                    let html = '';
-                    if (data.image_url) {
-                        html += `<img src="${data.image_url}" alt="Товар" style="max-width: 100%; height: auto; border-radius: 12px; margin-bottom: 12px; display: block;">`;
-                    }
-                    html += data.result || 'Готово!';
-                    
-                    resultDiv.innerHTML = html;
-                    resultDiv.style.color = '#00ff88';
-                } else {
-                    document.getElementById('resultText').innerHTML = data.error || 'Помилка на сервері';
-                    document.getElementById('resultText').style.color = '#ff5555';
-                }
-            } catch (err) {
-                field1.value = 'Помилка з’єднання з сервером';
-                field1.style.color = 'red';
-                console.error('Fetch error:', err);
-            } finally {
-                submitBtn.disabled = false;
-                submitBtn.textContent = 'INSERT AND START';
+    // ─── Enter в полі field4 також відправляє ────────────────────────
+    if (field4) {
+        field4.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                sendForm();
             }
         });
     }
