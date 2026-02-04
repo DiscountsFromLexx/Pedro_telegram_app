@@ -97,8 +97,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     return;
                 }
             } catch (err) {
-                resultText.innerHTML = '<b>Не вдалося прочитати буфер обміну.</b><br>Вставте посилання вручну в поле нижче і натисніть INSERT AND START.';
-                resultText.style.color = '#ffcc00';
+                resultText.innerHTML = '<b>Не вдалося прочитати буфер обміну.</b><br>Вставте посилання вручну в поле "Посилання на товар" і натисніть INSERT AND START.';
+                resultText.style.color = '#DC143C';
             
                 submitBtn.style.background = 'linear-gradient(to bottom, #ffcc00, #ff9900)';
                 submitBtn.style.boxShadow = '0 0 15px rgba(255,204,0,0.6)';
