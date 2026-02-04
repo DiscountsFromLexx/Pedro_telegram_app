@@ -56,12 +56,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // ─── Кнопка "Вставити з буфера" ─────────────────────────────────
-    pasteBtn.addEventListener('click', async () => {
-    // Вібрація на iOS (працює тільки якщо дозволено)
-    if (navigator.vibrate) navigator.vibrate(50);
-    // ... решта коду
-});
+    // ─── Кнопка "Вставити з буфера" ─────────────────────────────────    
     const pasteBtn = document.getElementById('pasteBtn');
     if (pasteBtn) {
         pasteBtn.addEventListener('click', async () => {
