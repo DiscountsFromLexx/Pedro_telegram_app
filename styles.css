@@ -250,6 +250,30 @@ body.light-theme .theme-label {
     color: #000000;
 }
 
+/* Стилі для промокоду */
+.promo-code {
+    background: rgba(255, 193, 7, 0.15); /* легкий жовтий фон */
+    color: #ffeb3b;                      /* жовтий текст для темної теми */
+    padding: 4px 8px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-family: monospace;
+    font-weight: 600;
+    user-select: none;
+    transition: all 0.2s ease;
+    display: inline-block;
+}
+
+.promo-code:hover {
+    background: rgba(255, 193, 7, 0.3);
+    transform: scale(1.05);
+}
+
+body.light-theme .promo-code {
+    background: rgba(255, 193, 7, 0.2);
+    color: #ef6c00; /* темніший жовтий/помаранчевий для світлої теми */
+}
+
 /* Універсальні кольори для результату в обох темах */
 
 /* Заголовки розділів */
