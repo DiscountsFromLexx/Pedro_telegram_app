@@ -980,7 +980,7 @@ body.light-theme blockquote i {
         clear: both;                 /* щоб текст не "обтікав" інші елементи */
     }
     .theme-toggle-container {
-        top: 45px; /* було 35px */
+        top: 55px; /* було 35px */
         right: 5px;    /* було right: 10px;  */
         gap: 1px;
     }
@@ -1037,15 +1037,32 @@ body.light-theme blockquote i {
         bottom: 2px;
         
     }
-    .instruction-btn {
+    .top-buttons {
+        position: absolute;
         top: 45px; /* було 10px */
+        gap: 4px;                     /* відстань між кнопками */
+        top: 10px;    /* було top: 10px; */
+        left: 15px;
+        z-index: 1000;
+        display: flex;
+        flex-direction: column;
+        
+        font-family: 'Montserrat', sans-serif;
+        font-size: 12px;              /* невеликий, але читабельний розмір */
+        font-weight: 200;
+        letter-spacing: 1px;
+        
+        text-align: center;
+    }
+    .instruction-btn {
+        
         left: 10px;
         padding: 8px 15px;
         font-size: 10px;
         font-weight: 100;
     }
     .coupons-btn {
-        top: 10px; /* було 10px */
+        
         left: 10px;
         padding: 8px 15px;
         font-size: 10px;
