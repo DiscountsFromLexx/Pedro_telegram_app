@@ -135,7 +135,7 @@ body.light-theme .container {
 }
 
 body.light-theme .loading-text {
-    color: #006600; /* темно-зелений або #1a3d5a для контрасту */
+    color: #FF0000; /*  або #1a3d5a для контрасту */
 }
 
 body.light-theme .instruction-btn {
@@ -509,7 +509,7 @@ input:checked + .slider:before {
 
 /* Стилі для "Зачекайте..." */
 .loading-text {
-    color: #00ff88;
+    color: #FF0000;
     font-weight: 500;
     font-style: italic;
     display: inline-block;
