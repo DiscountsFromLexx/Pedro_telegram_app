@@ -78,7 +78,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     
     // ─── Функція відправки форми (використовується і з кнопки, і з Enter) ──
-        const sendForm = async () => {
+    const sendForm = async () => {
         let link = field4.value.trim();
     
         // Якщо поле порожнє — намагаємося взяти з буфера
@@ -99,20 +99,37 @@ document.addEventListener('DOMContentLoaded', () => {
             } catch (err) {
                 resultText.innerHTML = '<b>Не вдалося прочитати буфер обміну.</b><br>Вставте посилання вручну в поле "Посилання на товар" і натисніть INSERT AND START.';
                 resultText.style.color = '#DC143C';
-            
                 submitBtn.style.background = 'linear-gradient(to bottom, #ffcc00, #ff9900)';
                 submitBtn.style.boxShadow = '0 0 15px rgba(255,204,0,0.6)';
                 setTimeout(() => {
                     submitBtn.style.background = '';
                     submitBtn.style.boxShadow = '';
-                }, 3000); // 3 секунди підсвітки
+                }, 3000);
+                return;
             }
         }
     
-        // Перевірка валідності (якщо посилання вже є або вставилося)
+        // Перевірка валідності
         if (!link.includes('aliexpress.com') && !link.includes('s.click.aliexpress.com')) {
-            resultText.innerHTML = 'Вставте посилання вручну в поле "Посилання на товар" і натисніть INSERT AND START.';
+            resultText.innerHTML = 'Це не посилання AliExpress';
             resultText.style.color = 'red';
+            return;
+        }
+    
+        // Збираємо стан чекбоксів
+        const sections = [];
+        if (document.getElementById('all')?.checked) {
+            sections.push('all');
+        } else {
+            if (document.getElementById('coins')?.checked) sections.push('coins');
+            if (document.getElementById('crystal')?.checked) sections.push('crystal');
+            if (document.getElementById('prizeland')?.checked) sections.push('prizeland');
+        }
+    
+        // Якщо жоден не вибраний — показуємо помилку
+        if (sections.length === 0) {
+            resultText.innerHTML = 'Оберіть хоча б один розділ (ALL, COINS, CRYSTALS або PRIZE LAND)';
+            resultText.style.color = 'orange';
             return;
         }
     
@@ -125,7 +142,10 @@ document.addEventListener('DOMContentLoaded', () => {
             const response = await fetch('https://lexxexpress.click/pedro/submit', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ link: link })
+                body: JSON.stringify({ 
+                    link: link,
+                    sections: sections  // передаємо масив вибраних розділів
+                })
             });
     
             if (!response.ok) {
@@ -142,7 +162,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 html += data.result || 'Готово!';
                 resultText.innerHTML = html;
                 resultText.style.color = 'inherit';
-                field4.value = ''; // очищаємо після успіху
+                field4.value = '';
                 field4.readOnly = false;
             } else {
                 resultText.innerHTML = data.error || 'Помилка на сервері';
