@@ -1,3 +1,19 @@
+// Розгортаємо застосунок на весь екран і прибираємо верхню панель
+if (window.Telegram?.WebApp) {
+    Telegram.WebApp.ready();                // повідомляємо Telegram, що ми готові
+    Telegram.WebApp.expand();               // розгортаємо на весь екран
+    Telegram.WebApp.setHeaderColor('bg_color'); // або 'secondary_bg_color'
+    Telegram.WebApp.setBackgroundColor('bg_color');
+    
+    // Приховуємо верхню панель (працює в більшості випадків)
+    Telegram.WebApp.MainButton.hide();
+    Telegram.WebApp.BackButton.hide();
+    
+    // Якщо потрібно — вимикаємо вертикальний скрол у header (додатково)
+    document.body.style.overflowY = 'hidden';
+    document.body.style.height = '100vh';
+}
+
 document.addEventListener('DOMContentLoaded', () => {
     const form = document.getElementById('telegramForm');
     const submitBtn = document.querySelector('.submit-btn');
