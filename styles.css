@@ -942,8 +942,11 @@ body.light-theme blockquote i {
 }
 
 @media (max-width: 800px) {  
-    .main-container {
+    body {
         margin-top: 5px;
+    }
+    .main-container {
+        
         padding: 4px;
         width: 100%;
     }
