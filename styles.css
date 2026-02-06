@@ -962,7 +962,7 @@ body.light-theme blockquote i {
         width: 100%;
     }
     .container {
-        top: 50px; /* було top: 30px; */
+        top: 80px; /* було top: 50px; */
         padding: 6px;
         width: 100%;
     }   
