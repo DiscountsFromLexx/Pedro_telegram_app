@@ -581,6 +581,15 @@ input:checked + .slider:before {
     z-index: 10;                   /* щоб не перекривалися іншими елементами, якщо потрібно */
 }
 
+.slogan-text {
+    margin-top: 2px;
+    font-size: 10px;
+    font-weight: 600;
+    font-family: 'Montserrat', sans-serif;
+    -webkit-tap-highlight-color: transparent;
+    letter-spacing: 2px;
+    text-align: center;
+}
 
 .header-text {
     margin-top: 20px;
@@ -733,16 +742,6 @@ input:checked + .slider:before {
 .submit-btn:active, .clear-btn:active {
     transform: translateY(0);
     box-shadow: 0 1px 5px rgba(0, 0, 0, 0.2);
-}
-
-.slogan-text {
-    margin-top: -20px;
-    font-size: 10px;
-    font-weight: 600;
-    font-family: 'Montserrat', sans-serif;
-    -webkit-tap-highlight-color: transparent;
-    letter-spacing: 2px;
-    text-align: center;
 }
 
 .channels-text {
@@ -967,6 +966,10 @@ body.light-theme blockquote i {
         height: 60px;
         border-radius: 50px;
         z-index: 10;                   /* щоб не перекривалися іншими елементами, якщо потрібно */
+    }
+    .slogan-text {
+        margin-top: 2px;
+        
     }
 
     
