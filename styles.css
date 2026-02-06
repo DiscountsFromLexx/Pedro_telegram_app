@@ -951,6 +951,7 @@ body.light-theme blockquote i {
         width: 100%;
     }
     .container {
+        top: 30px; /* було top: 80px; */
         padding: 6px;
         width: 100%;
     }
