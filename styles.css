@@ -827,6 +827,7 @@ input:checked + .slider:before {
 }
 
 .input-with-paste input {
+    margin-top: 2px;
     flex: 1;
     padding-right: 110px; /* місце для кнопки */
 }
