@@ -129,7 +129,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // Якщо жоден не вибраний — показуємо помилку
         if (sections.length === 0) {
             resultText.innerHTML = 'Оберіть хоча б один розділ (ALL, COINS, CRYSTALS або PRIZE LAND)';
-            resultText.style.color = 'orange';
+            resultText.style.color = 'red';
             return;
         }
     
