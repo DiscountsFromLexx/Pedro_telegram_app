@@ -948,12 +948,12 @@ body.light-theme blockquote i {
 @media (max-width: 800px) {  
     
     .main-container {        
-        top: 200px; /* було top: 80px; */
+        top: 0px; /* було top: 200px; */
         padding: 4px;
         width: 100%;
     }
     .container {
-        top: 30px; /* було top: 80px; */
+        top: 0px; /* було top: 30px; */
         padding: 6px;
         width: 100%;
     }
