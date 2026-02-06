@@ -364,7 +364,7 @@ body.light-theme blockquote {
 .theme-toggle-container {
     position: absolute; /* було position: absolute;  */
     top: 15px;                /* було 90px */
-    right: 55px;              /* було right: 15px; */
+    right: 15px;              /* було right: 15px; */
     display: flex;
     align-items: center;
     gap: 4px;                 /* було 2px → трохи збільшено для кращого вигляду */
