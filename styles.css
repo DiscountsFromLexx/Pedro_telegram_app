@@ -524,7 +524,7 @@ input:checked + .slider:before {
 .top-buttons {
     position: absolute;
     gap: 4px;                     /* відстань між кнопками */
-    top: 40px;    /* було top: 10px; */
+    top: 80px;    /* було top: 10px; */
     left: 15px;
     z-index: 1000;
     display: flex;
