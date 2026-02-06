@@ -5,8 +5,7 @@
 }
 
 body {
-    display: flex;
-    background: #B0E0E6;
+    display: flex;    
     justify-content: center;
     align-items: center;
     min-height: 100vh;
@@ -128,7 +127,7 @@ body.dark-theme .theme-label {
 
 /* Світлий режим (на основі наданого коду) */
 body.light-theme {
-    background: transparent;
+    background: #B0E0E6;  /*  було background: transparent; */
 }
 
 body.light-theme .container {
