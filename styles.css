@@ -946,7 +946,7 @@ body.light-theme blockquote i {
 @media (max-width: 800px) {  
     
     .main-container {        
-        top: 80px;
+        top: 0px; /* було top: 80px; */
         padding: 4px;
         width: 100%;
     }
@@ -956,6 +956,7 @@ body.light-theme blockquote i {
     }
     
     .instruction-img {
+        position: absolute;
         top: 5px;
         width: 60px;
         height: 60px;
@@ -981,7 +982,7 @@ body.light-theme blockquote i {
         clear: both;                 /* щоб текст не "обтікав" інші елементи */
     }
     .theme-toggle-container {
-        top: 10px; /* було 10px */
+        top: 30px; /* було 10px */
         right: 10px;    /* було right: 7px;; */
         gap: 1px;
     }
