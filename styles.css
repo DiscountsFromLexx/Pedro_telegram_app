@@ -524,7 +524,7 @@ input:checked + .slider:before {
 
 .top-buttons {
     position: absolute;
-    gap: 4px;                     /* відстань між кнопками */
+    gap: 6px;                     /* відстань між кнопками було top: 4px */
     top: 10px;    /* було top: 10px; */
     left: 15px;
     z-index: 1000;
@@ -998,7 +998,7 @@ body.light-theme blockquote i {
     .theme-label:not(.active) {
         font-size: 5px;
     }
-    .top-buttons {        
+     {        
         top: 90px; /* було 80px */      
     }
     .instruction-btn {        
@@ -1007,8 +1007,7 @@ body.light-theme blockquote i {
         font-size: 10px;
         font-weight: 100;
     }
-    .coupons-btn {
-        
+    .coupons-btn {        
         left: 10px;
         padding: 8px 15px;
         font-size: 10px;
