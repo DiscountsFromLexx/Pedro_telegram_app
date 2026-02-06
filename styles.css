@@ -524,7 +524,7 @@ input:checked + .slider:before {
 .top-buttons {
     position: absolute;
     gap: 4px;                     /* відстань між кнопками */
-    top: 10px;
+    top: 40px;    /* було top: 10px; */
     left: 15px;
     z-index: 1000;
     display: flex;
@@ -571,6 +571,7 @@ input:checked + .slider:before {
 
 .image {
     position: absolute;
+    top: 40px;
     left: 50%;
     transform: translateX(-50%);
     width: 70px;
@@ -942,11 +943,8 @@ body.light-theme blockquote i {
 }
 
 @media (max-width: 800px) {  
-    body {
-        margin-top: 5px;
-    }
-    .main-container {
-        
+    
+    .main-container {        
         padding: 4px;
         width: 100%;
     }
@@ -963,6 +961,7 @@ body.light-theme blockquote i {
 
     .image {
     position: absolute;
+    top: 40px; 
     left: 50%;
     transform: translateX(-50%);
     width: 70px;
@@ -1037,14 +1036,14 @@ body.light-theme blockquote i {
         
     }
     .instruction-btn {
-        top: 10px;
+        top: 40px; /* було 10px */
         left: 10px;
         padding: 8px 15px;
         font-size: 10px;
         font-weight: 100;
     }
     .coupons-btn {
-        top: 10px;
+        top: 40px; /* було 10px */
         left: 10px;
         padding: 8px 15px;
         font-size: 10px;
