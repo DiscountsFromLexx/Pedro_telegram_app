@@ -943,6 +943,7 @@ body.light-theme blockquote i {
 
 @media (max-width: 800px) {  
     .main-container {
+        top: 10px;
         padding: 4px;
         width: 100%;
     }
@@ -1047,67 +1048,4 @@ body.light-theme blockquote i {
         font-weight: 100; /* 300; */
         text-decoration: none;
     }  
-}
-/* Повноекранний режим Mini Apps — враховуємо статус-бар iOS/Android */
-:root {
-    --tg-safe-area-top: env(safe-area-inset-top, 0px);
-    --tg-safe-area-bottom: env(safe-area-inset-bottom, 0px);
-    --tg-safe-area-left: env(safe-area-inset-left, 0px);
-    --tg-safe-area-right: env(safe-area-inset-right, 0px);
-}
-
-/* Опускаємо весь контент нижче статус-бару */
-body, html {
-    margin: 0;
-    padding: 0;
-    height: 100%;
-    overflow-x: hidden;
-}
-
-.main-container {
-    padding-top: calc(var(--tg-safe-area-top) + 10px) !important; /* +10px для відступу від статус-бару */
-    padding-bottom: calc(var(--tg-safe-area-bottom) + 10px) !important;
-    padding-left: var(--tg-safe-area-left);
-    padding-right: var(--tg-safe-area-right);
-    min-height: 100vh;
-    box-sizing: border-box;
-}
-
-/* Для мобільних — примусово на весь екран */
-@media (max-width: 800px) {
-    .main-container {
-        padding: calc(var(--tg-safe-area-top) + 10px) 10px calc(var(--tg-safe-area-bottom) + 10px) 10px !important;
-        width: 100%;
-        margin: 0;
-    }
-
-    .container {
-        padding: 10px;
-        width: 100%;
-        margin: 0;
-    }
-
-    .block-form {
-        margin-top: 20px; /* зменшуємо відступ зверху, бо статус-бар вже враховано */
-    }
-
-    .theme-toggle-container {
-        top: calc(var(--tg-safe-area-top) + 10px); /* опускаємо перемикач теми під статус-бар */
-    }
-
-    .top-buttons {
-        top: calc(var(--tg-safe-area-top) + 10px); /* опускаємо кнопки COUPONS / HOW TO */
-    }
-}
-
-/* Якщо статус-бар все одно перекриває — додаємо прозорий блок зверху */
-body::before {
-    content: "";
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: var(--tg-safe-area-top);
-    background: var(--tg-bg-color, #000); /* колір фону твого застосунку */
-    z-index: 9999;
 }
