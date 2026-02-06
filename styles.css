@@ -953,15 +953,10 @@ body.light-theme blockquote i {
         width: 100%;
     }
     .container {
-        top: 30px; /* було top: 30px; */
+        top: 50px; /* було top: 30px; */
         padding: 6px;
         width: 100%;
-    }
-
-    .block-form {
-        margin-top: 40px; /* було 35px */
-        padding: 15px; /* було 10px */
-    }
+    }   
     
     .instruction-img {
         position: absolute;
@@ -978,8 +973,53 @@ body.light-theme blockquote i {
         font-weight: 100;
         
     }
-
+    .slider:before {        
+        height: 30px;             /* було 30px */
+        bottom: 2px;        
+    }
+    .theme-toggle-container {
+        top: 90px; /* було 35px */
+        right: 5px;    /* було right: 10px;  */
+        gap: 1px;
+    }
+    .theme-toggle {    
+        height: 37px;             /* було 40px height: 22px; */
+        width: 75px;              /* було 48px */
+    }
+    .theme-label {
+        font-size: 8px; /* 6px */
+        font-family: 'Montserrat', sans-serif;
+        font-weight: 100;
+        color: #FF0000;
+    }
+    .theme-label.active {
+        font-size: 10px;
+    }
+    .theme-label:not(.active) {
+        font-size: 5px;
+    }
+    .top-buttons {        
+        top: 90px; /* було 80px */      
+    }
+    .instruction-btn {        
+        left: 10px;
+        padding: 8px 15px;
+        font-size: 10px;
+        font-weight: 100;
+    }
+    .coupons-btn {
+        
+        left: 10px;
+        padding: 8px 15px;
+        font-size: 10px;
+        font-weight: 100; /* 300; */
+        text-decoration: none;
+    } 
     
+    .block-form {
+        margin-top: 40px; /* було 35px */
+        padding: 15px; /* було 10px */
+    }
     .result-text img {
         float: right;                /* фото праворуч */
         margin: 0 0 12px 16px;       /* відступи: знизу 0, зліва 16px (щоб текст не прилипав) */
@@ -1020,48 +1060,5 @@ body.light-theme blockquote i {
         letter-spacing: 2px;
         margin-bottom: 5px;
     }
-    .slider:before {
-        
-        height: 30px;             /* було 30px */
-        bottom: 2px;
-        
-    }
-    .theme-toggle-container {
-        top: 90px; /* було 35px */
-        right: 5px;    /* було right: 10px;  */
-        gap: 1px;
-    }
-    .theme-toggle {    
-        height: 37px;             /* було 40px height: 22px; */
-        width: 75px;              /* було 48px */
-    }
-    .theme-label {
-        font-size: 8px; /* 6px */
-        font-family: 'Montserrat', sans-serif;
-        font-weight: 100;
-        color: #FF0000;
-    }
-    .theme-label.active {
-        font-size: 10px;
-    }
-    .theme-label:not(.active) {
-        font-size: 5px;
-    }
-    .top-buttons {        
-        top: 90px; /* було 80px */      
-    }
-    .instruction-btn {        
-        left: 10px;
-        padding: 8px 15px;
-        font-size: 10px;
-        font-weight: 100;
-    }
-    .coupons-btn {
-        
-        left: 10px;
-        padding: 8px 15px;
-        font-size: 10px;
-        font-weight: 100; /* 300; */
-        text-decoration: none;
-    }  
+     
 }
