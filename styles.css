@@ -955,15 +955,20 @@ body.light-theme blockquote i {
         width: 100%;
     }
     
-
+    .instruction-img {
+        top: 5px;
+        width: 60px;
+        height: 60px;
+        border-radius: 50px;
+    }
 
     .image {
         position: absolute;
         top: 5px; 
         left: 50%;
         transform: translateX(-50%);
-        width: 70px;
-        height: 70px;
+        width: 60px;
+        height: 60px;
         border-radius: 50%;
     }
     .result-text img {
