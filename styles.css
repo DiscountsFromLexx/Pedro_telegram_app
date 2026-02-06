@@ -998,7 +998,7 @@ body.light-theme blockquote i {
     .theme-label:not(.active) {
         font-size: 5px;
     }
-     {        
+    .top-buttons {        
         top: 90px; /* було 80px */      
     }
     .instruction-btn {        
