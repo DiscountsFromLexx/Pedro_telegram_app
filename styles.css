@@ -959,7 +959,7 @@ body.light-theme blockquote i {
     }
 
     .block-form {
-        margin-top: 35px; /* було 55px */
+        margin-top: 40px; /* було 35px */
         padding: 15px; /* було 10px */
     }
     
