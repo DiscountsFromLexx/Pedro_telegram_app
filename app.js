@@ -1,6 +1,3 @@
-РЕЗЕРВ
-
-
 document.addEventListener('DOMContentLoaded', () => {
     const form = document.getElementById('telegramForm');
     const submitBtn = document.querySelector('.submit-btn');
@@ -100,8 +97,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     return;
                 }
             } catch (err) {
-                resultText.innerHTML = '<b>Не вдалося прочитати буфер обміну.</b><br>Вставте посилання вручну в поле нижче і натисніть INSERT AND START.';
-                resultText.style.color = '#ffcc00';
+                resultText.innerHTML = '<b>Не вдалося прочитати буфер обміну.</b><br>Вставте посилання вручну в поле "Посилання на товар" і натисніть INSERT AND START.';
+                resultText.style.color = '#DC143C';
             
                 submitBtn.style.background = 'linear-gradient(to bottom, #ffcc00, #ff9900)';
                 submitBtn.style.boxShadow = '0 0 15px rgba(255,204,0,0.6)';
@@ -114,7 +111,7 @@ document.addEventListener('DOMContentLoaded', () => {
     
         // Перевірка валідності (якщо посилання вже є або вставилося)
         if (!link.includes('aliexpress.com') && !link.includes('s.click.aliexpress.com')) {
-            resultText.innerHTML = 'Це не посилання AliExpress';
+            resultText.innerHTML = 'Вставте посилання вручну в поле "Посилання на товар" і натисніть INSERT AND START.';
             resultText.style.color = 'red';
             return;
         }
