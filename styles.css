@@ -592,7 +592,7 @@ input:checked + .slider:before {
 }
 
 .block-form {
-    margin-top: 70px; /* було 20px */
+    margin-top: 100px; /* було 70px */
     padding: 15px; /* було 10px */
 }
 
@@ -980,7 +980,7 @@ body.light-theme blockquote i {
         clear: both;                 /* щоб текст не "обтікав" інші елементи */
     }
     .theme-toggle-container {
-        top: 55px; /* було 35px */
+        top: 75px; /* було 35px */
         right: 5px;    /* було right: 10px;  */
         gap: 1px;
     }
@@ -1037,22 +1037,8 @@ body.light-theme blockquote i {
         bottom: 2px;
         
     }
-    .top-buttons {
-        position: absolute;
-        top: 45px; /* було 10px */
-        gap: 4px;                     /* відстань між кнопками */
-        top: 10px;    /* було top: 10px; */
-        left: 15px;
-        z-index: 1000;
-        display: flex;
-        flex-direction: column;
-        
-        font-family: 'Montserrat', sans-serif;
-        font-size: 12px;              /* невеликий, але читабельний розмір */
-        font-weight: 200;
-        letter-spacing: 1px;
-        
-        text-align: center;
+    .top-buttons {        
+        top: 75px; /* було 10px */      
     }
     .instruction-btn {
         
