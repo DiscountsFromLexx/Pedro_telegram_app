@@ -572,7 +572,7 @@ input:checked + .slider:before {
 
 .image {
     position: absolute;
-    top: 40px;
+    top: 5px; /* було 40px */
     left: 50%;
     transform: translateX(-50%);
     width: 70px;
