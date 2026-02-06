@@ -582,7 +582,7 @@ input:checked + .slider:before {
 }
 
 .slogan-text {
-    margin-top: 2px;
+    margin-top: 62px;
     font-size: 10px;
     font-weight: 600;
     font-family: 'Montserrat', sans-serif;
@@ -968,7 +968,7 @@ body.light-theme blockquote i {
         z-index: 10;                   /* щоб не перекривалися іншими елементами, якщо потрібно */
     }
     .slogan-text {
-        margin-top: 2px;
+        margin-top: 62px;
         
     }
 
