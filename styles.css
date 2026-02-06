@@ -299,10 +299,10 @@ body.light-theme .prizi-title {
 
 /* Посилання */
 .moneti-link {
-    color: #fff176; /* світло-жовтий */
+    color: #4fc3f7; /* світло-жовтий */
 }
 body.light-theme .moneti-link {
-    color: #ef6c00;
+    color: #0277bd;
 }
 
 .crystal-link {
@@ -313,10 +313,10 @@ body.light-theme .crystal-link {
 }
 
 .prizi-link {
-    color: #81c784;
+    color: #4fc3f7;
 }
 body.light-theme .prizi-link {
-    color: #2e7d32;
+    color: #0277bd;
 }
 
 /* Загальний текст результату (якщо потрібно) */
