@@ -573,7 +573,7 @@ input:checked + .slider:before {
 .instruction-img {
     position: absolute;   
     top: 5px;
-    left: 50%;
+    left: 30%;
     width: 60px;
     height: 60px;
     border-radius: 50px;
@@ -958,8 +958,8 @@ body.light-theme blockquote i {
     
     .instruction-img {
         position: absolute;
-        left: 50%;
-        top: 5px;
+        left: 30%;
+        top: 35px; /* було 5px; */
         width: 60px;
         height: 60px;
         border-radius: 50px;
