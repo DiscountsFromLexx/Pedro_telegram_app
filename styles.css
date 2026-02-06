@@ -359,6 +359,7 @@ body.light-theme blockquote {
     border-left-color: #0288d1;
 }
 
+
 /* Стилі для перемикача тем (зменшений розмір, окремий контейнер, з написом) */
 .theme-toggle-container {
     position: absolute;
@@ -524,7 +525,7 @@ input:checked + .slider:before {
 .top-buttons {
     position: absolute;
     gap: 4px;                     /* відстань між кнопками */
-    top: 80px;    /* було top: 10px; */
+    top: 10px;    /* було top: 10px; */
     left: 15px;
     z-index: 1000;
     display: flex;
@@ -960,25 +961,25 @@ body.light-theme blockquote i {
     }
 
     .image {
-    position: absolute;
-    top: 40px; 
-    left: 50%;
-    transform: translateX(-50%);
-    width: 70px;
-    height: 70px;
-    border-radius: 50%;
+        position: absolute;
+        top: 40px; 
+        left: 50%;
+        transform: translateX(-50%);
+        width: 70px;
+        height: 70px;
+        border-radius: 50%;
     }
     .result-text img {
-    float: right;                /* фото праворуч */
-    margin: 0 0 12px 16px;       /* відступи: знизу 0, зліва 16px (щоб текст не прилипав) */
-    max-width: 90px; /* було 120px; */
-    height: auto;
-    border-radius: 12px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-    clear: both;                 /* щоб текст не "обтікав" інші елементи */
+        float: right;                /* фото праворуч */
+        margin: 0 0 12px 16px;       /* відступи: знизу 0, зліва 16px (щоб текст не прилипав) */
+        max-width: 90px; /* було 120px; */
+        height: auto;
+        border-radius: 12px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+        clear: both;                 /* щоб текст не "обтікав" інші елементи */
     }
     .theme-toggle-container {
-        top: 10px;
+        top: 100px; /* було 10px */
         right: 10px;    /* було right: 7px;; */
         gap: 1px;
     }
@@ -1036,14 +1037,14 @@ body.light-theme blockquote i {
         
     }
     .instruction-btn {
-        top: 80px; /* було 10px */
+        top: 100px; /* було 10px */
         left: 10px;
         padding: 8px 15px;
         font-size: 10px;
         font-weight: 100;
     }
     .coupons-btn {
-        top: 80px; /* було 10px */
+        top: 100px; /* було 10px */
         left: 10px;
         padding: 8px 15px;
         font-size: 10px;
