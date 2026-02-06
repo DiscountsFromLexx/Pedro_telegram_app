@@ -223,7 +223,7 @@ body.light-theme .channels-text {
 
 body.light-theme .slogan-text {
     color: #000000;
-    font-weight: 300;
+    font-weight: 200;
 }
 
 body.light-theme .tgkch-text {
@@ -584,7 +584,7 @@ input:checked + .slider:before {
 .slogan-text {
     margin-top: 55px;
     font-size: 10px;
-    font-weight: 300;
+    font-weight: 200;
     font-family: 'Montserrat', sans-serif;
     -webkit-tap-highlight-color: transparent;
     letter-spacing: 2px;
