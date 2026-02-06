@@ -27,13 +27,51 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // ─── Очищення форми ─────────────────────────────────────────────
+    // ─── Збереження стану чекбоксів у localStorage ────────────────────────
+    const CHECKBOX_STORAGE_KEY = 'pedro_checkboxes_state';
+    
+    // Функція збереження стану
+    const saveCheckboxes = () => {
+        const state = {};
+        otherCheckboxes.forEach(cb => {
+            state[cb.id] = cb.checked;
+        });
+        state.all = allCheckbox.checked;
+        localStorage.setItem(CHECKBOX_STORAGE_KEY, JSON.stringify(state));
+    };
+    
+    // Функція відновлення стану
+    const restoreCheckboxes = () => {
+        const saved = localStorage.getItem(CHECKBOX_STORAGE_KEY);
+        if (saved) {
+            const state = JSON.parse(saved);
+            otherCheckboxes.forEach(cb => {
+                if (state[cb.id] !== undefined) {
+                    cb.checked = state[cb.id];
+                }
+            });
+            const allChecked = Array.from(otherCheckboxes).every(c => c.checked);
+            allCheckbox.checked = allChecked;
+        }
+    };
+    
+    // При завантаженні — відновлюємо
+    restoreCheckboxes();
+    
+    // При зміні — зберігаємо
+    allCheckbox.addEventListener('change', saveCheckboxes);
+    otherCheckboxes.forEach(cb => {
+        cb.addEventListener('change', saveCheckboxes);
+    });
+
+    // ─── Очищення форми ─────────────────────────────────────────────    
     if (clearBtn) {
         clearBtn.addEventListener('click', () => {
             form.reset();
             field4.value = '';
             resultText.innerHTML = '';
-            addLog('Форма очищена');
+            localStorage.removeItem(CHECKBOX_STORAGE_KEY); // ← додаємо це
+            addLog('Форма та чекбокси очищені');
         });
     }
 
