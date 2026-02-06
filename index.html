@@ -10,6 +10,22 @@
     <link rel="stylesheet" href="styles.css">
     <!-- Додаємо Telegram Web Apps SDK -->
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <script>
+    // Розгортаємо Mini App на весь екран без верхньої панелі
+    window.Telegram.WebApp.ready();
+    window.Telegram.WebApp.expand();
+    window.Telegram.WebApp.setHeaderColor('bg_color');
+    window.Telegram.WebApp.setBackgroundColor('bg_color');
+    
+    // Опціонально — ховаємо всі кнопки Telegram
+    window.Telegram.WebApp.MainButton.hide();
+    window.Telegram.WebApp.BackButton.hide();
+    
+    // Робимо body на весь екран
+    document.documentElement.style.height = '100%';
+    document.body.style.height = '100vh';
+    document.body.style.overflow = 'hidden';
+    </script>
 </head>
 <body class="dark-theme">
     <div class="main-container">
