@@ -569,6 +569,7 @@ input:checked + .slider:before {
     border-color: #1E90FF;
 }
 
+
 .instruction-img {
     position: absolute;   
     top: 5px;
