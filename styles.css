@@ -976,7 +976,7 @@ body.light-theme blockquote i {
         clear: both;                 /* щоб текст не "обтікав" інші елементи */
     }
     .theme-toggle-container {
-        top: 10px; /* було 10px */
+        top: 5px; /* було 10px */
         right: 5px;    /* було right: 10px;  */
         gap: 1px;
     }
