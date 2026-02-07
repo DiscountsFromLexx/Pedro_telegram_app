@@ -139,6 +139,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 html += data.text.replace(/\n/g, '<br>');
                 resultText.innerHTML = html;
                 resultText.style.color = 'inherit';
+                // Додаємо атрибут, щоб стилі з CSS застосувалися саме сюди
+                resultText.setAttribute('data-coupons-loaded', 'true');
             } else {
                 resultText.innerHTML = data.error || 'Не вдалося завантажити промокоди';
                 resultText.style.color = 'red';
