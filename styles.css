@@ -794,8 +794,12 @@ input:checked + .slider:before {
 }
 
 .instructions-text a {
+    color: #1E90FF;
     text-decoration: none;
-    transition: color 0.3s ease;
+}
+
+.instructions-text a:hover {
+    text-decoration: underline;
 }
 
 .scroll-top-btn {
