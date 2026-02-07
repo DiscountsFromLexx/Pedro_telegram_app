@@ -120,7 +120,10 @@ document.addEventListener('DOMContentLoaded', () => {
             resultText.innerHTML = '<span class="loading-text">Завантаження промокодів...</span>';
             resultText.style.color = '#00ff88';
     
-            const response = await fetch('https://lexxexpress.click/pedro/coupons', {
+            // Отримуємо user_id з Telegram WebApp (якщо є)
+            const userId = window.Telegram?.WebApp?.initDataUnsafe?.user?.id || 0;
+    
+            const response = await fetch(`https://lexxexpress.click/pedro/coupons?user_id=${userId}`, {
                 method: 'GET',
                 headers: { 'Content-Type': 'application/json' }
             });
@@ -132,9 +135,8 @@ document.addEventListener('DOMContentLoaded', () => {
             const data = await response.json();
     
             if (data.success) {
-                // Формуємо гарний вивід
                 let html = '<b>Актуальні промокоди та акції:</b><br><br>';
-                html += data.text.replace(/\n/g, '<br>'); // перетворюємо переноси рядків на <br>
+                html += data.text.replace(/\n/g, '<br>');
                 resultText.innerHTML = html;
                 resultText.style.color = 'inherit';
             } else {
