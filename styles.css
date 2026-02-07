@@ -955,6 +955,30 @@ body.light-theme blockquote i {
         clear: both;                 /* щоб текст не "обтікав" інші елементи */
     } 
 
+
+/* Текст промокодів у resultText — завжди контрастний */
+.result-text[data-coupons-loaded] p,
+.result-text[data-coupons-loaded] span,
+.result-text[data-coupons-loaded] div,
+.result-text[data-coupons-loaded] {
+    color: #f0f4f8 !important; /* світлий білий/сірий у темній темі */
+}
+
+body.light-theme .result-text[data-coupons-loaded],
+body.light-theme .result-text[data-coupons-loaded] * {
+    color: #1a2533 !important; /* темно-синій/чорний у світлій темі */
+}
+
+/* Виділення заголовка "Актуальні промокоди та акції" */
+.result-text[data-coupons-loaded] b {
+    color: #ffeb3b !important; /* золотистий у темній */
+    font-size: 16px;
+}
+
+body.light-theme .result-text[data-coupons-loaded] b {
+    color: #f57c00 !important; /* помаранчевий у світлій */
+}
+
 @media (max-width: 800px) {  
     
     .main-container {        
