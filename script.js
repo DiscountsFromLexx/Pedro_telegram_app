@@ -114,7 +114,39 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
+    // ─── Кнопка COUPONS ──────────────────────────────────────────────────
+    document.querySelector('.coupons-btn')?.addEventListener('click', async () => {
+        try {
+            resultText.innerHTML = '<span class="loading-text">Завантаження промокодів...</span>';
+            resultText.style.color = '#00ff88';
     
+            const response = await fetch('https://lexxexpress.click/pedro/coupons', {
+                method: 'GET',
+                headers: { 'Content-Type': 'application/json' }
+            });
+    
+            if (!response.ok) {
+                throw new Error(`Помилка: ${response.status}`);
+            }
+    
+            const data = await response.json();
+    
+            if (data.success) {
+                // Формуємо гарний вивід
+                let html = '<b>Актуальні промокоди та акції:</b><br><br>';
+                html += data.text.replace(/\n/g, '<br>'); // перетворюємо переноси рядків на <br>
+                resultText.innerHTML = html;
+                resultText.style.color = 'inherit';
+            } else {
+                resultText.innerHTML = data.error || 'Не вдалося завантажити промокоди';
+                resultText.style.color = 'red';
+            }
+        } catch (err) {
+            resultText.innerHTML = 'Помилка з’єднання з сервером';
+            resultText.style.color = 'red';
+            console.error('Coupons error:', err);
+        }
+    });
     // ─── Функція відправки форми (використовується і з кнопки, і з Enter) ──
     const sendForm = async () => {
         let link = field4.value.trim();
