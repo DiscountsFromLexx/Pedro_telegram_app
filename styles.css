@@ -784,7 +784,7 @@ input:checked + .slider:before {
 
 .instructions-text {
     margin-top: 10px;
-    font-size: 12px; /* було 14px; */
+    font-size: 14px; /* було 14px; */
     font-weight: 100; /* було 200; */
     font-family: 'Montserrat', sans-serif;
     -webkit-tap-highlight-color: transparent;
