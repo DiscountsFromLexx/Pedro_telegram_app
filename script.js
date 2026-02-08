@@ -279,19 +279,16 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // ─── Інші обробники ──────────────────────────────────────────────
-    document.querySelector('.instruction-btn')?.addEventListener('click', () => {
+        document.querySelector('.instruction-btn')?.addEventListener('click', () => {
         const instructionsElement = document.getElementById('instructions');
         if (instructionsElement) {
-            // Спочатку прокручуємо елемент до верху
-            instructionsElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            const yOffset = -80; // негативне значення — опускаємо на 80 px
+            const y = instructionsElement.getBoundingClientRect().top + window.pageYOffset + yOffset;
     
-            // Через 300–500 мс (щоб анімація завершилася) опускаємо на 80–100 px
-            setTimeout(() => {
-                window.scrollBy({
-                    top: 120,                    // на скільки пікселів опустити (підбери під себе: 80–120)
-                    behavior: 'smooth'
-                });
-            }, 400); // 400 мс — оптимально для smooth-анімації
+            window.scrollTo({
+                top: y,
+                behavior: 'smooth'
+            });
         }
     });
 
