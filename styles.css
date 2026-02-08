@@ -1036,22 +1036,23 @@ body.light-theme .result-text[data-coupons-loaded] b {
     .theme-label:not(.active) {
         font-size: 5px;
     }
-    .top-buttons {        
-        top: 90px; /* було 80px */      
+    
+    top-buttons {
+        flex-direction: row;     /* на мобілках теж рядок */
+        top: 90px; /* було 80px */  
+        gap: 6px;
+        left: 10px;              /* трохи зменшуємо відступ для маленьких екранів */
     }
-    .instruction-btn {        
-        left: 10px;
-        padding: 8px 15px;
-        font-size: 10px;
+    
+    .instruction-btn,
+    .coupons-btn {
+        min-width: 70px;         /* якщо екран дуже малий — зменшуємо ширину */
+        font-size: 11px;         /* трохи менший шрифт */
         font-weight: 100;
+        padding: 0 10px;
     }
-    .coupons-btn {        
-        left: 30px;
-        padding: 8px 15px;
-        font-size: 10px;
-        font-weight: 100; /* 300; */
-        text-decoration: none;
-    } 
+    
+    
     
     .block-form {
         margin-top: 40px; /* було 35px */
