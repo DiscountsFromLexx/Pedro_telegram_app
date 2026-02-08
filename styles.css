@@ -535,7 +535,7 @@ input:checked + .slider:before {
     z-index: 1000;
     display: flex;
     flex-direction: row;
-    gap: 2px;                    /* відстань між кнопками 12px;*/
+    gap: -5px;                    /* відстань між кнопками 12px;*/
     align-items: flex-end;        /* вирівнюємо по низу, щоб підписи були на одному рівні */
 }
 
@@ -1066,7 +1066,7 @@ body.light-theme .result-text[data-coupons-loaded] b {
     
     .top-buttons {        
         left: 15px;
-        gap: 2px;
+        gap: -7px;
     } 
     
     .coupons-btn,
@@ -1077,8 +1077,8 @@ body.light-theme .result-text[data-coupons-loaded] b {
     }
     
     .btn-icon {
-        width: 15px; /* 32px; */
-        height: 15px;  /* 32px; */
+        width: 25px; /* 32px; */
+        height: 25px;  /* 32px; */
         margin-bottom: 4px;
     }
     
