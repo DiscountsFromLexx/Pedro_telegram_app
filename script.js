@@ -306,7 +306,7 @@ document.addEventListener('DOMContentLoaded', () => {
         document.querySelector('.instruction-btn')?.addEventListener('click', () => {
         const instructionsElement = document.getElementById('instructions');
         if (instructionsElement) {
-            const yOffset = -80; // негативне значення — опускаємо на 80 px
+            const yOffset = -75; // негативне значення — опускаємо на 80 px
             const y = instructionsElement.getBoundingClientRect().top + window.pageYOffset + yOffset;
     
             window.scrollTo({
