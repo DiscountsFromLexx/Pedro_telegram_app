@@ -531,7 +531,7 @@ input:checked + .slider:before {
     z-index: 1000;
     display: flex;
     flex-direction: row;
-    gap: 6px;                    /* відстань між кнопками 12px;*/
+    gap: 4px;                    /* відстань між кнопками 12px;*/
     align-items: flex-end;        /* вирівнюємо по низу, щоб підписи були на одному рівні */
 }
 
@@ -1055,7 +1055,7 @@ body.light-theme .result-text[data-coupons-loaded] b {
     .top-buttons {
         top: calc(90px + var(--tg-safe-area-top, 0px)) !important; /* + висота статус-бару */
         left: 15px;
-        gap: 6px;
+        gap: 2px;
     } 
     
     .coupons-btn,
