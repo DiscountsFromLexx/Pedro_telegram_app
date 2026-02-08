@@ -220,6 +220,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (document.getElementById('coins')?.checked) sections.push('coins');
             if (document.getElementById('crystal')?.checked) sections.push('crystal');
             if (document.getElementById('prizeland')?.checked) sections.push('prizeland');
+            if (document.getElementById('complect')?.checked) sections.push('complect');
         }
     
         // Якщо жоден не вибраний — показуємо помилку
