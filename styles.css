@@ -526,45 +526,53 @@ input:checked + .slider:before {
 /* Контейнер кнопок — горизонтальний рядок */
 .top-buttons {
     position: absolute;
-    top: 10px;                    /* або 90px на мобілках */
+    top: 10px;                    /* або 90px на мобілках — як ти налаштував */
     left: 15px;
     z-index: 1000;
     display: flex;
     flex-direction: row;
-    gap: 8px;                     /* відстань між іконками — підбери 6–10px */
+    gap: 12px;                    /* відстань між кнопками — підбери 8–16px */
     align-items: center;
 }
 
-/* Уніфіковані стилі для всіх іконок-кнопок */
+/* Уніфіковані стилі для кнопок */
 .coupons-btn,
 .instruction-btn,
 .web-btn {
-    width: 48px;                  /* розмір кнопки — квадратний для іконок */
-    height: 48px;
     display: flex;
+    flex-direction: column;       /* іконка зверху, текст знизу */
     align-items: center;
     justify-content: center;
-    padding: 0;
+    min-width: 70px;
+    padding: 8px 6px;
     background: transparent;
-    border: none;                 /* без рамки навколо іконки */
-    border-radius: 50%;           /* кругла кнопка — виглядає сучасно */
+    border: none;                 /* без бордеру навколо кнопки (якщо хочеш — додай 1px solid #1E90FF) */
+    border-radius: 8px;
     cursor: pointer;
     transition: all 0.25s ease;
-    -webkit-tap-highlight-color: transparent;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 10px;
+    font-weight: 300;
+    color: #FFFFFF;
+    letter-spacing: 0.5px;
 }
 
 .coupons-btn:hover,
 .instruction-btn:hover,
 .web-btn:hover {
-    background: rgba(30, 144, 255, 0.2);  /* легкий фон при наведенні */
-    transform: scale(1.1);        /* легке збільшення */
+    background: rgba(30, 144, 255, 0.15);  /* легкий фон при наведенні */
+    transform: scale(1.05);
 }
 
-/* Сама іконка */
+/* Іконка без обідка/рамки */
 .btn-icon {
-    width: 36px;                  /* розмір іконки всередині кнопки */
+    width: 36px;                  /* розмір іконки — підбери під себе */
     height: 36px;
+    margin-bottom: 6px;           /* відстань між іконкою і текстом */
     object-fit: contain;
+    border: none !important;      /* гарантовано без обідка */
+    border-radius: 0 !important;
+    background: transparent;
 }
 
 
@@ -1035,7 +1043,7 @@ body.light-theme .result-text[data-coupons-loaded] b {
     }
     
     .top-buttons {
-        top: calc(95px + var(--tg-safe-area-top, 0px)) !important; /* + висота статус-бару */
+        top: calc(90px + var(--tg-safe-area-top, 0px)) !important; /* + висота статус-бару */
         left: 15px;
         gap: 6px;
     } 
@@ -1043,13 +1051,15 @@ body.light-theme .result-text[data-coupons-loaded] b {
     .coupons-btn,
     .instruction-btn,
     .web-btn {
-        width: 44px;
-        height: 44px;
+        min-width: 60px;
+        padding: 6px 4px;
+        font-size: 9px;
     }
     
     .btn-icon {
         width: 32px;
         height: 32px;
+        margin-bottom: 5px;
     }
     
     
