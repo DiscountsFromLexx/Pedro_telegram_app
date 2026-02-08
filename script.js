@@ -168,6 +168,11 @@ document.addEventListener('DOMContentLoaded', () => {
             console.error('Coupons error:', err);
         }
     });
+    // ─── Кнопка WEB — перехід на повну версію сайту ────────────────────────
+    document.querySelector('.web-btn')?.addEventListener('click', () => {
+        window.open('https://pedroapp.lexxexpress.click', '_blank');
+        // або window.location.href = 'https://pedroapp.lexxexpress.click'; — якщо хочеш відкрити в тому ж вікні
+    });
     // ─── Функція відправки форми (використовується і з кнопки, і з Enter) ──
     const sendForm = async () => {
         let link = field4.value.trim();
