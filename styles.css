@@ -1013,6 +1013,7 @@ body.light-theme .result-text[data-coupons-loaded] b {
         width: 100%;
     }
     
+    
     /* Якщо клас .in-telegram відсутній (браузер на телефоні) — явно повертаємо 10px */
     .top-buttons {
         top: 10px !important;
@@ -1025,6 +1026,12 @@ body.light-theme .result-text[data-coupons-loaded] b {
         padding: 4px;
         width: 100%;
     } 
+
+    .container {
+        top: -10px; !important;
+        padding: 6px;
+        width: 100%;
+    }
     
     .instruction-img {
         position: absolute;
