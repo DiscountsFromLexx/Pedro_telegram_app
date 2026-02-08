@@ -1,4 +1,15 @@
-document.addEventListener('DOMContentLoaded', () => {
+====================
+
+
+
+
+
+
+
+
+
+
+    document.addEventListener('DOMContentLoaded', () => {
     const form = document.getElementById('telegramForm');
     const submitBtn = document.querySelector('.submit-btn');
     const field4 = document.getElementById('field4');
@@ -27,13 +38,51 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // ─── Очищення форми ─────────────────────────────────────────────
+    // ─── Збереження стану чекбоксів у localStorage ────────────────────────
+    const CHECKBOX_STORAGE_KEY = 'pedro_checkboxes_state';
+    
+    // Функція збереження стану
+    const saveCheckboxes = () => {
+        const state = {};
+        otherCheckboxes.forEach(cb => {
+            state[cb.id] = cb.checked;
+        });
+        state.all = allCheckbox.checked;
+        localStorage.setItem(CHECKBOX_STORAGE_KEY, JSON.stringify(state));
+    };
+    
+    // Функція відновлення стану
+    const restoreCheckboxes = () => {
+        const saved = localStorage.getItem(CHECKBOX_STORAGE_KEY);
+        if (saved) {
+            const state = JSON.parse(saved);
+            otherCheckboxes.forEach(cb => {
+                if (state[cb.id] !== undefined) {
+                    cb.checked = state[cb.id];
+                }
+            });
+            const allChecked = Array.from(otherCheckboxes).every(c => c.checked);
+            allCheckbox.checked = allChecked;
+        }
+    };
+    
+    // При завантаженні — відновлюємо
+    restoreCheckboxes();
+    
+    // При зміні — зберігаємо
+    allCheckbox.addEventListener('change', saveCheckboxes);
+    otherCheckboxes.forEach(cb => {
+        cb.addEventListener('change', saveCheckboxes);
+    });
+
+    // ─── Очищення форми ─────────────────────────────────────────────    
     if (clearBtn) {
         clearBtn.addEventListener('click', () => {
             form.reset();
             field4.value = '';
             resultText.innerHTML = '';
-            addLog('Форма очищена');
+            localStorage.removeItem(CHECKBOX_STORAGE_KEY); // ← додаємо це
+            addLog('Форма та чекбокси очищені');
         });
     }
 
@@ -76,9 +125,45 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
+    // ─── Кнопка COUPONS ──────────────────────────────────────────────────
+    document.querySelector('.coupons-btn')?.addEventListener('click', async () => {
+        try {
+            resultText.innerHTML = '<span class="loading-text">Завантаження промокодів...</span>';
+            resultText.style.color = '#00ff88';
     
+            // Отримуємо user_id з Telegram WebApp (якщо є)
+            const userId = window.Telegram?.WebApp?.initDataUnsafe?.user?.id || 0;
+    
+            const response = await fetch(`https://lexxexpress.click/pedro/coupons?user_id=${userId}`, {
+                method: 'GET',
+                headers: { 'Content-Type': 'application/json' }
+            });
+    
+            if (!response.ok) {
+                throw new Error(`Помилка: ${response.status}`);
+            }
+    
+            const data = await response.json();
+    
+            if (data.success) {
+                let html = '<b>Актуальні промокоди та акції:</b><br><br>';
+                html += data.text.replace(/\n/g, '<br>');
+                resultText.innerHTML = html;
+                resultText.style.color = 'inherit';
+                // Додаємо атрибут, щоб стилі з CSS застосувалися саме сюди
+                resultText.setAttribute('data-coupons-loaded', 'true');
+            } else {
+                resultText.innerHTML = data.error || 'Не вдалося завантажити промокоди';
+                resultText.style.color = 'red';
+            }
+        } catch (err) {
+            resultText.innerHTML = 'Помилка з’єднання з сервером';
+            resultText.style.color = 'red';
+            console.error('Coupons error:', err);
+        }
+    });
     // ─── Функція відправки форми (використовується і з кнопки, і з Enter) ──
-        const sendForm = async () => {
+    const sendForm = async () => {
         let link = field4.value.trim();
     
         // Якщо поле порожнє — намагаємося взяти з буфера
@@ -99,19 +184,36 @@ document.addEventListener('DOMContentLoaded', () => {
             } catch (err) {
                 resultText.innerHTML = '<b>Не вдалося прочитати буфер обміну.</b><br>Вставте посилання вручну в поле "Посилання на товар" і натисніть INSERT AND START.';
                 resultText.style.color = '#DC143C';
-            
                 submitBtn.style.background = 'linear-gradient(to bottom, #ffcc00, #ff9900)';
                 submitBtn.style.boxShadow = '0 0 15px rgba(255,204,0,0.6)';
                 setTimeout(() => {
                     submitBtn.style.background = '';
                     submitBtn.style.boxShadow = '';
-                }, 3000); // 3 секунди підсвітки
+                }, 3000);
+                return;
             }
         }
     
-        // Перевірка валідності (якщо посилання вже є або вставилося)
+        // Перевірка валідності
         if (!link.includes('aliexpress.com') && !link.includes('s.click.aliexpress.com')) {
-            resultText.innerHTML = 'Вставте посилання вручну в поле "Посилання на товар" і натисніть INSERT AND START.';
+            resultText.innerHTML = 'Це не посилання AliExpress';
+            resultText.style.color = 'red';
+            return;
+        }
+    
+        // Збираємо стан чекбоксів
+        const sections = [];
+        if (document.getElementById('all')?.checked) {
+            sections.push('all');
+        } else {
+            if (document.getElementById('coins')?.checked) sections.push('coins');
+            if (document.getElementById('crystal')?.checked) sections.push('crystal');
+            if (document.getElementById('prizeland')?.checked) sections.push('prizeland');
+        }
+    
+        // Якщо жоден не вибраний — показуємо помилку
+        if (sections.length === 0) {
+            resultText.innerHTML = 'Оберіть хоча б один розділ (ALL, COINS, CRYSTALS або PRIZE LAND)';
             resultText.style.color = 'red';
             return;
         }
@@ -125,7 +227,10 @@ document.addEventListener('DOMContentLoaded', () => {
             const response = await fetch('https://lexxexpress.click/pedro/submit', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ link: link })
+                body: JSON.stringify({ 
+                    link: link,
+                    sections: sections  // передаємо масив вибраних розділів
+                })
             });
     
             if (!response.ok) {
@@ -142,7 +247,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 html += data.result || 'Готово!';
                 resultText.innerHTML = html;
                 resultText.style.color = 'inherit';
-                field4.value = ''; // очищаємо після успіху
+                field4.value = '';
                 field4.readOnly = false;
             } else {
                 resultText.innerHTML = data.error || 'Помилка на сервері';
