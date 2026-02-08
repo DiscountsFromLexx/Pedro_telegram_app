@@ -574,8 +574,8 @@ body.light-theme .web-btn span {
 
 /* Іконка */
 .btn-icon {
-    width: 26px;                  /* розмір іконки — підбери */
-    height: 26px;
+    width: 30px;                  /* розмір іконки — підбери */
+    height: 30px;
     margin-bottom: 4px;           /* відстань між іконкою і текстом */
     object-fit: contain;
 }
@@ -1081,8 +1081,8 @@ body.light-theme .result-text[data-coupons-loaded] b {
     }
     
     .btn-icon {
-        width: 25px; /* 32px; */
-        height: 25px;  /* 32px; */
+        width: 35px; /* 32px; */
+        height: 35px;  /* 32px; */
         margin-bottom: 4px;
     }
     
