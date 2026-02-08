@@ -100,9 +100,6 @@ body.dark-theme .slogan-text {
 body.dark-theme .channels-text {
     color: #FFFFFF;
 }    
-body.dark-theme .web-btn {
-    color: #FFFFFF;
-}
 
 body.dark-theme .tgkch-text {
     color: #FFFFFF;
@@ -238,10 +235,6 @@ body.light-theme .iheader-text {
 }
 
 body.light-theme .instructions-text {
-    color: #000000;
-}
-
-body.light-theme .web-btn {
     color: #000000;
 }
 
@@ -560,9 +553,15 @@ input:checked + .slider:before {
     font-family: 'Montserrat', sans-serif;
     font-size: 10px;
     font-weight: 300;
-
+    color: #FFFFFF;
     letter-spacing: 0.5px;
     text-transform: uppercase;
+}
+/* Світла тема — чорний текст */
+body.light-theme .coupons-btn span,
+body.light-theme .instruction-btn span,
+body.light-theme .web-btn span {
+    color: #000000 !important;
 }
 
 .coupons-btn:hover,
