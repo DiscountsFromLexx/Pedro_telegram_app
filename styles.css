@@ -1000,6 +1000,14 @@ body.light-theme .result-text[data-coupons-loaded] b {
 
 @media (max-width: 800px) {  
     
+    body.in-telegram .top-buttons {
+        top: 90px !important;  /* більше відступу в Telegram */
+    }
+
+    body.in-browser .top-buttons {
+        top: 10px !important;  /* менше відступу в браузері */
+    }
+    
     .main-container {        
         top: 0px; /* було top: 200px; */
         padding: 4px;
