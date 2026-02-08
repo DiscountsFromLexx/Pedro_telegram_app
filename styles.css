@@ -1001,11 +1001,11 @@ body.light-theme .result-text[data-coupons-loaded] b {
 @media (max-width: 800px) {  
     
     body.in-telegram .top-buttons {
-        top: 90px !important;  /* більше відступу в Telegram */
+        top: calc(90px + var(--tg-safe-area-top, 0px)) !important;
     }
-
+    
     body.in-browser .top-buttons {
-        top: 10px !important;  /* менше відступу в браузері */
+        top: 10px !important;
     }
     
     .main-container {        
@@ -1061,7 +1061,7 @@ body.light-theme .result-text[data-coupons-loaded] b {
     }
     
     .top-buttons {
-        top: calc(90px + var(--tg-safe-area-top, 0px)) !important; /* + висота статус-бару */
+        
         left: 15px;
         gap: 2px;
     } 
