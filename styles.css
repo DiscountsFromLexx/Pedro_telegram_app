@@ -536,7 +536,7 @@ input:checked + .slider:before {
 
 .instruction-btn,
 .coupons-btn {
-    min-width: 80px;              /* однакова мінімальна ширина */
+    width: 50px;         /* min-width: 80px;  */
     height: 37px;                 /* висота */
     display: inline-flex;
     align-items: center;
@@ -1046,7 +1046,7 @@ body.light-theme .result-text[data-coupons-loaded] b {
     
     .instruction-btn,
     .coupons-btn {
-        min-width: 70px;         /* якщо екран дуже малий — зменшуємо ширину */
+        width: 30px;         /* min-width: 70px;  */
         font-size: 11px;         /* трохи менший шрифт */
         font-weight: 100;
         padding: 0 10px;
