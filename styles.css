@@ -531,7 +531,7 @@ input:checked + .slider:before {
     z-index: 1000;
     display: flex;
     flex-direction: row;
-    gap: -15px;                    /* відстань між кнопками 12px;*/
+    gap: -35px;                    /* відстань між кнопками 12px;*/
     align-items: center;        /* вирівнюємо по низу, щоб підписи були на одному рівні */
 }
 
