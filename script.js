@@ -4,6 +4,13 @@ const isTelegramMiniApp = !!window.Telegram?.WebApp;
 // Приклад використання — додаємо клас до body
 if (isTelegramMiniApp) {
     document.body.classList.add('in-telegram');
+    
+    // Отримуємо safe-area від Telegram WebApp (якщо доступно)
+    const safeTop = window.Telegram.WebApp.safeAreaInset?.top || 0;
+    document.documentElement.style.setProperty('--tg-safe-area-top', safeTop + 'px');
+    
+    // Розгортаємо Mini App на весь екран
+    window.Telegram.WebApp.expand();
 } else {
     document.body.classList.add('in-browser');
 }
