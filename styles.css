@@ -537,12 +537,12 @@ input:checked + .slider:before {
 .instruction-btn,
 .coupons-btn {
     width: 70px;         /* min-width: 80px;  */
-    height: 37px;                 /* висота */
+    height: 30px;                 /* висота 37px; */
     display: inline-flex;
     align-items: center;
     justify-content: center;
     text-decoration: none;
-    padding: 0 14px;
+    padding: 0 4px; /* padding: 0 14px; */
     background: transparent;
     color: #FFFFFF;
     border: 1px solid #1E90FF;
