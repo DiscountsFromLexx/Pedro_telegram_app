@@ -238,6 +238,10 @@ body.light-theme .instructions-text {
     color: #000000;
 }
 
+body.light-theme .web-btn {
+    color: #000000;
+}
+
 body.light-theme .instructions-text a {
     color: #000000;
 }
