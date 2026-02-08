@@ -525,70 +525,49 @@ input:checked + .slider:before {
 
 .top-buttons {
     position: absolute;
-    gap: 6px;                     /* відстань між кнопками було top: 4px */
-    top: 10px;    /* було top: 10px; */
-    
+    top: 10px;                    /* відстань від верху */
+    left: 15px;                   /* відступ від лівого краю */
     z-index: 1000;
-    display: flex;
-    flex-direction: column;
-    
+    display: flex;                /* горизонтальне розміщення */
+    flex-direction: row;          /* рядок, а не стовпець */
+    gap: 6px;                     /* відстань між кнопками — саме 6px */
+    align-items: center;          /* вертикальне вирівнювання по центру */
+}
+
+.instruction-btn,
+.coupons-btn {
+    min-width: 80px;              /* однакова мінімальна ширина */
+    height: 37px;                 /* висота */
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    padding: 0 14px;
+    background: transparent;
+    color: #FFFFFF;
+    border: 1px solid #1E90FF;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    -webkit-tap-highlight-color: transparent;
+    box-sizing: border-box;
+    line-height: 1;
     font-family: 'Montserrat', sans-serif;
-    font-size: 12px;              /* невеликий, але читабельний розмір */
+    font-size: 12px;
     font-weight: 200;
     letter-spacing: 1px;
-    
-    text-align: center;
 }
 
-.instruction-btn {
-    /* однакові стилі для обох кнопок */
-    
-    min-width: 80px;             /* однакова мінімальна ширина */
-    height: 37px;                 /* компактна висота 18px; */
-    left: 15px;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    text-decoration: none;
-    padding: 0 14px;
-    background: transparent;
-    color: #FFFFFF;
-    border: 1px solid #1E90FF;
-    border-radius: 6px;
-    
-    cursor: pointer;
-    transition: all 0.25s ease;
-    -webkit-tap-highlight-color: transparent;
-    box-sizing: border-box;
-    line-height: 1;
-}
-.coupons-btn{
-    
-    min-width: 80px;             /* однакова мінімальна ширина */
-    height: 37px;                 /* компактна висота 18px; */
-    left: 35px;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    text-decoration: none;
-    padding: 0 14px;
-    background: transparent;
-    color: #FFFFFF;
-    border: 1px solid #1E90FF;
-    border-radius: 6px;
-    
-    cursor: pointer;
-    transition: all 0.25s ease;
-    -webkit-tap-highlight-color: transparent;
-    box-sizing: border-box;
-    line-height: 1;
-}
-
-.coupons-btn:hover,
-.instruction-btn:hover {
+.instruction-btn:hover,
+.coupons-btn:hover {
     background: #1E90FF;
     color: #ffffff;
     border-color: #1E90FF;
+}
+
+/* Якщо потрібно, щоб COUPONS був праворуч (наприклад, при фіксованій ширині контейнера) */
+.coupons-btn {
+    margin-left: auto;            /* відштовхує кнопку вправо, якщо є місце */
 }
 
 
