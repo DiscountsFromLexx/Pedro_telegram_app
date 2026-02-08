@@ -99,6 +99,9 @@ body.dark-theme .slogan-text {
 }
 body.dark-theme .channels-text {
     color: #FFFFFF;
+    
+body.dark-theme .web-btn {
+    color: #FFFFFF;
 }
 
 body.dark-theme .tgkch-text {
@@ -557,7 +560,7 @@ input:checked + .slider:before {
     font-family: 'Montserrat', sans-serif;
     font-size: 10px;
     font-weight: 300;
-    color: #FFFFFF;
+
     letter-spacing: 0.5px;
     text-transform: uppercase;
 }
