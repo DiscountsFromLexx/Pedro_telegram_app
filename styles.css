@@ -1056,8 +1056,8 @@ body.light-theme .result-text[data-coupons-loaded] b {
         bottom: 2px;        
     }
     .theme-toggle-container {
-        top: 90px; /* було 35px */
-        right: 5px;    /* було right: 10px;  */
+        top: 93px; /* було 90px */
+        right: 8px;    /* було right: 5px;  */
         gap: 1px;
     }
     .theme-toggle {    
