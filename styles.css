@@ -532,7 +532,10 @@ input:checked + .slider:before {
     display: flex;
     flex-direction: row;
     gap: -15px;                    /* відстань між кнопками 12px;*/
-    align-items: flex-end;        /* вирівнюємо по низу, щоб підписи були на одному рівні */
+    align-items: center;        /* вирівнюємо по низу, щоб підписи були на одному рівні */
+}
+body.in-telegram .top-buttons {
+    top: 90px !important;
 }
 
 /* Стилі для кнопок */
@@ -1010,6 +1013,11 @@ body.light-theme .result-text[data-coupons-loaded] b {
         top: calc(90px + var(--tg-safe-area-top, 0px)) !important;
     }
     
+    /* Для браузера на мобілках — дефолт 10px (перекриваємо будь-які інші) */
+    .top-buttons {
+        top: 10px !important;
+    }
+    
     .main-container {        
         top: 0px; /* було top: 200px; */
         padding: 4px;
@@ -1063,7 +1071,7 @@ body.light-theme .result-text[data-coupons-loaded] b {
     }
     
     .top-buttons {        
-        top: 10px !important;
+        
         left: 15px;
         gap: -20px;
     } 
