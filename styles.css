@@ -547,7 +547,7 @@ input:checked + .slider:before {
     padding: 4px 12px;
     background: transparent;
     color: #FFFFFF;
-    border: 1px solid #1E90FF;
+    border: 0px solid #1E90FF;
     border-radius: 8px;
     cursor: pointer;
     transition: all 0.25s ease;
