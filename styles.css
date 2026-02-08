@@ -1067,7 +1067,7 @@ body.light-theme .result-text[data-coupons-loaded] b {
         font-weight: 100;
     }
     .coupons-btn {        
-        left: 10px;
+        left: 30px;
         padding: 8px 15px;
         font-size: 10px;
         font-weight: 100; /* 300; */
