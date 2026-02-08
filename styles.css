@@ -526,16 +526,16 @@ input:checked + .slider:before {
 /* Контейнер кнопок — горизонтальний рядок */
 .top-buttons {
     position: absolute;
-    top: 10px;                    /* або 90px на мобілках — як ти налаштував */
+    top: 10px;                    /* або 90px на мобілках */
     left: 15px;
     z-index: 1000;
     display: flex;
     flex-direction: row;
-    gap: 12px;                    /* відстань між кнопками — підбери 8–16px */
-    align-items: center;
+    gap: 12px;                    /* відстань між кнопками */
+    align-items: flex-end;        /* вирівнюємо по низу, щоб підписи були на одному рівні */
 }
 
-/* Уніфіковані стилі для кнопок */
+/* Стилі для кнопок */
 .coupons-btn,
 .instruction-btn,
 .web-btn {
@@ -546,7 +546,7 @@ input:checked + .slider:before {
     min-width: 70px;
     padding: 8px 6px;
     background: transparent;
-    border: none;                 /* без бордеру навколо кнопки (якщо хочеш — додай 1px solid #1E90FF) */
+    border: none;                 /* без рамки навколо кнопки */
     border-radius: 8px;
     cursor: pointer;
     transition: all 0.25s ease;
@@ -555,6 +555,7 @@ input:checked + .slider:before {
     font-weight: 300;
     color: #FFFFFF;
     letter-spacing: 0.5px;
+    text-transform: uppercase;
 }
 
 .coupons-btn:hover,
@@ -564,15 +565,24 @@ input:checked + .slider:before {
     transform: scale(1.05);
 }
 
-/* Іконка без обідка/рамки */
+/* Іконка */
 .btn-icon {
-    width: 36px;                  /* розмір іконки — підбери під себе */
+    width: 36px;                  /* розмір іконки — підбери */
     height: 36px;
     margin-bottom: 6px;           /* відстань між іконкою і текстом */
     object-fit: contain;
-    border: none !important;      /* гарантовано без обідка */
-    border-radius: 0 !important;
-    background: transparent;
+}
+
+/* Підпис під іконкою */
+.coupons-btn span,
+.instruction-btn span,
+.web-btn span {
+    display: block;
+    margin-top: 4px;
+    font-size: 9px;
+    font-weight: 400;
+    color: #FFFFFF;
+    text-align: center;
 }
 
 
@@ -1053,13 +1063,18 @@ body.light-theme .result-text[data-coupons-loaded] b {
     .web-btn {
         min-width: 60px;
         padding: 6px 4px;
-        font-size: 9px;
     }
     
     .btn-icon {
         width: 32px;
         height: 32px;
         margin-bottom: 5px;
+    }
+    
+    .coupons-btn span,
+    .instruction-btn span,
+    .web-btn span {
+        font-size: 8px;
     }
     
     
