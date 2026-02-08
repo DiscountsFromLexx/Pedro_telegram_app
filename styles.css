@@ -525,49 +525,53 @@ input:checked + .slider:before {
 
 .top-buttons {
     position: absolute;
-    top: 10px;                    /* відстань від верху */
-    left: 15px;                   /* відступ від лівого краю */
+    top: 10px;                    /* або 90px на мобілках — як ти налаштував */
+    left: 15px;
     z-index: 1000;
-    display: flex;                /* горизонтальне розміщення */
-    flex-direction: row;          /* рядок, а не стовпець */
-    gap: 6px;                     /* відстань між кнопками — саме 6px */
-    align-items: center;          /* вертикальне вирівнювання по центру */
+    display: flex;
+    flex-direction: row;
+    gap: 6px;                     /* відстань між кнопками */
+    align-items: center;
 }
 
+/* Стилі для всіх кнопок (уніфікуємо) */
+.coupons-btn,
 .instruction-btn,
-.coupons-btn {
-    width: 70px;         /* min-width: 80px;  */
-    height: 30px;                 /* висота 37px; */
-    display: inline-flex;
+.web-btn {
+    min-width: 80px;
+    height: 60px;                 /* збільшили висоту, щоб вмістилася іконка + текст */
+    display: flex;
+    flex-direction: column;       /* іконка зверху, текст знизу */
     align-items: center;
     justify-content: center;
-    text-decoration: none;
-    padding: 0 4px; /* padding: 0 14px; */
+    padding: 4px 12px;
     background: transparent;
     color: #FFFFFF;
     border: 1px solid #1E90FF;
-    border-radius: 6px;
+    border-radius: 8px;
     cursor: pointer;
     transition: all 0.25s ease;
-    -webkit-tap-highlight-color: transparent;
-    box-sizing: border-box;
-    line-height: 1;
     font-family: 'Montserrat', sans-serif;
-    font-size: 10px;
+    font-size: 11px;
     font-weight: 200;
     letter-spacing: 1px;
+    text-transform: uppercase;
 }
 
+.coupons-btn:hover,
 .instruction-btn:hover,
-.coupons-btn:hover {
+.web-btn:hover {
     background: #1E90FF;
     color: #ffffff;
     border-color: #1E90FF;
 }
 
-/* Якщо потрібно, щоб COUPONS був праворуч (наприклад, при фіксованій ширині контейнера) */
-.coupons-btn {
-    margin-left: auto;            /* відштовхує кнопку вправо, якщо є місце */
+/* Іконка всередині кнопки WEB */
+.web-btn .btn-icon {
+    width: 28px;                  /* розмір іконки — підбери під себе */
+    height: 28px;
+    margin-bottom: 4px;           /* відстань між іконкою і текстом */
+    object-fit: contain;
 }
 
 
@@ -1043,14 +1047,20 @@ body.light-theme .result-text[data-coupons-loaded] b {
         gap: 6px;
     } 
     
+    coupons-btn,
     .instruction-btn,
-    .coupons-btn, .web-btn {
-        width: 70px;         /* min-width: 80px;  */
-        height: 25px;   /* height: 27px;  */
-        font-size: 8px;         /* трохи менший шрифт */
-        font-weight: 100;
-        padding: 0 2px; /* padding: 0 10px; */
-    }   
+    .web-btn {
+        min-width: 70px;
+        height: 55px;             /* трохи менша висота */
+        font-size: 10px;
+        padding: 4px 8px;
+    }
+    
+    .web-btn .btn-icon {
+        width: 24px;
+        height: 24px;
+        margin-bottom: 3px;
+    }  
     
     
     .block-form {
