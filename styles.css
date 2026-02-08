@@ -553,7 +553,7 @@ input:checked + .slider:before {
     box-sizing: border-box;
     line-height: 1;
     font-family: 'Montserrat', sans-serif;
-    font-size: 12px;
+    font-size: 10px;
     font-weight: 200;
     letter-spacing: 1px;
 }
@@ -1045,12 +1045,11 @@ body.light-theme .result-text[data-coupons-loaded] b {
     
     .instruction-btn,
     .coupons-btn {
-        width: 65px;         /* min-width: 70px;  */
-        font-size: 10px;         /* трохи менший шрифт */
+        width: 37px;         /* min-width: 70px;  */
+        font-size: 8px;         /* трохи менший шрифт */
         font-weight: 100;
         padding: 0 10px;
-    }
-    
+    }   
     
     
     .block-form {
