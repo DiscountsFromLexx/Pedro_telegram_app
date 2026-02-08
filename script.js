@@ -1,3 +1,13 @@
+// Визначаємо, чи це Telegram Mini App
+const isTelegramMiniApp = !!window.Telegram?.WebApp;
+
+// Приклад використання — додаємо клас до body
+if (isTelegramMiniApp) {
+    document.body.classList.add('in-telegram');
+} else {
+    document.body.classList.add('in-browser');
+}
+
 document.addEventListener('DOMContentLoaded', () => {
     const form = document.getElementById('telegramForm');
     const submitBtn = document.querySelector('.submit-btn');
