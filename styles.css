@@ -1026,7 +1026,7 @@ body.light-theme .result-text[data-coupons-loaded] b {
         width: 100%;
     }
     .container {
-        top: 50px; /* було top: 40px; */
+        top: 0px; /* було top: 50px; */
         padding: 6px;
         width: 100%;
     }   
