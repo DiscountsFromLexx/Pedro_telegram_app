@@ -534,9 +534,6 @@ input:checked + .slider:before {
     gap: -15px;                    /* відстань між кнопками 12px;*/
     align-items: flex-end;        /* вирівнюємо по низу, щоб підписи були на одному рівні */
 }
-body.in-telegram .top-buttons {
-    top: 90px !important;
-}
 
 /* Стилі для кнопок */
 .coupons-btn,
