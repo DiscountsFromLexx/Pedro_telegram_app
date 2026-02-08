@@ -1047,7 +1047,7 @@ body.light-theme .result-text[data-coupons-loaded] b {
         gap: 6px;
     } 
     
-    coupons-btn,
+    .coupons-btn,
     .instruction-btn,
     .web-btn {
         min-width: 70px;
@@ -1060,7 +1060,7 @@ body.light-theme .result-text[data-coupons-loaded] b {
         width: 24px;
         height: 24px;
         margin-bottom: 3px;
-    }  
+    } 
     
     
     .block-form {
