@@ -27,7 +27,7 @@ body.dark-theme .instruction-btn {
     background: transparent;
     font-weight: 100;
     color: #FFFFFF;
-    border: 1px solid #1E90FF;
+    border: 0px solid #1E90FF;
 }
 
 body.dark-theme .instruction-btn:hover {
