@@ -1046,10 +1046,10 @@ body.light-theme .result-text[data-coupons-loaded] b {
     .instruction-btn,
     .coupons-btn {
         width: 80px;         /* min-width: 70px;  */
-        height: 37px;
+        height: 27px;   /* height: 37px;  */
         font-size: 8px;         /* трохи менший шрифт */
         font-weight: 100;
-        padding: 0 10px;
+        padding: 0 2px; /* padding: 0 10px; */
     }   
     
     
