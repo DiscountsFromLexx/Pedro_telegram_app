@@ -545,7 +545,7 @@ input:checked + .slider:before {
     /* однакові стилі для обох кнопок */
     
     min-width: 80px;             /* однакова мінімальна ширина */
-    height: 18px;                 /* компактна висота */
+    height: 37px;                 /* компактна висота 18px; */
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -1046,7 +1046,7 @@ body.light-theme .result-text[data-coupons-loaded] b {
         font-weight: 100;
     }
     .coupons-btn {        
-        left: 10px;
+        left: 30px;
         padding: 8px 15px;
         font-size: 10px;
         font-weight: 100; /* 300; */
