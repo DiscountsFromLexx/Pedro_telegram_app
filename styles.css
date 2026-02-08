@@ -523,54 +523,47 @@ input:checked + .slider:before {
     50% { opacity: 0.4; }
 }
 
+/* Контейнер кнопок — горизонтальний рядок */
 .top-buttons {
     position: absolute;
-    top: 10px;                    /* або 90px на мобілках — як ти налаштував */
+    top: 10px;                    /* або 90px на мобілках */
     left: 15px;
     z-index: 1000;
     display: flex;
     flex-direction: row;
-    gap: 6px;                     /* відстань між кнопками */
+    gap: 8px;                     /* відстань між іконками — підбери 6–10px */
     align-items: center;
 }
 
-/* Стилі для всіх кнопок (уніфікуємо) */
+/* Уніфіковані стилі для всіх іконок-кнопок */
 .coupons-btn,
 .instruction-btn,
 .web-btn {
-    min-width: 80px;
-    height: 60px;                 /* збільшили висоту, щоб вмістилася іконка + текст */
+    width: 48px;                  /* розмір кнопки — квадратний для іконок */
+    height: 48px;
     display: flex;
-    flex-direction: column;       /* іконка зверху, текст знизу */
     align-items: center;
     justify-content: center;
-    padding: 4px 12px;
+    padding: 0;
     background: transparent;
-    color: #FFFFFF;
-    border: 0px solid #1E90FF;
-    border-radius: 8px;
+    border: none;                 /* без рамки навколо іконки */
+    border-radius: 50%;           /* кругла кнопка — виглядає сучасно */
     cursor: pointer;
     transition: all 0.25s ease;
-    font-family: 'Montserrat', sans-serif;
-    font-size: 11px;
-    font-weight: 200;
-    letter-spacing: 1px;
-    text-transform: uppercase;
+    -webkit-tap-highlight-color: transparent;
 }
 
 .coupons-btn:hover,
 .instruction-btn:hover,
 .web-btn:hover {
-    background: #1E90FF;
-    color: #ffffff;
-    border-color: #1E90FF;
+    background: rgba(30, 144, 255, 0.2);  /* легкий фон при наведенні */
+    transform: scale(1.1);        /* легке збільшення */
 }
 
-/* Іконка всередині кнопки WEB */
-.web-btn .btn-icon {
-    width: 28px;                  /* розмір іконки — підбери під себе */
-    height: 28px;
-    margin-bottom: 4px;           /* відстань між іконкою і текстом */
+/* Сама іконка */
+.btn-icon {
+    width: 36px;                  /* розмір іконки всередині кнопки */
+    height: 36px;
     object-fit: contain;
 }
 
@@ -1050,17 +1043,14 @@ body.light-theme .result-text[data-coupons-loaded] b {
     .coupons-btn,
     .instruction-btn,
     .web-btn {
-        min-width: 70px;
-        height: 55px;             /* трохи менша висота */
-        font-size: 10px;
-        padding: 4px 8px;
+        width: 44px;
+        height: 44px;
     }
     
-    .web-btn .btn-icon {
-        width: 24px;
-        height: 24px;
-        margin-bottom: 3px;
-    } 
+    .btn-icon {
+        width: 32px;
+        height: 32px;
+    }
     
     
     .block-form {
