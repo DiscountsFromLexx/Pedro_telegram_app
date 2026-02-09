@@ -208,11 +208,11 @@ body.light-theme .instructions-text {
 }
 
 body.light-theme .instructions-text a {
-    color: #000000;
+    color: #1E90FF;
 }
 
 body.light-theme .instructions-text a:hover {
-    color: #B2EBF2;
+    color: #4682B4;
 }
 
 body.light-theme .theme-label {
