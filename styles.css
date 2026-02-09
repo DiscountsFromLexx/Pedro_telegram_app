@@ -138,29 +138,6 @@ body.light-theme .loading-text {
     color: #FF0000; /*  або #1a3d5a для контрасту */
 }
 
-body.light-theme .instruction-btn {
-    background: transparent;
-    color: #4682B4;
-    border: 0px solid #000080;
-    font-weight: 300;
-}
-
-body.light-theme .instruction-btn:hover {
-    background: #191970;
-    color: #ffffff;
-}
-
-body.light-theme .coupons-btn {
-    background: transparent;
-    color: #4682B4;
-    border: 0px solid #000080;
-    font-weight: 100; /* було 300px */
-}
-
-body.light-theme .coupons-btn:hover {
-    background: #1E90FF;
-    color: #ffffff;
-}
 
 body.light-theme .header-text {
     color: #000000;
@@ -566,6 +543,7 @@ body.light-theme .web-btn span {
 .web-btn:hover {
     background: rgba(30, 144, 255, 0.15);  /* легкий фон при наведенні */
     transform: scale(1.05);
+    font-weight: 100; /* було 300px */
 }
 
 /* Іконка */
