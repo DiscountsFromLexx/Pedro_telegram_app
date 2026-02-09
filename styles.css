@@ -504,7 +504,8 @@ input:checked + .slider:before {
 /* Стилі для кнопок */
 .coupons-btn,
 .instruction-btn,
-.web-btn {
+.web-btn,
+.feedback-btn {
     display: flex;
     flex-direction: column;       /* іконка зверху, текст знизу */
     align-items: center;
@@ -526,13 +527,15 @@ input:checked + .slider:before {
 /* Світла тема — чорний текст */
 body.light-theme .coupons-btn span,
 body.light-theme .instruction-btn span,
-body.light-theme .web-btn span {
+body.light-theme .web-btn span,
+body.light-theme .feedback-btn span {
     color: #000000 !important;
 }
 
 .coupons-btn:hover,
 .instruction-btn:hover,
-.web-btn:hover {
+.web-btn:hover,
+.feedback-btn:hover {
     background: rgba(30, 144, 255, 0.15);  /* легкий фон при наведенні */
     transform: scale(1.05);
     font-weight: 100; /* було 300px */
@@ -549,7 +552,8 @@ body.light-theme .web-btn span {
 /* Підпис під іконкою */
 .coupons-btn span,
 .instruction-btn span,
-.web-btn span {
+.web-btn span,
+.feedback-btn span {
     display: block;
     margin-top: 2px;  /* 4px; */
     font-size: 9px;
@@ -1049,7 +1053,8 @@ body.light-theme .result-text[data-coupons-loaded] b {
     }
     .coupons-btn,
     .instruction-btn,
-    .web-btn {
+    .web-btn,
+    .feedback-btn {
         min-width: 60px;
         padding: 6px 4px;
     }
@@ -1062,7 +1067,8 @@ body.light-theme .result-text[data-coupons-loaded] b {
     
     .coupons-btn span,
     .instruction-btn span,
-    .web-btn span {
+    .web-btn span,
+    .feedback-btn span{
         font-size: 8px;
     }
     
@@ -1139,7 +1145,8 @@ body.light-theme .result-text[data-coupons-loaded] b {
 
     .coupons-btn,
     .instruction-btn,
-    .web-btn {
+    .web-btn,
+    .feedback-btn {
         min-width: 90px;
         padding: 12px 8px;
         border-radius: 12px;
@@ -1153,7 +1160,8 @@ body.light-theme .result-text[data-coupons-loaded] b {
 
     .coupons-btn span,
     .instruction-btn span,
-    .web-btn span {
+    .web-btn span,
+    .feedback-btn span {
         font-size: 12px;
         font-weight: 500;
         letter-spacing: 0.8px;
