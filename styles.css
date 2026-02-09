@@ -1145,7 +1145,7 @@ body.light-theme .result-text[data-coupons-loaded] b {
     
     .feedback-btn {
         min-width: 90px;
-        left: 32px;
+        left: 64px;
         padding: 12px 8px;
         border-radius: 12px;
     }
