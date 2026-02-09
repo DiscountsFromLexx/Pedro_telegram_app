@@ -30,10 +30,6 @@ body.dark-theme .instruction-btn {
     border: 0px solid #1E90FF;
 }
 
-body.dark-theme .instruction-btn:hover {
-    background: #1E90FF;
-    color: #ffffff;
-}
 
 body.dark-theme .coupons-btn {
     background: transparent;
@@ -45,10 +41,6 @@ body.dark-theme .coupons-btn {
 body.dark-theme .checkbox-group {
     
     color: #FFFFFF;
-}
-body.dark-theme .coupons-btn:hover {
-    background: #1E90FF;
-    color: #ffffff;
 }
 
 body.dark-theme .header-text {
