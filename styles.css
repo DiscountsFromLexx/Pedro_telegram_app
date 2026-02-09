@@ -363,8 +363,8 @@ body.light-theme blockquote {
 /* Стилі для перемикача тем (зменшений розмір, окремий контейнер, з написом) */
 .theme-toggle-container {
     position: absolute; /* було position: absolute;  */
-    top: 15px;                /* було 90px */
-    right: 15px;              /* було right: 15px; */
+    top: 20px;                /* було 15px */
+    right: 20px;              /* було right: 15px; */
     display: flex;
     align-items: center;
     gap: 4px;                 /* було 2px → трохи збільшено для кращого вигляду */
@@ -1056,8 +1056,8 @@ body.light-theme .result-text[data-coupons-loaded] b {
         bottom: 2px;        
     }
     .theme-toggle-container {
-        top: 93px; /* було 90px */
-        right: 8px;    /* було right: 5px;  */
+        top: 98px; /* було 98px */
+        right: 12px;    /* було right: 8px;  */
         gap: 1px;
     }
     .theme-toggle {    
