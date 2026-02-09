@@ -297,25 +297,21 @@ body.light-theme .prizi-title {
     color: #388e3c; /* темніший зелений */
 }
 
-/* Посилання */
-.moneti-link {
-    color: #4fc3f7; /* світло-жовтий */
-}
-body.light-theme .moneti-link {
-    color: #0277bd;
-}
-
-.crystal-link {
-    color: #4fc3f7;
-}
-body.light-theme .crystal-link {
-    color: #0277bd;
+/* Посилання — об'єднаний блок */
+.moneti-link,
+.crystal-link,
+.prizi-link,
+.complect-link,
+.bestsellers-link {
+    color: #4fc3f7; /* синій у темній темі */
 }
 
-.prizi-link {
-    color: #4fc3f7;
-}
-body.light-theme .prizi-link {
+/* Світла тема — темніший синій для всіх типів посилань */
+body.light-theme .moneti-link,
+body.light-theme .crystal-link,
+body.light-theme .prizi-link,
+body.light-theme .complect-link,
+body.light-theme .bestsellers-link {
     color: #0277bd;
 }
 
