@@ -221,7 +221,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (document.getElementById('crystal')?.checked) sections.push('crystal');
             if (document.getElementById('prizeland')?.checked) sections.push('prizeland');
             if (document.getElementById('complect')?.checked) sections.push('complect');
-            if (document.getElementById('superdeals')?.checked) sections.push('superdeals');
+            if (document.getElementById('bestsellers')?.checked) sections.push('bestsellers');
         }
     
         // Якщо жоден не вибраний — показуємо помилку
