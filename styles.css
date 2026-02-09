@@ -1123,7 +1123,7 @@ body.light-theme .result-text[data-coupons-loaded] b {
 /* iPad Mini та подібні планшети (портретний режим) */
 @media (max-width: 821px) {
     body {
-        font-size: 18px;
+        font-size: 18px; /* базовий розмір тексту більший */
     }
 
     .main-container {
@@ -1137,46 +1137,15 @@ body.light-theme .result-text[data-coupons-loaded] b {
         border-radius: 16px;
     }
 
-    /* Контейнер лівих кнопок — зліва */
     .top-buttons {
-        position: absolute;
         top: 16px;
         left: 16px;
-        z-index: 1000;
-        display: flex;
-        flex-direction: row;
-        gap: 12px;
+        gap: 12px; /* більша відстань між іконками */
     }
 
-    /* Нова кнопка FEEDBACK — праворуч від центру */
-    .feedback-btn {
-        position: absolute;
-        top: 16px;
-        right: 16px;              /* симетрично зліва */
-        z-index: 1000;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        min-width: 90px;
-        padding: 12px 8px;
-        background: transparent;
-        border: none;
-        border-radius: 12px;
-        cursor: pointer;
-        transition: all 0.25s ease;
-    }
-
-    .feedback-btn:hover {
-        background: rgba(30, 144, 255, 0.15);
-        transform: scale(1.05);
-    }
-
-    /* Усі кнопки (включаючи нову) */
     .coupons-btn,
     .instruction-btn,
-    .web-btn,
-    .feedback-btn {
+    .web-btn {
         min-width: 90px;
         padding: 12px 8px;
         border-radius: 12px;
@@ -1186,42 +1155,25 @@ body.light-theme .result-text[data-coupons-loaded] b {
         width: 42px;
         height: 42px;
         margin-bottom: 8px;
-        object-fit: contain;
     }
 
     .coupons-btn span,
     .instruction-btn span,
-    .web-btn span,
-    .feedback-btn span {
+    .web-btn span {
         font-size: 12px;
         font-weight: 500;
         letter-spacing: 0.8px;
         margin-top: 6px;
-        color: #FFFFFF;
     }
 
-    body.light-theme .coupons-btn span,
-    body.light-theme .instruction-btn span,
-    body.light-theme .web-btn span,
-    body.light-theme .feedback-btn span {
-        color: #000000 !important;
-    }
-
-    /* Центральна іконка — по центру, не зсувається */
     .instruction-img {
-        position: absolute;
-        top: 8px;
-        left: 50%;
-        transform: translateX(-50%);
         width: 80px;
         height: 80px;
-        border-radius: 50%;
-        z-index: 10;
+        top: 8px;
     }
 
-    /* Щоб текст не перекривався кнопками */
     .slogan-text {
-        margin-top: 100px; /* збільшили, щоб не лізло на іконки */
+        margin-top: 80px;
         font-size: 14px;
         font-weight: 300;
     }
