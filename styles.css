@@ -993,7 +993,7 @@ body.light-theme .result-text[data-coupons-loaded] * {
 
 /* Виділення заголовка "Актуальні промокоди та акції" */
 .result-text[data-coupons-loaded] b {
-    color: #ffeb3b !important; /* золотистий у темній */
+    color: #FFE4B5 !important; /* було #ffeb3b золотистий у темній */
     font-size: 16px;
 }
 
