@@ -34,28 +34,20 @@ body.dark-theme .instruction-btn {
     background: transparent;
     font-weight: 100;
     color: #FFFFFF;
-    border: 1px solid #1E90FF;
+    border: 0px solid #1E90FF;
 }
 
-body.dark-theme .instruction-btn:hover {
-    background: #1E90FF;
-    color: #ffffff;
-}
 
 body.dark-theme .coupons-btn {
     background: transparent;
     font-weight: 100;
     color: #FFFFFF;
-    border: 1px solid #1E90FF;
+    border: 0px solid #1E90FF;
 }
 
 body.dark-theme .checkbox-group {
     
     color: #FFFFFF;
-}
-body.dark-theme .coupons-btn:hover {
-    background: #1E90FF;
-    color: #ffffff;
 }
 
 body.dark-theme .header-text {
@@ -106,7 +98,7 @@ body.dark-theme .slogan-text {
 }
 body.dark-theme .channels-text {
     color: #FFFFFF;
-}
+}    
 
 body.dark-theme .tgkch-text {
     color: #FFFFFF;
@@ -145,29 +137,6 @@ body.light-theme .loading-text {
     color: #FF0000; /*  або #1a3d5a для контрасту */
 }
 
-body.light-theme .instruction-btn {
-    background: transparent;
-    color: #4682B4;
-    border: 1px solid #000080;
-    font-weight: 300;
-}
-
-body.light-theme .instruction-btn:hover {
-    background: #191970;
-    color: #ffffff;
-}
-
-body.light-theme .coupons-btn {
-    background: transparent;
-    color: #4682B4;
-    border: 1px solid #000080;
-    font-weight: 100; /* було 300px */
-}
-
-body.light-theme .coupons-btn:hover {
-    background: #1E90FF;
-    color: #ffffff;
-}
 
 body.light-theme .header-text {
     color: #000000;
@@ -246,11 +215,11 @@ body.light-theme .instructions-text {
 }
 
 body.light-theme .instructions-text a {
-    color: #000000;
+    color: #1E90FF;
 }
 
 body.light-theme .instructions-text a:hover {
-    color: #B2EBF2;
+    color: #4682B4;
 }
 
 body.light-theme .theme-label {
@@ -304,25 +273,21 @@ body.light-theme .prizi-title {
     color: #388e3c; /* темніший зелений */
 }
 
-/* Посилання */
-.moneti-link {
-    color: #4fc3f7; /* світло-жовтий */
-}
-body.light-theme .moneti-link {
-    color: #0277bd;
-}
-
-.crystal-link {
-    color: #4fc3f7;
-}
-body.light-theme .crystal-link {
-    color: #0277bd;
+/* Посилання — об'єднаний блок */
+.moneti-link,
+.crystal-link,
+.prizi-link,
+.complect-link,
+.bestsellers-link {
+    color: #4fc3f7; /* синій у темній темі */
 }
 
-.prizi-link {
-    color: #4fc3f7;
-}
-body.light-theme .prizi-link {
+/* Світла тема — темніший синій для всіх типів посилань */
+body.light-theme .moneti-link,
+body.light-theme .crystal-link,
+body.light-theme .prizi-link,
+body.light-theme .complect-link,
+body.light-theme .bestsellers-link {
     color: #0277bd;
 }
 
@@ -370,8 +335,8 @@ body.light-theme blockquote {
 /* Стилі для перемикача тем (зменшений розмір, окремий контейнер, з написом) */
 .theme-toggle-container {
     position: absolute; /* було position: absolute;  */
-    top: 15px;                /* було 90px */
-    right: 15px;              /* було right: 15px; */
+    top: 20px;                /* було 15px */
+    right: 20px;              /* було right: 15px; */
     display: flex;
     align-items: center;
     gap: 4px;                 /* було 2px → трохи збільшено для кращого вигляду */
@@ -530,51 +495,78 @@ input:checked + .slider:before {
     50% { opacity: 0.4; }
 }
 
+/* Контейнер кнопок — горизонтальний рядок */
 .top-buttons {
     position: absolute;
-    top: 10px;                    /* відстань від верху */
-    left: 15px;                   /* відступ від лівого краю */
+    top: 10px;                    /* або 90px на мобілках */
+    left: 15px;
     z-index: 1000;
-    display: flex;                /* горизонтальне розміщення */
-    flex-direction: row;          /* рядок, а не стовпець */
-    gap: 6px;                     /* відстань між кнопками — саме 6px */
-    align-items: center;          /* вертикальне вирівнювання по центру */
+    display: flex;
+    flex-direction: row;
+    gap: -35px;                    /* відстань між кнопками 12px;*/
+    align-items: center;        /* вирівнюємо по низу, щоб підписи були на одному рівні */
 }
 
+
+/* Стилі для кнопок */
+.coupons-btn,
 .instruction-btn,
-.coupons-btn {
-    width: 70px;         /* min-width: 80px;  */
-    height: 30px;                 /* висота 37px; */
-    display: inline-flex;
+.web-btn,
+.feedback-btn {
+    display: flex;
+    flex-direction: column;       /* іконка зверху, текст знизу */
     align-items: center;
     justify-content: center;
-    text-decoration: none;
-    padding: 0 4px; /* padding: 0 14px; */
+    min-width: 70px;
+    padding: 8px 6px;
     background: transparent;
-    color: #FFFFFF;
-    border: 1px solid #1E90FF;
-    border-radius: 6px;
+    border: none;                 /* без рамки навколо кнопки */
+    border-radius: 8px;
     cursor: pointer;
     transition: all 0.25s ease;
-    -webkit-tap-highlight-color: transparent;
-    box-sizing: border-box;
-    line-height: 1;
     font-family: 'Montserrat', sans-serif;
     font-size: 10px;
-    font-weight: 200;
-    letter-spacing: 1px;
+    font-weight: 300;
+    color: #FFFFFF;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+}
+/* Світла тема — чорний текст */
+body.light-theme .coupons-btn span,
+body.light-theme .instruction-btn span,
+body.light-theme .web-btn span,
+body.light-theme .feedback-btn span {
+    color: #000000 !important;
 }
 
+.coupons-btn:hover,
 .instruction-btn:hover,
-.coupons-btn:hover {
-    background: #1E90FF;
-    color: #ffffff;
-    border-color: #1E90FF;
+.web-btn:hover,
+.feedback-btn:hover {
+    background: rgba(30, 144, 255, 0.15);  /* легкий фон при наведенні */
+    transform: scale(1.05);
+    font-weight: 100; /* було 300px */
 }
 
-/* Якщо потрібно, щоб COUPONS був праворуч (наприклад, при фіксованій ширині контейнера) */
-.coupons-btn {
-    margin-left: auto;            /* відштовхує кнопку вправо, якщо є місце */
+/* Іконка */
+.btn-icon {
+    width: 30px;                  /* розмір іконки — підбери */
+    height: 30px;
+    margin-bottom: 4px;           /* відстань між іконкою і текстом */
+    object-fit: contain;
+}
+
+/* Підпис під іконкою */
+.coupons-btn span,
+.instruction-btn span,
+.web-btn span,
+.feedback-btn span {
+    display: block;
+    margin-top: 2px;  /* 4px; */
+    font-size: 9px;
+    font-weight: 400;
+    color: #FFFFFF;
+    text-align: center;
 }
 
 
@@ -625,7 +617,7 @@ input:checked + .slider:before {
     margin: 6px 0 10px; /* було 12px 0 20px; */
 
     /* Якщо елементів більше 6 — вони просто не помістяться, можна додати overflow */
-    overflow: hidden;   /* або auto, якщо хочеш скрол */
+    overflow: auto;   /* або auto, якщо хочеш скрол */
 }
 
 /* label вже не потребує flex-властивостей */
@@ -982,7 +974,7 @@ body.light-theme .result-text[data-coupons-loaded] * {
 
 /* Виділення заголовка "Актуальні промокоди та акції" */
 .result-text[data-coupons-loaded] b {
-    color: #ffeb3b !important; /* золотистий у темній */
+    color: #FFE4B5 !important; /* було #ffeb3b золотистий у темній */
     font-size: 16px;
 }
 
@@ -992,29 +984,47 @@ body.light-theme .result-text[data-coupons-loaded] b {
 
 @media (max-width: 800px) {  
     
+    body.in-telegram .container {
+        top: 50px; !important;
+        padding: 6px;
+        width: 100%;
+    }
+    body.in-telegram .top-buttons {
+        top: calc(90px + var(--tg-safe-area-top, 0px)) !important;
+    }
+    
+    
+    /* Якщо клас .in-telegram відсутній (браузер на телефоні) — явно повертаємо 10px */
+    .top-buttons {
+        top: 10px !important;
+        left: 15px;
+        gap: -20px;
+    }
+    
     .main-container {        
         top: 0px; /* було top: 200px; */
         padding: 4px;
         width: 100%;
-    }
+    } 
+
     .container {
-        top: 50px; /* було top: 40px; */
+        top: -10px; !important;
         padding: 6px;
         width: 100%;
-    }   
+    }
     
     .instruction-img {
         position: absolute;
         top: 2px;
         left: 50%;
         transform: translateX(-50%);   /* саме це вирівнює центр картинки з центром контейнера */
-        width: 60px;
-        height: 60px;
+        width: 65px; /* було top: 60px; */
+        height: 65px; /* було top: 60px; */
         border-radius: 50px;
         z-index: 10;                   /* щоб не перекривалися іншими елементами, якщо потрібно */
     }
     .slogan-text {
-        margin-top: 60px;
+        margin-top: 65px;
         font-weight: 100;
         
     }
@@ -1023,8 +1033,8 @@ body.light-theme .result-text[data-coupons-loaded] b {
         bottom: 2px;        
     }
     .theme-toggle-container {
-        top: 90px; /* було 35px */
-        right: 5px;    /* було right: 10px;  */
+        top: 98px; /* було 98px */
+        right: 12px;    /* було right: 8px;  */
         gap: 1px;
     }
     .theme-toggle {    
@@ -1043,25 +1053,35 @@ body.light-theme .result-text[data-coupons-loaded] b {
     .theme-label:not(.active) {
         font-size: 5px;
     }
-    
+ 
     .top-buttons {
-        top: calc(95px + var(--tg-safe-area-top, 0px)) !important; /* + висота статус-бару */
         left: 15px;
-        gap: 6px;
-    } 
-    
+        gap: -20px;
+    }
+    .coupons-btn,
     .instruction-btn,
-    .coupons-btn, .web-btn {
-        width: 70px;         /* min-width: 80px;  */
-        height: 25px;   /* height: 27px;  */
-        font-size: 8px;         /* трохи менший шрифт */
-        font-weight: 100;
-        padding: 0 2px; /* padding: 0 10px; */
-    }   
+    .web-btn,
+    .feedback-btn {
+        min-width: 60px;
+        padding: 6px 4px;
+    }
+    
+    .btn-icon {
+        width: 35px; /* 32px; */
+        height: 35px;  /* 32px; */
+        margin-bottom: 4px;
+    }
+    
+    .coupons-btn span,
+    .instruction-btn span,
+    .web-btn span,
+    .feedback-btn span{
+        font-size: 8px;
+    }
     
     
     .block-form {
-        margin-top: 40px; /* було 35px */
+        margin-top: 50px; /* було 40px */
         padding: 15px; /* було 10px */
     }
     .result-text img {
@@ -1106,3 +1126,4 @@ body.light-theme .result-text[data-coupons-loaded] b {
     }
      
 }
+
