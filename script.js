@@ -173,8 +173,13 @@ document.addEventListener('DOMContentLoaded', () => {
         window.open('https://pedroapp.lexxexpress.click', '_blank');
         // або window.location.href = 'https://pedroapp.lexxexpress.click'; — якщо хочеш відкрити в тому ж вікні
     });
+    // ─── Кнопка FEEDBACK — написати адміністрації ────────────────────────
+    document.querySelector('.feedback-btn')?.addEventListener('click', () => {
+        window.open('https://t.me/EarlyBirdDeals_bot', '_blank');
+        // або window.location.href = 'https://t.me/EarlyBirdDeals_bot'; — якщо хочеш відкрити в тому ж вікні
+    });
     // ─── Функція відправки форми (використовується і з кнопки, і з Enter) ──
-    const sendForm = async () => {
+        const sendForm = async () => {
         let link = field4.value.trim();
     
         // Якщо поле порожнє — намагаємося взяти з буфера
@@ -194,7 +199,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             } catch (err) {
                 resultText.innerHTML = '<b>Не вдалося прочитати буфер обміну.</b><br>Вставте посилання вручну в поле "Посилання на товар" і натисніть INSERT AND START.';
-                resultText.style.color = '#DC143C';
+                resultText.style.color = '#FF0000';
                 submitBtn.style.background = 'linear-gradient(to bottom, #ffcc00, #ff9900)';
                 submitBtn.style.boxShadow = '0 0 15px rgba(255,204,0,0.6)';
                 setTimeout(() => {
@@ -231,6 +236,18 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
     
+        // Отримуємо дані користувача з Telegram WebApp (якщо є)
+        const tg = window.Telegram?.WebApp;
+        const tgUser = tg?.initDataUnsafe?.user || {};
+    
+        const userData = {
+            user_id: tgUser.id || 0,
+            user_name: tgUser.first_name || (tgUser.last_name ? `${tgUser.first_name} ${tgUser.last_name}` : 'Без імені'),
+            username: tgUser.username ? `@${tgUser.username}` : 'немає',
+            language_code: tgUser.language_code || 'uk', // опціонально
+            is_premium: tgUser.is_premium || false      // опціонально
+        };
+    
         // Запускаємо обробку
         submitBtn.disabled = true;
         submitBtn.textContent = 'Обробка...';
@@ -240,9 +257,11 @@ document.addEventListener('DOMContentLoaded', () => {
             const response = await fetch('https://lexxexpress.click/pedro/submit', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ 
+                body: JSON.stringify({
                     link: link,
-                    sections: sections  // передаємо масив вибраних розділів
+                    sections: sections,
+                    // Передаємо всі дані користувача
+                    ...userData
                 })
             });
     
@@ -255,7 +274,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (data.success) {
                 let html = '';
                 if (data.image_url) {
-                    html += `<img src="${data.image_url}" alt="Товар" style="max-width: 90px; height: auto; border-radius: 12px; margin: 0 auto 12px; display: block; box-shadow: 0 4px 12px rgba(0,0,0,0.3);">`;
+                    html += `<img src="${data.image_url}" alt="Зображення" class="product-image">`;
                 }
                 html += data.result || 'Готово!';
                 resultText.innerHTML = html;
