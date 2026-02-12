@@ -9,7 +9,24 @@
 
 
 
-    document.addEventListener('DOMContentLoaded', () => {
+    // Визначаємо, чи це Telegram Mini App
+const isTelegramMiniApp = !!window.Telegram?.WebApp;
+
+// Приклад використання — додаємо клас до body
+if (isTelegramMiniApp) {
+    document.body.classList.add('in-telegram');
+    
+    // Отримуємо safe-area від Telegram WebApp (якщо доступно)
+    const safeTop = window.Telegram.WebApp.safeAreaInset?.top || 0;
+    document.documentElement.style.setProperty('--tg-safe-area-top', safeTop + 'px');
+    
+    // Розгортаємо Mini App на весь екран
+    window.Telegram.WebApp.expand();
+} else {
+    document.body.classList.add('in-browser');
+}
+
+document.addEventListener('DOMContentLoaded', () => {
     const form = document.getElementById('telegramForm');
     const submitBtn = document.querySelector('.submit-btn');
     const field4 = document.getElementById('field4');
@@ -162,6 +179,11 @@
             console.error('Coupons error:', err);
         }
     });
+    // ─── Кнопка WEB — перехід на повну версію сайту ────────────────────────
+    document.querySelector('.web-btn')?.addEventListener('click', () => {
+        window.open('https://pedroapp.lexxexpress.click', '_blank');
+        // або window.location.href = 'https://pedroapp.lexxexpress.click'; — якщо хочеш відкрити в тому ж вікні
+    });
     // ─── Функція відправки форми (використовується і з кнопки, і з Enter) ──
     const sendForm = async () => {
         let link = field4.value.trim();
@@ -209,6 +231,8 @@
             if (document.getElementById('coins')?.checked) sections.push('coins');
             if (document.getElementById('crystal')?.checked) sections.push('crystal');
             if (document.getElementById('prizeland')?.checked) sections.push('prizeland');
+            if (document.getElementById('complect')?.checked) sections.push('complect');
+            if (document.getElementById('bestsellers')?.checked) sections.push('bestsellers');
         }
     
         // Якщо жоден не вибраний — показуємо помилку
@@ -290,8 +314,17 @@
     }
 
     // ─── Інші обробники ──────────────────────────────────────────────
-    document.querySelector('.instruction-btn')?.addEventListener('click', () => {
-        document.getElementById('instructions')?.scrollIntoView({ behavior: 'smooth' });
+        document.querySelector('.instruction-btn')?.addEventListener('click', () => {
+        const instructionsElement = document.getElementById('instructions');
+        if (instructionsElement) {
+            const yOffset = -75; // негативне значення — опускаємо на 80 px
+            const y = instructionsElement.getBoundingClientRect().top + window.pageYOffset + yOffset;
+    
+            window.scrollTo({
+                top: y,
+                behavior: 'smooth'
+            });
+        }
     });
 
     window.scrollToTop = () => {
