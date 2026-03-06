@@ -878,7 +878,7 @@ body.light-theme .feedback-btn span {
 }
 
 .instructions-text {
-    margin-top: 1px;
+    margin-top: 10px;
     font-size: 14px; /* було 14px; */
     font-weight: 100; /* було 200; */
     font-family: 'Montserrat', sans-serif;
@@ -886,30 +886,6 @@ body.light-theme .feedback-btn span {
     letter-spacing: 1px;
     text-align: left;
     line-height: 1.5;
-    overflow: hidden;
-    transition: max-height 0.6s ease-out, opacity 0.5s ease;
-    max-height: 33px;               /* висота першого рядка + трохи запасу 60px */
-    opacity: 0.5;                     /* текст видно одразу */
-    position: relative;
-}
-.instructions-text.active {
-    max-height: 2000px;             /* великий запас, щоб вмістити все */
-}
-.instructions-text::after {
-    content: "";
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    height: 40px;                   /* висота градієнту */
-    background: linear-gradient(to bottom, transparent, var(--bg-color)); /* колір фону сторінки */
-    pointer-events: none;
-    opacity: 1;
-    transition: opacity 0.6s ease;
-}
-
-.instructions-text.active::after {
-    opacity: 0;                     /* градієнт зникає при розгортанні */
 }
 
 .instructions-text a {
