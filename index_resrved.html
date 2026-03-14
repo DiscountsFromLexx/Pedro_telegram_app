@@ -1,1 +1,194 @@
-123
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>Telegram Mini App - Педро помічник</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:sans-serif,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <!-- Додаємо Telegram Web Apps SDK -->
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-MXLX1XMFSD"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+    
+      gtag('config', 'G-MXLX1XMFSD');
+    </script>
+    
+</head>
+<body class="dark-theme">
+    
+
+        <div class="container"> 
+
+            <div class="instruction-img">
+            <img src="https://raw.githubusercontent.com/DiscountsFromAli/X-CUBOT/main/images/pedro.jpeg" class="instruction-img">
+            </div>
+
+            <div class="slogan-text">                        
+                        <p>シ Педро помічник - ділить ціни на три!</p>
+            </div>
+            
+            <!-- Перемикач тем у окремому контейнері -->
+            <div class="theme-toggle-container">
+                <label class="theme-toggle">
+                    <input type="checkbox" id="themeToggle">
+                    <span class="slider"></span>
+                </label>
+                <span class="theme-label theme-label-moon">🌙</span>
+                <span class="theme-label theme-label-sun">🔆</span>
+            </div> 
+            
+            <div class="top-buttons">
+                <button type="button" class="coupons-btn">
+                    <img src="https://raw.githubusercontent.com/DiscountsFromLexx/Pedro_telegram_app/main/img/coupon.png" alt="COUPONS" class="btn-icon">
+                    <span>КУПОНИ</span>
+                </button>
+            
+                <button type="button" class="instruction-btn">
+                    <img src="https://raw.githubusercontent.com/DiscountsFromLexx/Pedro_telegram_app/main/img/howto.png" alt="HOW TO" class="btn-icon">
+                    <span>ДОВІДКА</span>
+                </button>
+            
+                <button type="button" class="web-btn">
+                    <img src="https://raw.githubusercontent.com/DiscountsFromLexx/Pedro_telegram_app/main/img/internet.png" alt="WEB" class="btn-icon">
+                    <span>WEB</span>
+                </button>
+            
+                <!-- FEEDBACK тепер всередині .top-buttons, з margin-left: auto -->
+                <button type="button" class="feedback-btn">
+                    <img src="https://raw.githubusercontent.com/DiscountsFromLexx/Pedro_telegram_app/main/img/feedback2.png" alt="FEEDBACK" class="btn-icon">
+                    <span>ЗВ'ЯЗОК</span>
+                </button>
+            </div>
+
+            <div class="reklama">
+                <a href="https://s.click.aliexpress.com/e/_c2J21jnz" target="_blank">
+                    <img src="https://raw.githubusercontent.com/DiscountsFromLexx/Pedro_telegram_app/main/img/Anniversary_Sale.png" 
+                         alt="Реклама" 
+                         style="width: 100%; height: auto;">
+                </a>
+            </div>
+
+            <div class="block-form">
+                <form id="telegramForm">                    
+                    <div class="checkbox-group">
+                        <label>
+                            <input type="checkbox" id="all" name="all"> ALL 
+                        </label>
+                        <label>
+                            <input type="checkbox" id="coins" name="check"> COINS 
+                        </label>
+                        <label>
+                            <input type="checkbox" id="crystal" name="check"> CRYSTALS 
+                        </label>
+                        <label>
+                            <input type="checkbox" id="prizeland" name="check"> PRIZE LAND
+                        </label>
+                        
+                        <label>
+                            <input type="checkbox" id="complect" name="check"> КОМПЛЕКТИ 
+                        </label>
+                        <label>
+                            <input type="checkbox" id="bestsellers" name="check"> BESTSELLERS
+                        </label>
+                    </div>                    
+                    
+                    <div class="input-group">
+                        <label for="field4">Посилання на товар або tracking ID:</label>
+                        <div class="input-with-paste">
+                            <input type="text" id="field4" name="field4" placeholder="Вставте посилання з aliexpress або tracking ID посилки">
+                            
+                        </div>
+                    </div>
+                    <div class="submit-group">
+                        <button type="submit" class="submit-btn">ПОЧАТИ</button>
+                        <button type="button" class="clear-btn">ОЧИСТИТИ</button>
+                    </div>
+                    <div class="result">
+                        <label for="resultText"><br>РЕЗУЛЬТАТ:</label>
+                        <div id="resultText" class="result-text" placeholder="Тут буде магія..."></div>
+                    </div>                    
+                     </form>                
+
+            </div>
+            
+           
+            <div class="channels-text">
+                <div class="tgkch-text"><img src="https://raw.githubusercontent.com/DiscountsFromLexx/Pedro_telegram_app/main/img/spilnota_light.png" 
+                     alt="spilnota_light" 
+                     style="width: 1.5em; height: 1.5em; vertical-align: middle; margin: 0 4px; border-radius: 25%;"> НАША СПІЛЬНОТА</div><br>
+
+                
+                
+                <p><img src="https://raw.githubusercontent.com/DiscountsFromLexx/Pedro_telegram_app/main/img/alicats_logo.png" 
+                     alt="alicats_logo" 
+                     style="width: 2.5em; height: 2.5em; vertical-align: middle; horizontal-align: left; margin: 0 4px; border-radius: 50%;"> <strong>𝐀ʟì↻ᴀᴛട 🐾</strong><br>- товари за ціною більше 100 грн.<br>
+                    <img src="https://raw.githubusercontent.com/DiscountsFromLexx/Pedro_telegram_app/main/img/telegram.png" 
+                     alt="telegram" 
+                     style="width: 1.0em; height: 1.0em; vertical-align: middle; horizontal-align: left; margin: 0 4px;"><a href="https://t.me/+7dNuLBNGj244MWU6" target="_blank">https://t.me/+7dNuLBNGj244MWU6</a>
+                </p>
+                <br> <p>&thinsp;<img src="https://raw.githubusercontent.com/DiscountsFromAli/DISCOUNTS-FROM-ALI/50b8ef25d272800693752ad34036703decfa91ba/images/shara_logo.png" 
+                     alt="shara_logo" 
+                     style="width: 2.0em; height: 2.0em; vertical-align: middle; horizontal-align: left; margin: 0 4px; border-radius: 50%;"> <strong>Аліекспрес - ШАРА НА ШАРУ!</strong><br>- товари дешевше 100 грн.<br>
+                    <img src="https://raw.githubusercontent.com/DiscountsFromLexx/Pedro_telegram_app/main/img/telegram.png" 
+                     alt="telegram" 
+                     style="width: 1.0em; height: 1.0em; vertical-align: middle; horizontal-align: left; margin: 0 4px;"><a href="https://t.me/+96EuuIO84_I3NDU6" target="_blank">https://t.me/+96EuuIO84_I3NDU6</a>
+                </p>
+                <br><p>&thinsp;<img src="https://raw.githubusercontent.com/DiscountsFromAli/DISCOUNTS-FROM-ALI/50b8ef25d272800693752ad34036703decfa91ba/images/coupons_logo.png" 
+                     alt="coupons_logo" 
+                     style="width: 2.0em; height: 2.0em; vertical-align: middle; horizontal-align: left; margin: 0 4px; border-radius: 50%;"> <strong>Сховище промокодів з AliExpress</strong><br>- купуйте дешевше з промокодами<br>
+                    <img src="https://raw.githubusercontent.com/DiscountsFromLexx/Pedro_telegram_app/main/img/telegram.png" 
+                     alt="telegram" 
+                     style="width: 1.0em; height: 1.0em; vertical-align: middle; horizontal-align: left; margin: 0 4px;"><a href="https://t.me/+TSjki0TSVRI4YzYy" target="_blank">https://t.me/+TSjki0TSVRI4YzYy</a>
+                </p>
+
+                <br><p>&thinsp;<img src="https://raw.githubusercontent.com/DiscountsFromLexx/Pedro_telegram_app/main/img/youtube.png" 
+                     alt="youtube" 
+                     style="width: 2.0em; height: 2.0em; vertical-align: middle; horizontal-align: left; margin: 0 4px;"> <strong>YouTube</strong> - огляди товарів<br>
+                    <a href="http://www.youtube.com/@lexxexpressshara" target="_blank">http://www.youtube.com/@lexxexpressshara</a>
+                </p>
+
+                <br><p>&thinsp;<img src="https://raw.githubusercontent.com/DiscountsFromLexx/Pedro_telegram_app/main/img/TikTok.png" 
+                     alt="TikTok" 
+                     style="width: 2.0em; height: 2.0em; vertical-align: middle; horizontal-align: left; margin: 0 4px;"> <strong>TikTok</strong> - огляди товарів<br>
+                    <a href="https://www.tiktok.com/@expresscats" target="_blank">https://www.tiktok.com/@expresscats</a>
+                </p>
+
+                <br><p>&thinsp;<img src="https://raw.githubusercontent.com/DiscountsFromLexx/Pedro_telegram_app/main/img/Instagram.png" 
+                     alt="Instagram" 
+                     style="width: 2.0em; height: 2.0em; vertical-align: middle; horizontal-align: left; margin: 0 4px;"> <strong>Instagram</strong> - огляди товарів<br>
+                    <a href="https://www.instagram.com/spilnota_cats" target="_blank">https://www.instagram.com/spilnota_cats</a>
+                </p>
+
+                <p>
+                    <br><img src="https://raw.githubusercontent.com/DiscountsFromLexx/Pedro_telegram_app/main/img/e_mail.png" 
+                     alt="e_mail" 
+                     style="width: 1.5em; height: 1.5em; vertical-align: middle; margin: 0 4px;"> <a href="support@lexxexpress.click" target="_blank">support@lexxexpress.click</a>
+                </p>
+              
+                <p><br>シ Ми працюємо для вас та завдяки вам!<img src="https://raw.githubusercontent.com/DiscountsFromLexx/Pedro_telegram_app/main/img/heart.png" 
+                     alt="heart" 
+                     style="width: 1.5em; height: 1.5em; vertical-align: middle; horizontal-align: left; margin: 0 4px;"></p>
+
+                <p><br><br><img src="https://raw.githubusercontent.com/DiscountsFromLexx/Pedro_telegram_app/main/img/paw-print_12575872.png" 
+                     alt="paw" 
+                     style="width: 1.5em; height: 1.5em; vertical-align: middle; horizontal-align: left; margin: 0 4px;"> 𐌋㠪乂乂 ©2026 v.2.0<br><br></p>
+            </div>
+            
+            <button class="scroll-top-btn" onclick="scrollToTop()">Вгору</button>
+        </div>
+        
+        <button class="scroll-top-btn" onclick="scrollToTop()">Вгору</button>
+
+    <!-- Підключаємо script.js після SDK -->
+    <script src="script.js"></script>
+</body>
+</html>
+
