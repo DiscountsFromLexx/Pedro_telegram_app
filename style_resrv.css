@@ -13,8 +13,8 @@
 
 body {
     display: flex;    
-    justify-content: center;
-    align-items: center;
+    justify-content: top;
+    align-items: top;
     min-height: 100vh;
     font-family: Helvetica, Arial, sans-serif;
     -webkit-tap-highlight-color: transparent;
@@ -26,6 +26,11 @@ body.dark-theme {
 }
 
 body.dark-theme .container {
+    background: linear-gradient(to bottom, #000000, #191970);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+body.dark-theme .howto-container {
     background: linear-gradient(to bottom, #000000, #191970);
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
 }
@@ -96,6 +101,11 @@ body.dark-theme .submit-btn:hover, body.dark-theme .clear-btn:hover {
 body.dark-theme .slogan-text {
     color: #FFFFFF;
 }
+
+body.dark-theme .history_main-text {
+    color: #FFFFFF;
+}
+
 body.dark-theme .channels-text {
     color: #FFFFFF;
 }    
@@ -120,17 +130,33 @@ body.dark-theme .instructions-text a:hover {
     color: #B2EBF2;
 }
 
+
+body.dark-theme .howto-text {
+    color: #FFFFFF;
+}
+
+body.dark-theme .howto-text a {
+    color: #00BFFF;
+}
+
+body.dark-theme .howto-text a:hover {
+    color: #B2EBF2;
+}
+
 body.dark-theme .theme-label {
     color: #FFFFFF;
 }
 
 /* Світлий режим (на основі наданого коду) */
-body.light-theme {
-    background: #B0E0E6;  /*  було background: transparent; */
+body.light-theme {      
+    background: #B0E0E6; /*  було  linear-gradient(to bottom, #B0E0E6, #FFFFFF); */
+}
+body.light-theme .container {
+    background: linear-gradient(to bottom, #B0E0E6, #FFFFFF);  /*  було background: #B0E0E6; */
 }
 
-body.light-theme .container {
-    background: #B0E0E6;
+body.dark-theme {
+    background: #000000;  /*  задній фон; */
 }
 
 body.light-theme .loading-text {
@@ -202,6 +228,11 @@ body.light-theme .slogan-text {
     font-weight: 200;
 }
 
+body.light-theme .history_main-text {
+    color: #000000;
+    font-weight: 900;
+}
+
 body.light-theme .tgkch-text {
     color: #000000;
 }
@@ -219,6 +250,19 @@ body.light-theme .instructions-text a {
 }
 
 body.light-theme .instructions-text a:hover {
+    color: #4682B4;
+}
+
+
+body.light-theme .howto-text {
+    color: #000000;
+}
+
+body.light-theme .howto-text a {
+    color: #1E90FF;
+}
+
+body.light-theme .howto-text a:hover {
     color: #4682B4;
 }
 
@@ -466,18 +510,19 @@ input:checked + .slider:before {
     display: flex;
     flex-direction: column;
     align-items: center;
-    width: 90%;
+    width: 100%;
+    height: 100%; 
     min-width: 300px;
     max-width: 600px;
-    padding: 20px;
+    padding: 2px; /* Було padding: 10px; */
 }
 
 .container {
-    top: -10px; /* не було */
-    width: 96%; /* було 100%; */
-    padding: 10px; /* було 20px */
+    top: 20px;  /* було 20px */
+    width: 100%; /* було 100%; */
+    padding: 2px; /* було 20px */
     border-radius: 12px;
-    text-align: center;
+    text-align: center; /* було 20px */
     position: relative;
 }
 
@@ -499,7 +544,19 @@ input:checked + .slider:before {
 .top-buttons {
     position: absolute;
     top: 10px;                    /* або 90px на мобілках */
-    left: 15px;
+    left: 5px;
+    text-align: center;
+    z-index: 1000;
+    display: flex;
+    flex-direction: row;
+    gap: -35px;                    /* відстань між кнопками 12px;*/
+    align-items: center;        /* вирівнюємо по низу, щоб підписи були на одному рівні */
+}
+
+.howto-buttons {
+    position: absolute;
+    top: 10px;                    /* або 90px на мобілках */
+    left: 5px;
     z-index: 1000;
     display: flex;
     flex-direction: row;
@@ -511,7 +568,10 @@ input:checked + .slider:before {
 /* Стилі для кнопок */
 .coupons-btn,
 .instruction-btn,
+.history-btn,
 .web-btn,
+.coins-btn,
+.coupones-btn,
 .feedback-btn {
     display: flex;
     flex-direction: column;       /* іконка зверху, текст знизу */
@@ -534,14 +594,20 @@ input:checked + .slider:before {
 /* Світла тема — чорний текст */
 body.light-theme .coupons-btn span,
 body.light-theme .instruction-btn span,
+body.light-theme .history-btn span,
 body.light-theme .web-btn span,
+body.light-theme .coins-btn span,
+body.light-theme .coupones-btn span,
 body.light-theme .feedback-btn span {
     color: #000000 !important;
 }
 
 .coupons-btn:hover,
 .instruction-btn:hover,
+.history-btn:hover,
 .web-btn:hover,
+.coins-btn:hover,
+.coupones-btn:hover,
 .feedback-btn:hover {
     background: rgba(30, 144, 255, 0.15);  /* легкий фон при наведенні */
     transform: scale(1.05);
@@ -559,7 +625,10 @@ body.light-theme .feedback-btn span {
 /* Підпис під іконкою */
 .coupons-btn span,
 .instruction-btn span,
+.history-btn span,
 .web-btn span,
+.coupones-btn span,
+.coupons-btn span,
 .feedback-btn span {
     display: block;
     margin-top: 2px;  /* 4px; */
@@ -572,11 +641,21 @@ body.light-theme .feedback-btn span {
 
 .instruction-img {
     position: absolute;
-    top: 5px;
+    top: 2px;
     left: 50%;
     transform: translateX(-50%);   /* саме це вирівнює центр картинки з центром контейнера */
     width: 60px;
     height: 60px;
+    border-radius: 50px;
+    z-index: 10;                   /* щоб не перекривалися іншими елементами, якщо потрібно */
+}
+.headhistory-img {
+    position: absolute;
+    top: 2px;
+    left: 50%;
+    transform: translateX(-50%);   /* саме це вирівнює центр картинки з центром контейнера */
+    width: 70px;
+    height: 70px;
     border-radius: 50px;
     z-index: 10;                   /* щоб не перекривалися іншими елементами, якщо потрібно */
 }
@@ -585,6 +664,16 @@ body.light-theme .feedback-btn span {
     margin-top: 55px;
     font-size: 10px;
     font-weight: 200;
+    font-family: 'Montserrat', sans-serif;
+    -webkit-tap-highlight-color: transparent;
+    letter-spacing: 2px;
+    text-align: center;
+}
+
+.history_main-text {
+    margin-top: 65px;
+    font-size: 20px;
+    font-weight: 900;
     font-family: 'Montserrat', sans-serif;
     -webkit-tap-highlight-color: transparent;
     letter-spacing: 2px;
@@ -601,7 +690,7 @@ body.light-theme .feedback-btn span {
 }
 
 .block-form {
-    margin-top: 10px; /* було 80px */
+    margin-top: 50px; /* було 10px */
     padding: 15px; /* було 10px */
 }
 
@@ -752,6 +841,7 @@ body.light-theme .feedback-btn span {
     -webkit-tap-highlight-color: transparent;
     letter-spacing: 1px;
     text-align: left;
+    margin-left: 4px;
 }
 
 .tgkch-text {
@@ -772,6 +862,9 @@ body.light-theme .feedback-btn span {
     text-decoration: underline;
 }
 
+
+
+
 .iheader-text {
     margin-top: 40px;
     font-size: 22px;
@@ -779,6 +872,16 @@ body.light-theme .feedback-btn span {
     font-family: 'Montserrat', sans-serif;
     -webkit-tap-highlight-color: transparent;
     text-align: left;
+    cursor: pointer;
+    user-select: none;
+}
+.toggle-icon {
+    font-size: 2.5em; /* було 1.1em;; */
+    margin-left: 8px;
+    transition: transform 0.4s ease;
+}
+.iheader-text.active .toggle-icon {
+    transform: rotate(180deg);
 }
 
 .instructions-text {
@@ -798,6 +901,28 @@ body.light-theme .feedback-btn span {
 }
 
 .instructions-text a:hover {
+    text-decoration: underline;
+}
+
+
+.howto-text {
+    margin-top: 80px;
+    left: 8px;
+    font-size: 14px; /* було 14px; */
+    font-weight: 100; /* було 200; */
+    font-family: 'Montserrat', sans-serif;
+    -webkit-tap-highlight-color: transparent;
+    letter-spacing: 1px;
+    text-align: left;
+    line-height: 1.5;
+}
+
+.howto-text a {
+    color: #1E90FF;
+    text-decoration: none;
+}
+
+.howto-text a:hover {
     text-decoration: underline;
 }
 
@@ -985,36 +1110,111 @@ body.light-theme .result-text[data-coupons-loaded] b {
     color: #f57c00 !important; /* помаранчевий у світлій */
 }
 
-@media (max-width: 800px) {  
+@media (min-width: 200px) and (max-width: 480px) and (orientation: portrait) {  
     
     body.in-telegram .container {
         top: 50px; !important;
-        padding: 2px; /* було top: 6px; */
-        width: 96%;
+        padding: 4px; /* було top: 6px; */
+        width: 100%;
+    }
+    body.in-telegram .howto-container {
+        top: 50px; !important;
+        padding: 4px; /* було top: 6px; */
+        width: 100%;
     }
     body.in-telegram .top-buttons {
         top: calc(90px + var(--tg-safe-area-top, 0px)) !important;
+        text-align: center;
+    }
+
+    }
+    body.in-telegram .howto-buttons {
+        top: calc(100px + var(--tg-safe-area-top, 0px)) !important;
+        text-align: center;
+    }
+    .container {
+        top: -5px; !important;
+        padding: 2px;
+        width: 100%; /* height: 120vh; */
+        height: 100%;
+
+    }
+    .main-container {        
+        top: 0px; /* було top: 200px; */
+        padding: 2px; 
+        
+
     }
     
+    .howto-container {        
+        top: 25px; !important; /* було top: 30px; */
+        padding: 4px;
+        width: 100%;
+        left: 2px;
+        right: 2px;
+
+        
+        background: #B0E0E6;
+    }
+
+    .howto-text {
+        width: 100%;
+        margin-top: 15px;
+        left: 44px;
+
+    }
+
+    .structure-img {
+        margin-top: 5px;
+        margin-left: 50%;
+        transform: translateX(-50%);
+        width: 100%;
+        max-width: 100%;
+        overflow-x: auto;
+        touch-action: pinch-zoom pan-x pan-y;
+        -webkit-overflow-scrolling: touch;
+    }
+    
+    .structurw-img {
+        width: 100%;
+        height: auto;
+        max-width: 100%;
+        display: block;
+        object-fit: contain;          /* зберігає пропорції, не обрізає */
+        border-radius: 8px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    }
+
+
+
     
     /* Якщо клас .in-telegram відсутній (браузер на телефоні) — явно повертаємо 10px */
     .top-buttons {
-        top: 90px !important;
+        top: 85px !important; /* було 10px; */
         left: 15px;
         gap: -20px;
     }
-    
-    .main-container {        
-        top: 0px; /* було top: 200px; */
-        padding: 4px;
-        width: 100%;
-    } 
-
-    .container {
-        top: -10px; !important;
-        padding: 6px;
-        width: 96%;
+    .howto-buttons {
+        top: 90px !important; /* було 10px; */
+        left: 5px;
+        gap: -20px;
+        text-align: center;
     }
+    .coupons-btn span,
+    .instruction-btn span,
+    .history-btn span,
+    .web-btn span,
+    .coins-btn span,
+    .coupones-btn span,
+    .feedback-btn span {
+        display: block;
+        margin-top: 2px;  /* 4px; */
+        font-size: 9px;
+        font-weight: 400;
+        color: #FFFFFF;
+        text-align: center;
+    }    
+    
     
     .instruction-img {
         position: absolute;
@@ -1026,17 +1226,35 @@ body.light-theme .result-text[data-coupons-loaded] b {
         border-radius: 50px;
         z-index: 10;                   /* щоб не перекривалися іншими елементами, якщо потрібно */
     }
+    .headhistory-img {
+        position: absolute;
+        top: 1px;
+        left: 50%;
+        transform: translateX(-50%);   /* саме це вирівнює центр картинки з центром контейнера */
+        width: 85px; /* було top: 60px; */
+        height: 85px; /* було top: 60px; */
+        border-radius: 50px;
+        z-index: 10;                   /* щоб не перекривалися іншими елементами, якщо потрібно */
+    }
     .slogan-text {
         margin-top: 65px;
         font-weight: 100;
         
     }
+
+    .history_main-text {
+        margin-top: 180px;
+        font-weight: 900;
+        font-size: 16px;
+        
+    }
+
     .slider:before {        
         height: 30px;             /* було 30px */
         bottom: 2px;        
     }
     .theme-toggle-container {
-        top: 98px; /* було 98px */
+        top: 90px; !important; /* було 98px */
         right: 12px;    /* було right: 8px;  */
         gap: 1px;
     }
@@ -1056,14 +1274,13 @@ body.light-theme .result-text[data-coupons-loaded] b {
     .theme-label:not(.active) {
         font-size: 5px;
     }
- 
-    .top-buttons {
-        left: 15px;
-        gap: -20px;
-    }
+    
     .coupons-btn,
     .instruction-btn,
+    .history-btn,
     .web-btn,
+    .coins-btn,
+    .coupones-btn,
     .feedback-btn {
         min-width: 60px;
         padding: 6px 4px;
@@ -1077,14 +1294,17 @@ body.light-theme .result-text[data-coupons-loaded] b {
     
     .coupons-btn span,
     .instruction-btn span,
+    .history-btn span,
     .web-btn span,
+    .coins-btn span,
+    .coupones-btn span,
     .feedback-btn span{
         font-size: 8px;
     }
     
     
     .block-form {
-        margin-top: 55px; /* було 50px */
+        margin-top: 60px; /* було 50px */
         padding: 10px; /* було 10px */
     }
         
@@ -1124,6 +1344,248 @@ body.light-theme .result-text[data-coupons-loaded] b {
         max-width: 90px;          /* або 400px — підбери під себе */
     }
      
+}
+
+/* Планшети (iPad Mini тощо) — (min-width: 744px) (max-width: 821px) */
+@media (min-width: 700px) and (max-width: 750px) and (orientation: portrait) {  
+    
+    body {
+        font-size: 18px;
+        width: 100%;
+    }
+
+    .main-container {
+        width: 98%;
+        max-width: 820px;
+        padding: 10px;
+    }
+
+    /* Контейнер усіх кнопок (включаючи FEEDBACK) — тепер єдиний рядок */
+    .top-buttons {
+        position: absolute;
+        top: 24px;
+        left: 2px;
+        right: 8px;              /* розтягуємо на всю ширину  24px; */
+        z-index: 1000;
+        display: flex;
+        flex-direction: row;
+        align-items: flex-end;
+        justify-content: flex-start; /* кнопки зліва */
+        gap: 1px;
+    }
+
+    /* FEEDBACK відштовхується вправо до перемикача тем */
+    .feedback-btn {
+        margin-left: 160px;        /* головне — відштовхується максимально вправо auto */
+        min-width: 85px;
+        padding: 16px 12px;
+        border-radius: 16px;
+    }
+
+    .coupons-btn,
+    .instruction-btn,
+    .history-btn,
+    .web-btn,
+    .coins-btn,
+    .coupones-btn,
+    .feedback-btn {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        min-width: 75px; /* було 110px */
+        padding: 16px 12px;
+        border-radius: 16px;
+        background: transparent;
+        border: none;
+        cursor: pointer;
+        transition: all 0.25s ease;
+    }
+
+    .btn-icon {
+        width: 42px;
+        height: 42px;
+        margin-bottom: 10px;
+        object-fit: contain;
+    }
+
+    .coupons-btn span,
+    .instruction-btn span,
+    .history-btn span,
+    .web-btn span,
+    .coins-btn span,
+    .coupones-btn span,
+    .feedback-btn span {
+        font-size: 14px;
+        font-weight: 500;
+        margin-top: 8px;
+        color: #FFFFFF;
+    }
+
+    body.light-theme .coupons-btn span,
+    body.light-theme .instruction-btn span,
+    body.light-theme .history-btn span,
+    body.light-theme .web-btn span,
+    body.light-theme .coins-btn span,
+    body.light-theme .coupones-btn span,
+    body.light-theme .feedback-btn span {
+        color: #000000 !important;
+    }
+
+    .coupons-btn:hover,
+    .instruction-btn:hover,
+    .history-btn:hover,
+    .web-btn:hover,
+    .coins-btn:hover,
+    .coupones-btn:hover,
+    .feedback-btn:hover {
+        background: rgba(30, 144, 255, 0.15);
+        transform: scale(1.05);
+    }
+
+    /* Центральна іконка Pedro — по центру */
+    .instruction-img {
+        position: absolute;
+        top: 12px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 105px;
+        height: 105px;
+        border-radius: 50%;
+        z-index: 10;
+    }
+
+    .slogan-text {
+        margin-top: 135px;
+        font-size: 18px;
+        font-weight: 300;
+        text-align: center;
+    }
+
+    .history_main-text {
+        margin-top: 135px;
+        font-size: 18px;
+        font-weight: 300;
+        text-align: center;
+    }
+
+    /* Перемикач тем — праворуч від FEEDBACK */
+    .theme-toggle-container {
+        position: absolute;
+        top: 45px;                /* трохи нижче, щоб не перекривати кнопки 45px; */
+        right: 2px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        z-index: 1001;            /* вище всіх кнопок */
+    }
+
+    .theme-toggle {
+        height: 48px;
+        width: 110px;
+    }
+
+    .slider {
+        border-radius: 24px;
+        border: 2px solid #FFFFFF;
+    }
+
+    .slider:after {
+        font-size: 12px;
+        letter-spacing: 0.8px;
+    }
+
+    .slider:before {
+        height: 42px;
+        width: 42px;
+        left: -4px;
+        bottom: 2px;
+        border: 0px solid #FFFFFF;
+    }
+
+    input:checked + .slider:before {
+        transform: translateX(64px);
+    }
+
+    .theme-label {
+        font-size: 16px;
+        font-weight: 600;
+        letter-spacing: 1px;
+    }
+
+    .theme-label-moon,
+    .theme-label-sun {
+        font-size: 2.2em;
+        top: 8px;
+        margin-top: -4px;
+    }
+
+    .theme-label.active {
+        font-size: 24px;
+    }
+
+    .theme-label:not(.active) {
+        font-size: 12px;
+    }
+
+    .header-text {
+        font-size: 32px;
+        margin-top: 40px;
+    }
+
+    .block-form {
+        margin-top: 2px;
+        padding: 30px;
+    }
+
+    .checkbox-group {
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+        gap: 14px 18px;
+        padding: 20px 24px;
+        font-size: 16px;
+    }
+
+    .checkbox-group label {
+        font-size: 16px;
+        padding: 10px 14px;
+        min-height: 20px;
+    }
+
+    .input-group label {
+        font-size: 20px;
+        margin-bottom: 10px;
+    }
+
+    .input-group input {
+        font-size: 18px;
+        padding: 16px;
+    }
+
+    .result label {
+        font-size: 22px;
+        margin-bottom: 14px;
+    }
+
+    .result-text {
+        min-height: 300px;
+        font-size: 18px;
+        padding: 24px;
+        line-height: 1.8;
+    }
+
+    .submit-group {
+        gap: 16px;
+        margin-top: 24px;
+    }
+
+    .submit-btn,
+    .clear-btn {
+        font-size: 20px;
+        padding: 16px;
+        border-radius: 12px;
+    }
+    .result-text .product-image {
+        max-width: 250px;          /* або 220px — підбери під себе */
+    }
 }
 
 @media (min-width: 824px) and (max-width: 854px) and (orientation: landscape) {  
@@ -1169,9 +1631,14 @@ body.light-theme .result-text[data-coupons-loaded] b {
     }
     .slogan-text {
         margin-top: 65px;
-        font-weight: 100;
-        
+        font-weight: 100;        
     }
+
+    .history_main-text {
+        margin-top: 65px;
+        font-weight: 100;        
+    }
+    
     .slider:before {        
         height: 30px;             /* було 30px */
         bottom: 2px;        
@@ -1204,7 +1671,10 @@ body.light-theme .result-text[data-coupons-loaded] b {
     }
     .coupons-btn,
     .instruction-btn,
+    .history-btn,
     .web-btn,
+    .coins-btn,
+    .coupones-btn,
     .feedback-btn {
         min-width: 60px;
         padding: 6px 4px;
@@ -1218,7 +1688,10 @@ body.light-theme .result-text[data-coupons-loaded] b {
     
     .coupons-btn span,
     .instruction-btn span,
+    .history-btn span,
     .web-btn span,
+    .coins-btn span,
+    .coupones-btn span,
     .feedback-btn span{
         font-size: 8px;
     }
@@ -1267,7 +1740,7 @@ body.light-theme .result-text[data-coupons-loaded] b {
      
 }
 
-/* Планшети (11 дюймів iPad Mini тощо) — ширина від 769 до 1024 px (max-width: 821px) */
+/* Планшети (11 дюймів iPad тощо) — (min-width: 769px) (max-width: 821px) */
 @media (min-width: 769px) and (max-width: 821px) and (orientation: portrait) {
     /* твої стилі для планшета — збільшені розміри, відступи тощо */
     body {
@@ -1284,7 +1757,7 @@ body.light-theme .result-text[data-coupons-loaded] b {
     /* Контейнер усіх кнопок (включаючи FEEDBACK) — тепер єдиний рядок */
     .top-buttons {
         position: absolute;
-        top: 24px;
+        top: 10px;
         left: 2px;
         right: 8px;              /* розтягуємо на всю ширину  24px; */
         z-index: 1000;
@@ -1305,7 +1778,10 @@ body.light-theme .result-text[data-coupons-loaded] b {
 
     .coupons-btn,
     .instruction-btn,
+    .history-btn,
     .web-btn,
+    .coins-btn,
+    .coupones-btn,
     .feedback-btn {
         display: flex;
         flex-direction: column;
@@ -1328,7 +1804,10 @@ body.light-theme .result-text[data-coupons-loaded] b {
 
     .coupons-btn span,
     .instruction-btn span,
+    .history-btn span,
     .web-btn span,
+    .coins-btn span,
+    .coupones-btn span,
     .feedback-btn span {
         font-size: 14px;
         font-weight: 500;
@@ -1338,14 +1817,20 @@ body.light-theme .result-text[data-coupons-loaded] b {
 
     body.light-theme .coupons-btn span,
     body.light-theme .instruction-btn span,
+    body.light-theme .history-btn span,
     body.light-theme .web-btn span,
+    body.light-theme .coins-btn span,
+    body.light-theme .coupones-btn span,
     body.light-theme .feedback-btn span {
         color: #000000 !important;
     }
 
     .coupons-btn:hover,
     .instruction-btn:hover,
+    .history-btn:hover,
     .web-btn:hover,
+    .coins-btn:hover,
+    .coupones-btn:hover,
     .feedback-btn:hover {
         background: rgba(30, 144, 255, 0.15);
         transform: scale(1.05);
@@ -1367,6 +1852,13 @@ body.light-theme .result-text[data-coupons-loaded] b {
         margin-top: 120px;
         font-size: 18px;
         font-weight: 300;
+        text-align: center;
+    }
+
+    .history_main-text {
+        margin-top: 120px;
+        font-size: 38px;
+        font-weight: 900;
         text-align: center;
     }
 
@@ -1486,7 +1978,7 @@ body.light-theme .result-text[data-coupons-loaded] b {
         border-radius: 12px;
     }
     .result-text .product-image {
-        max-width: 220px;          /* або 300px — підбери під себе */
+        max-width: 250px;          /* або 220px — підбери під себе */
     }
 }
 
@@ -1520,13 +2012,14 @@ body.light-theme .result-text[data-coupons-loaded] b {
         align-items: flex-end;
         justify-content: flex-start; /* кнопки зліва */
         gap: 1px;
-    }
-
-    
+    }    
 
     .coupons-btn,
     .instruction-btn,
+    .history-btn,
     .web-btn,
+    .coins-btn,
+    .coupones-btn,
     .feedback-btn {
         display: flex;
         flex-direction: column;
@@ -1548,7 +2041,10 @@ body.light-theme .result-text[data-coupons-loaded] b {
 
     .coupons-btn span,
     .instruction-btn span,
+    .history-btn span,
     .web-btn span,
+    .coins-btn span,
+    .coupones-btn span,
     .feedback-btn span {
         font-size: 16px;
         margin-top: 10px;
@@ -1622,6 +2118,11 @@ body.light-theme .result-text[data-coupons-loaded] b {
     .slogan-text {
         margin-top: 140px;
         font-size: 22px;
+    }
+
+    .history_main-text {
+        margin-top: 140px;
+        font-size: 38px;
     }
 
     .header-text {
@@ -1697,12 +2198,12 @@ body.light-theme .result-text[data-coupons-loaded] b {
 
     .main-container {
         width: 100%;
-        max-width: 1020px;
+        max-width: 1022px;
         padding: 20px;
     }
 
     .container {
-        padding: 40px 32px;
+        padding: 10px 32px;
         border-radius: 24px;
     }
 
@@ -1718,13 +2219,14 @@ body.light-theme .result-text[data-coupons-loaded] b {
         align-items: flex-end;
         justify-content: flex-start; /* кнопки зліва */
         gap: 1px;
-    }
-
-    
+    }    
 
     .coupons-btn,
     .instruction-btn,
+    .history-btn,
     .web-btn,
+    .coins-btn,
+    .coupones-btn,
     .feedback-btn {
         display: flex;
         flex-direction: column;
@@ -1746,7 +2248,10 @@ body.light-theme .result-text[data-coupons-loaded] b {
 
     .coupons-btn span,
     .instruction-btn span,
+    .history-btn span,
     .web-btn span,
+    .coins-btn span,
+    .coupones-btn span,
     .feedback-btn span {
         font-size: 16px;
         margin-top: 10px;
@@ -1821,6 +2326,11 @@ body.light-theme .result-text[data-coupons-loaded] b {
         margin-top: 140px;
         font-size: 22px;
     }
+    
+    .history_main-text {
+        margin-top: 140px;
+        font-size: 38px;
+    }
 
     .header-text {
         font-size: 38px;
@@ -1882,7 +2392,7 @@ body.light-theme .result-text[data-coupons-loaded] b {
 
     
     .result-text .product-image {
-        max-width: 400px;          /* або 400px — підбери під себе */
+        max-width: 280px;          /* або 400px — підбери під себе */
     }
 }
 
@@ -1890,46 +2400,57 @@ body.light-theme .result-text[data-coupons-loaded] b {
 @media (min-width: 1370px) and (max-width: 3025px) and (orientation: landscape) {
     /* твої стилі для планшета — збільшені розміри, відступи тощо */
     body {
-        font-size: 18px;
+        font-size: 20px;
         width: 100%;
     }
 
     .main-container {
-        width: 100%;
-        max-width: 1020px;
-        padding: 20px;
+        width: 94%;
+        max-width: 1450px;
+        padding: 55px;
     }
-
+    .howto-container {
+        text-align: top;
+    }
+    
     .container {
-        padding: 40px 32px;
-        border-radius: 24px;
+    top: -10px;
+    width: 100%; /* було 100%; */
+    padding: 10px; /* було 20px */
+    border-radius: 12px;
+    text-align: center;
+    position: relative;
     }
+    
 
     /* Контейнер усіх кнопок (включаючи FEEDBACK) — тепер єдиний рядок */
     .top-buttons {
         position: absolute;
-        top: 24px;
-        left: -114px;
-        right: 8px;              /* розтягуємо на всю ширину  24px; */
+        font-size: 18px; 
+        left: 4px;
+        right: 4px;              /* розтягуємо на всю ширину  24px; */
         z-index: 1000;
         display: flex;
         flex-direction: row;
         align-items: flex-end;
         justify-content: flex-start; /* кнопки зліва */
         gap: 1px;
-    }
-
-    
+    }    
 
     .coupons-btn,
     .instruction-btn,
     .web-btn,
+    .coins-btn,
+    .coupones-btn,
+    .history-btn,
     .feedback-btn {
         display: flex;
+        margin-top: -65px; !important;
+        font-size: 18px; 
         flex-direction: column;
         align-items: center;
         min-width: 90px; /* було 110px */
-        padding: 16px 12px;
+        padding: 8px 6px; /* було 16px 12px; */
         border-radius: 16px;
         background: transparent;
         border: none;
@@ -1938,23 +2459,35 @@ body.light-theme .result-text[data-coupons-loaded] b {
     }
 
     .btn-icon {
-        width: 54px; /* було 64px */
-        height: 54px; /* було 64px */
+        width: 50px; /* було 64px */
+        height: 50px; /* було 64px */
         margin-bottom: 12px;
     }
 
     .coupons-btn span,
     .instruction-btn span,
     .web-btn span,
+    .coins-btn span,
+    .coupones-btn span,
+    .history-btn span,
     .feedback-btn span {
-        font-size: 16px;
-        margin-top: 10px;
+        font-size: 18px;
     }
 
     .instruction-img {
         width: 120px;
         height: 120px;
         top: 16px;
+    }
+    .headhistory-img {
+        position: absolute;
+        top: 2px;
+        left: 50%;
+        transform: translateX(-50%);   /* саме це вирівнює центр картинки з центром контейнера */
+        width: 120px; /* було top: 60px; */
+        height: 120px; /* було top: 60px; */
+        border-radius: 50px;
+        z-index: 10;                   /* щоб не перекривалися іншими елементами, якщо потрібно */
     }
 
     /* Перемикач тем — праворуч від FEEDBACK */
@@ -2017,8 +2550,14 @@ body.light-theme .result-text[data-coupons-loaded] b {
     }
 
     .slogan-text {
-        margin-top: 140px;
+        margin-top: 160px;
         font-size: 22px;
+    }
+
+    .history_main-text {
+        margin-top: 170px;
+        font-size: 22px;
+        font-weight: 500;
     }
 
     .header-text {
@@ -2026,8 +2565,19 @@ body.light-theme .result-text[data-coupons-loaded] b {
         margin-top: 50px;
     }
 
+    .structure-img {
+        margin-top: 15px;
+        margin-left: 50%;
+        transform: translateX(-50%);
+        width: 50%;
+        max-width: 50%;
+        overflow-x: auto;
+        touch-action: pinch-zoom pan-x pan-y;
+        -webkit-overflow-scrolling: touch;
+    }
+
     .block-form {
-        margin-top: 50px;
+        margin-top: 10px;
         padding: 40px;
     }
 
