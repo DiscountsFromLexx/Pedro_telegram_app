@@ -60,6 +60,42 @@ const miniAppInfo = isTelegramMiniApp ? {
     tg_version: tg.version || 'unknown'
 } : null;
 
+// Обробники кнопок — виконуються відразу після завантаження скрипта
+function initButtons() {
+    // Кнопка HOW TO / ІНСТРУКЦІЇ (на index.html)
+    document.querySelector('.instruction-btn')?.addEventListener('click', () => {
+        window.location.href = 'howto.html';
+    });
+
+    // Кнопка ІСТОРІЯ ТА ФАКТИ (на howto.html)
+    document.querySelector('.history-btn')?.addEventListener('click', () => {
+        window.location.href = 'history.html';
+    });
+
+    // ─── Кнопка FEEDBACK — повернення на головну ─────────────────────────────────
+    document.querySelector('.feedback-btn')?.addEventListener('click', () => {
+        window.location.href = 'index.html';
+    });
+
+    // Кнопка МОНЕТИ (на coins.html)
+    document.querySelector('.coins-btn')?.addEventListener('click', () => {
+        window.location.href = 'coins.html';
+    });
+
+    // Кнопка ПРОМОКОДИ (на coupones.html)
+    document.querySelector('.coupones-btn')?.addEventListener('click', () => {
+        window.location.href = 'coupones.html';
+    });
+
+}
+
+// Викликаємо ініціалізацію після завантаження сторінки
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initButtons);
+} else {
+    initButtons();  // якщо скрипт підключений після завантаження
+}
+
 document.addEventListener('DOMContentLoaded', () => {
     const form = document.getElementById('telegramForm');
     const submitBtn = document.querySelector('.submit-btn');
@@ -69,6 +105,27 @@ document.addEventListener('DOMContentLoaded', () => {
     const themeToggle = document.getElementById('themeToggle');
     // Логування
     const addLog = (msg, data = {}) => console.log(`${msg}:`, data);
+    
+
+    
+    // ─── Акордеон для інструкцій (тап по заголовку або вмісту) ────────────────────────
+    const instructionsHeader = document.getElementById('instructions');
+    const instructionsContent = document.getElementById('instructionsContent');
+    
+    [instructionsHeader, instructionsContent].forEach(element => {
+        element?.addEventListener('click', function(e) {
+            // Якщо клікнули на посилання всередині вмісту — не перемикаємо акордеон
+            if (e.target.tagName === 'A') {
+                return;
+            }
+            
+            instructionsContent.classList.toggle('active');
+            instructionsHeader.classList.toggle('active');
+        });
+    });
+    
+
+    
     // ─── Логіка чекбокса ALL ────────────────────────────────────────
     const allCheckbox = document.getElementById('all');
     const otherCheckboxes = document.querySelectorAll('input[name="check"]:not(#all)');
@@ -197,13 +254,15 @@ document.addEventListener('DOMContentLoaded', () => {
             console.error('Coupons error:', err);
         }
     });
+    
     // ─── Кнопка WEB / FEEDBACK — без логування (не критичні дії) ──────
     document.querySelector('.web-btn')?.addEventListener('click', () => {
         window.open('https://pedroapp.lexxexpress.click', '_blank');
     });
-    document.querySelector('.feedback-btn')?.addEventListener('click', () => {
-        window.open('https://t.me/EarlyBirdDeals_bot', '_blank');
-    });
+    //document.querySelector('.feedback-btn')?.addEventListener('click', () => {
+    //    window.open('https://t.me/EarlyBirdDeals_bot', '_blank');
+    // });
+    
     // ─── Функція відправки форми ────────────────────────────────────────
     const sendForm = async () => {
         let inputValue = field4.value.trim();
@@ -272,24 +331,70 @@ document.addEventListener('DOMContentLoaded', () => {
         try {
             if (isTrackNumber) {
                 const trackUrl = `https://global.cainiao.com/detail.htm?lang=en-US&mailNoList=${encodeURIComponent(inputValue)}`;
-                let html = `
-                    <b>Статус відправлення (Cainiao)</b>
-                    <iframe src="${trackUrl}" style="
-                        width: 100%;
-                        height: 800px;
-                        border: none;
-                        border-radius: 12px;
-                        box-shadow: 0 4px 15px rgba(0,0,0,0.4);
-                        background: #ffffff;
-                    " allowfullscreen></iframe>
-                    <br><br>
-                    <small style="color:#aaa; font-style:italic;">
-                        Повна інформація з офіційного сайту Cainiao.<br>
-                        Якщо сторінка не завантажилася — перевірте трек за посиланням.
-                    </small>
-                `;
-                resultText.innerHTML = html;
+            
+                // Створюємо модальне вікно
+                const modal = document.createElement('div');
+                modal.style.position = 'fixed';
+                modal.style.top = '0';
+                modal.style.left = '0';
+                modal.style.width = '100%';
+                modal.style.height = '100%';
+                modal.style.background = 'rgba(0,0,0,0.8)';
+                modal.style.zIndex = '9999';
+                modal.style.display = 'flex';
+                modal.style.alignItems = 'center';
+                modal.style.justifyContent = 'center';                
+            
+                const closeBtn = document.createElement('button');
+                closeBtn.innerHTML = '✕';
+                closeBtn.style.position = 'absolute';
+                closeBtn.style.top = '5px';
+                closeBtn.style.right = '15px';
+                closeBtn.style.background = 'rgba(0,0,0,0.6)';
+                closeBtn.style.color = 'white';
+                closeBtn.style.border = 'none';
+                closeBtn.style.borderRadius = '50%';
+                closeBtn.style.width = '40px';
+                closeBtn.style.height = '40px';
+                closeBtn.style.fontSize = '24px';
+                closeBtn.style.cursor = 'pointer';
+                closeBtn.style.zIndex = '10000';
+
+                if (isTelegramMiniApp) {
+                    closeBtn.style.top = '165px'; // було 95
+                }
+            
+                const iframe = document.createElement('iframe');
+                iframe.src = trackUrl;
+                iframe.style.width = '95%';
+                iframe.style.maxWidth = '1400px';  // 1000px обмеження для великих екранів
+                iframe.style.height = '100%';   // було 90
+                iframe.style.border = 'none';
+                iframe.style.borderRadius = '12px';
+                iframe.style.boxShadow = '0 10px 30px rgba(0,0,0,0.5)';
+                iframe.style.background = '#ffffff';
+            
+                modal.appendChild(closeBtn);
+                modal.appendChild(iframe);
+                document.body.appendChild(modal);
+            
+                // Закриття модалки
+                closeBtn.onclick = () => {
+                    document.body.removeChild(modal);
+                };
+            
+                // Закриття по кліку поза iframe
+                modal.onclick = (e) => {
+                    if (e.target === modal) {
+                        document.body.removeChild(modal);
+                    }
+                };
+            
+                // Показуємо повідомлення про завантаження
+                resultText.innerHTML = '<span style="color:#FF6347;">Для повторного відстеження посилки по трекеру вставте номер та натисніть "INSERT AND START"</span>';
                 resultText.style.color = 'inherit';
+                
+                
             } else {
                 let endpoint = 'https://lexxexpress.click/pedro/submit';
                 let payload = { link: inputValue, ...userData };
@@ -353,20 +458,41 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
     // ─── Інші обробники ──────────────────────────────────────────────
+    // document.querySelector('.instruction-btn')?.addEventListener('click', () => {
+    //     const instructionsElement = document.getElementById('instructions');
+    //     if (instructionsElement) {
+    //         const yOffset = -75;
+    //         const y = instructionsElement.getBoundingClientRect().top + window.pageYOffset + yOffset;
+    //         window.scrollTo({ top: y, behavior: 'smooth' });
+    //     }
+    // });
+    
+    // ─── Кнопка HOW TO / ІНСТРУКЦІЇ ──────────────────────────────────────────────
     document.querySelector('.instruction-btn')?.addEventListener('click', () => {
-        const instructionsElement = document.getElementById('instructions');
-        if (instructionsElement) {
-            const yOffset = -75;
-            const y = instructionsElement.getBoundingClientRect().top + window.pageYOffset + yOffset;
-            window.scrollTo({ top: y, behavior: 'smooth' });
-        }
+        // Переходимо на сторінку інструкцій
+        window.location.href = 'howto.html';
+
     });
+
+    // ─── Кнопка ІСТОРІЯ ТА ФАКТИ в howto.html ───────────────────────────────────
+    document.querySelector('.history-btn')?.addEventListener('click', () => {
+        // Переходимо на сторінку історії
+        window.location.href = 'history.html';
+
+    });
+
+    // ─── Кнопка FEEDBACK — повернення на головну ─────────────────────────────────
+    document.querySelector('.feedback-btn')?.addEventListener('click', () => {
+        window.location.href = 'index.html';
+    });
+
+    
     window.scrollToTop = () => {
         window.scrollTo({ top: 0, behavior: 'smooth' });
     };
     window.addEventListener('scroll', () => {
         const btn = document.querySelector('.scroll-top-btn');
-        if (btn) btn.style.display = window.scrollY > 300 ? 'block' : 'none';
+        if (btn) btn.style.display = window.scrollY > 100 ? 'block' : 'none';
     });
     console.log("Скрипт Педро завантажився");
 });
