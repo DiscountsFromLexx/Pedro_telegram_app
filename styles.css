@@ -1386,6 +1386,20 @@ body.light-theme .result-text[data-coupons-loaded] b {
     .result-text .product-image {
         max-width: 90px;          /* або 400px — підбери під себе */
     }
+    .calendar-img {
+        margin-top: 5px;
+        margin-right: 5px;
+        width: 100%;
+        display: block;
+        overflow-x: auto;
+        touch-action: pinch-zoom pan-x pan-y;
+        -webkit-overflow-scrolling: touch;
+    }
+    .calendar-img img {
+        width: 100%;
+        
+        border-radius: 5px;       
+    }
      
 }
 
@@ -1688,19 +1702,41 @@ body.light-theme .result-text[data-coupons-loaded] b {
     .result-text .product-image {
         max-width: 250px;          /* або 220px — підбери під себе */
     }
-    .tgkch-text {
-        margin-top: 10px;
-        font-size: 24px;        
-    }
+    
     .channels-text {
         position: relative;
         font-size: 20px;
-        margin-top: 30px;
-        padding: 40px;
+        margin-top: 5px;
+        padding: 10px;
         width: 90%;
         left: 50%;
         transform: translateX(-50%);   /* саме це вирівнює центр картинки з центром контейнера */
     }
+    .tgkch-text {
+        margin-top: 5px;
+        font-size: 24px;        
+    }
+    
+    .calendar-img {
+        margin-top: 5px;
+        margin-right: 5px;
+        width: 90%;
+        display: block;
+        overflow-x: auto;
+        touch-action: pinch-zoom pan-x pan-y;
+        -webkit-overflow-scrolling: touch;
+    }
+    .calendar-img img {
+
+        border-radius: 5px; 
+        position: relative;
+
+        width: 90%;
+        height: auto; 
+        left: 50%;
+        transform: translateX(-50%);
+    }     
+
     
 }
 
@@ -2390,6 +2426,19 @@ body.light-theme .result-text[data-coupons-loaded] b {
     .result-text .product-image {
         max-width: 400px;          /* або 400px — підбери під себе */
     }
+    .calendar-img {
+        margin-top: 5px;
+        margin-right: 5px;
+
+        display: block;
+        overflow-x: auto;
+        touch-action: pinch-zoom pan-x pan-y;
+        -webkit-overflow-scrolling: touch;
+    }
+    .calendar-img img {
+        width: 75%;
+        border-radius: 5px;       
+    }
 }
 
     /* Планшети (13 дюймів iPad Air тощо) — ширина від 769 до 1024 px (max-width: 821px) */
@@ -2622,6 +2671,19 @@ body.light-theme .result-text[data-coupons-loaded] b {
         left: 50%;
         transform: translateX(-50%);   /* саме це вирівнює центр картинки з центром контейнера */
     }
+    .calendar-img {
+        margin-top: 5px;
+        margin-right: 5px;
+
+        display: block;
+        overflow-x: auto;
+        touch-action: pinch-zoom pan-x pan-y;
+        -webkit-overflow-scrolling: touch;
+    }
+    .calendar-img img {
+        width: 75%;
+        border-radius: 5px;       
+    }
 }
 
 /* PC тощо */
@@ -2842,13 +2904,12 @@ body.light-theme .result-text[data-coupons-loaded] b {
         grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
         gap: 18px 44px;
         padding: 34px 42px;
-        width: 75%;
+        width: 60%;
         height: auto;
         horizontal-align: left;
         vertical-align: middle;
         font-size: 18px;
-        margin-left: 12%;
-
+        margin-left: 20%;
     }
 
     .checkbox-group label {
@@ -2897,14 +2958,28 @@ body.light-theme .result-text[data-coupons-loaded] b {
     .channels-text {
         position: relative;
         font-size: 20px;
-        margin-top: 60px;
-        padding: 40px;
+        margin-top: 5px;
+        padding: 10px;;
         width: 90%;
         left: 50%;
         transform: translateX(-50%);   /* саме це вирівнює центр картинки з центром контейнера */
     }
     .tgkch-text {
-        margin-top: 40px;
+        margin-top: 5px;
         font-size: 24px;        
+    }
+    
+    .calendar-img {
+        margin-top: 5px;
+        margin-right: 5px;
+
+        display: block;
+        overflow-x: auto;
+        touch-action: pinch-zoom pan-x pan-y;
+        -webkit-overflow-scrolling: touch;
+    }
+    .calendar-img img {
+        width: 50%;
+        border-radius: 5px;       
     }
 }
