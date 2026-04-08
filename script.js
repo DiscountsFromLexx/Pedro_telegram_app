@@ -494,5 +494,63 @@ document.addEventListener('DOMContentLoaded', () => {
         const btn = document.querySelector('.scroll-top-btn');
         if (btn) btn.style.display = window.scrollY > 100 ? 'block' : 'none';
     });
+
+    // --- Блок слайдера ---
+    const slider = document.getElementById('slider');
+    if (slider) {
+        let isPaused = false;
+        let slideInterval;
+    
+        function autoPlay() {
+            if (isPaused) return;
+        
+            const itemWidth = slider.clientWidth;
+            const maxScroll = slider.scrollWidth - itemWidth;
+            const currentScroll = slider.scrollLeft;
+        
+            // Если мы стоим на ВТОРОМ баннере и собираемся ехать на КЛОН
+            if (currentScroll >= (maxScroll - itemWidth) - 5 && currentScroll < maxScroll - 5) {
+                // Плавно едем на клона
+                slider.style.scrollBehavior = 'smooth';
+                slider.scrollLeft = maxScroll;
+        
+                // Ждем, пока анимация свайпа закончится (обычно 500-600мс)
+                setTimeout(() => {
+                    // Мгновенно и незаметно прыгаем на реальный ПЕРВЫЙ баннер
+                    slider.style.scrollBehavior = 'auto';
+                    slider.scrollLeft = 0;
+                }, 600); 
+            } else {
+                // Обычный плавный сдвиг (с первого на второй)
+                slider.style.scrollBehavior = 'smooth';
+                slider.scrollBy({ left: itemWidth, behavior: 'smooth' });
+            }
+        }
+    
+        // Запуск интервала
+        slideInterval = setInterval(autoPlay, 3000);
+    
+        // Функции остановки и старта
+        const stopSlider = () => {
+            isPaused = true;
+            if (slideInterval) clearInterval(slideInterval);
+        };
+    
+        const startSlider = () => {
+            isPaused = false;
+            clearInterval(slideInterval);
+            slideInterval = setInterval(autoPlay, 3000);
+        };
+    
+        // Слушатели событий
+        slider.addEventListener('touchstart', stopSlider, { passive: true });
+        slider.addEventListener('touchend', startSlider, { passive: true });
+        slider.addEventListener('mouseenter', stopSlider);
+        slider.addEventListener('mouseleave', startSlider);
+    }
+
+    
     console.log("Скрипт Педро завантажився");
+
+    
 });
