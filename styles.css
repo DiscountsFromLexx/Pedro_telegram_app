@@ -1,4 +1,3 @@
-
 * {
     margin: 0;
     padding: 0;
@@ -1907,7 +1906,7 @@ body.light-theme .result-text[data-coupons-loaded] b {
      
 }
 
-/* Планшети (11 дюймів iPad тощо) — (min-width: 769px) (max-width: 821px) */
+/* Планшети (11 дюймів iPad тощо) — (min-width: 769px) (max-width: 830px) */
 @media (min-width: 769px) and (max-width: 841px) and (orientation: portrait) {
     /* твої стилі для планшета — збільшені розміри, відступи тощо */
     body {
@@ -2206,19 +2205,41 @@ body.light-theme .result-text[data-coupons-loaded] b {
     .result-text .product-image {
         max-width: 250px;          /* або 220px — підбери під себе */
     }
-    .tgkch-text {
-        margin-top: 10px;
-        font-size: 24px;        
-    }
+    
     .channels-text {
         position: relative;
         font-size: 20px;
-        margin-top: 30px;
-        padding: 40px;
+        margin-top: 5px;
+        padding: 10px;
         width: 90%;
         left: 50%;
         transform: translateX(-50%);   /* саме це вирівнює центр картинки з центром контейнера */
     }
+    .tgkch-text {
+        margin-top: 5px;
+        font-size: 24px;        
+    }
+    
+    .calendar-img {
+        margin-top: 5px;
+        margin-right: 5px;
+        width: 90%;
+        display: block;
+        overflow-x: auto;
+        touch-action: pinch-zoom pan-x pan-y;
+        -webkit-overflow-scrolling: touch;
+    }
+    .calendar-img img {
+
+        border-radius: 5px; 
+        position: relative;
+
+        width: 90%;
+        height: auto; 
+        left: 50%;
+        transform: translateX(-50%);
+    }     
+
     
 }
 
@@ -2730,6 +2751,40 @@ body.light-theme .result-text[data-coupons-loaded] b {
     .reklama img {
         border-radius: 20px;       
     }
+    /* Настройки слайдера */
+    .reklama {
+        overflow: hidden;
+        border-radius: 10px; /* Сохраняем ваш радиус */
+    }
+    
+    .slider-container {
+        display: flex;
+        overflow-x: auto;
+        scroll-snap-type: x mandatory; /* Магнитный эффект при свайпе */
+        scroll-behavior: smooth;
+        -webkit-overflow-scrolling: touch; /* Плавность на iOS */
+    }
+    
+    /* Убираем полосу прокрутки */
+    .slider-container::-webkit-scrollbar {
+        display: none;
+    }
+    .slider-container {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+    }
+    
+    .slider-item {
+        flex: 0 0 100%; /* Каждый баннер занимает 100% ширины */
+        scroll-snap-align: start;
+        display: block;
+    }
+    
+    .slider-item img {
+        display: block;
+        width: 100%;
+        border-radius: 10px;
+    }
     
 
     /* Контейнер усіх кнопок (включаючи FEEDBACK) — тепер єдиний рядок */
@@ -2983,3 +3038,38 @@ body.light-theme .result-text[data-coupons-loaded] b {
         border-radius: 5px;       
     }
 }
+
+/* Настройки слайдера */
+    .reklama {
+        overflow: hidden;
+        border-radius: 10px; /* Сохраняем ваш радиус */
+    }
+    
+    .slider-container {
+        display: flex;
+        overflow-x: auto;
+        scroll-snap-type: x mandatory; /* Магнитный эффект при свайпе */
+        scroll-behavior: smooth;
+        -webkit-overflow-scrolling: touch; /* Плавность на iOS */
+    }
+    
+    /* Убираем полосу прокрутки */
+    .slider-container::-webkit-scrollbar {
+        display: none;
+    }
+    .slider-container {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+    }
+    
+    .slider-item {
+        flex: 0 0 100%; /* Каждый баннер занимает 100% ширины */
+        scroll-snap-align: start;
+        display: block;
+    }
+    
+    .slider-item img {
+        display: block;
+        width: 100%;
+        border-radius: 10px;
+    }
