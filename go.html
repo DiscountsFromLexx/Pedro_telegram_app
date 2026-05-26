@@ -52,30 +52,33 @@
                 // БОТ КОНКУРЕНТА: Елегантно згодовуємо йому твою головну сторінку
                 window.location.href = mainAffiliateLink;
             } else {
-                // ЖИВА ЛЮДИНА: Запускаємо збір кук та редірект на монетний товар
+                    // ЖИВА ЛЮДИНА: Запускаємо збір кук та редірект
+                    
+                    // 1. Жорстко мітимо це вікно унікальним ім'ям нашого додатка.
+                    // Якщо Safari спробує відкрити нове посилання, він може перевикористати вікно з таким же name.
+                    window.name = "pedroapp_ali_session";
                 
-                // Фоновий десант куки
-                const cookieFrame = document.createElement('iframe');
-                cookieFrame.src = mainAffiliateLink;
-                cookieFrame.style.position = 'absolute';
-                cookieFrame.style.width = '1px';
-                cookieFrame.style.height = '1px';
-                cookieFrame.style.opacity = '0';
-                document.body.appendChild(cookieFrame);
-    
-                // Редірект в додаток AliExpress (спрацює через 350 мс)
-                setTimeout(() => {
-                    window.location.replace(decodeURIComponent(targetCoinLink));
-                }, 700);
-    
-                // Прибираємо плашку з лоадером через 2.5 секунди (Варіант 2)
-                setTimeout(() => {
-                    const topBar = document.querySelector('.top-bar');
-                    if (topBar) {
-                        topBar.style.display = 'none';
-                    }
-                }, 2500);
-            }
+                    // Фоновий десант куки (залишаємо як є)
+                    const cookieFrame = document.createElement('iframe');
+                    cookieFrame.src = mainAffiliateLink;
+                    cookieFrame.style.position = 'absolute';
+                    cookieFrame.style.width = '1px';
+                    cookieFrame.style.height = '1px';
+                    cookieFrame.style.opacity = '0';
+                    document.body.appendChild(cookieFrame);
+                
+                    // 2. Редірект через replace з таймаутом 700мс
+                    setTimeout(() => {
+                        // Додатково перевіряємо, чи ми все ще в тому ж вікні
+                        window.location.replace(decodeURIComponent(targetCoinLink));
+                    }, 700);
+                
+                    // Прибираємо плашку з лоадером
+                    setTimeout(() => {
+                        const topBar = document.querySelector('.top-bar');
+                        if (topBar) { topBar.style.display = 'none'; }
+                    }, 2500);
+                }
         } else {
             // Якщо параметр 'to' пустий, просто відкриваємо PedroApp
             const topBar = document.querySelector('.top-bar');
