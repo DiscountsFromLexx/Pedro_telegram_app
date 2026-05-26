@@ -30,16 +30,11 @@
     <iframe class="app-container" src="./index.html"></iframe>
 
     <script>
-        // 1. Отримуємо монетне посилання з URL параметру (?to=...)
         const urlParams = new URLSearchParams(window.location.search);
         const targetCoinLink = urlParams.get('to');
-
-        // 🔥 ВСТАВ СЮДИ СВОЄ ЗАГАЛЬНЕ (ГОЛОВНЕ) ПАРТНЕРСЬКЕ ПОСИЛАННЯ КАНАЛУ
-        // Браузер фоново відкриє його, щоб прописати куку на 30 днів на "все інше"
         const mainAffiliateLink = "https://s.click.aliexpress.com/e/_c3hz8x37"; 
-
+    
         if (targetCoinLink) {
-            // 2. ФОНОВИЙ ДЕСАНТ КУКИ: Створюємо невидимий iframe
             const cookieFrame = document.createElement('iframe');
             cookieFrame.src = mainAffiliateLink;
             cookieFrame.style.position = 'absolute';
@@ -47,14 +42,21 @@
             cookieFrame.style.height = '1px';
             cookieFrame.style.opacity = '0';
             document.body.appendChild(cookieFrame);
-
-            // 3. МИТТЄВИЙ РЕДІРЕКТ НА МОНЕТНИЙ ТОВАР В ДОДАТОК
-            // Даємо 350 мс браузеру на фоновий запит куки і перенаправляємо користувача
+    
             setTimeout(() => {
                 window.location.href = decodeURIComponent(targetCoinLink);
             }, 350);
+    
+            // 🔥 Через 2.5 секунди повністю видаляємо плашку з лоадером.
+            // Користувач повертається з Алі і бачить чистий інтерфейс PedroApp!
+            setTimeout(() => {
+                const topBar = document.querySelector('.top-bar');
+                if (topBar) {
+                    topBar.style.display = 'none';
+                }
+            }, 2500);
+    
         } else {
-            // Якщо посилання забули передати, просто ховаємо лоадер і даємо користувачу користуватися PedroApp
             document.querySelector('.top-bar').style.display = 'none';
         }
     </script>
