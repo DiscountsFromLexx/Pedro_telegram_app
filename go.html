@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Завантаження AliExpress...</title>
+    <style>
+        body, html { margin: 0; padding: 0; height: 100%; overflow: hidden; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+        .app-container { width: 100%; height: 100%; border: none; }
+        .top-bar {
+            position: absolute; top: 0; left: 0; width: 100%; background: rgba(255, 255, 255, 0.95);
+            padding: 12px; text-align: center; box-shadow: 0 2px 10px rgba(0,0,0,0.1); z-index: 9999;
+            font-size: 14px; font-weight: bold; color: #333;
+        }
+        .loader { height: 3px; width: 100%; background-color: #f3f3f3; position: absolute; bottom: 0; left: 0; overflow: hidden; }
+        .loader::after {
+            content: ''; display: block; height: 100%; background-color: #e62e04; width: 40%;
+            animation: loading 0.8s infinite ease-in-out;
+        }
+        @keyframes loading { 0% { margin-left: -40%; } 100% { margin-left: 100%; } }
+    </style>
+</head>
+<body>
+
+    <div class="top-bar">
+        Відкриваю додаток AliExpress...
+        <div class="loader"></div>
+    </div>
+
+    <iframe class="app-container" src="./index.html"></iframe>
+
+    <script>
+        // 1. Отримуємо монетне посилання з URL параметру (?to=...)
+        const urlParams = new URLSearchParams(window.location.search);
+        const targetCoinLink = urlParams.get('to');
+
+        // 🔥 ВСТАВ СЮДИ СВОЄ ЗАГАЛЬНЕ (ГОЛОВНЕ) ПАРТНЕРСЬКЕ ПОСИЛАННЯ КАНАЛУ
+        // Браузер фоново відкриє його, щоб прописати куку на 30 днів на "все інше"
+        const mainAffiliateLink = "https://s.click.aliexpress.com/e/_c3hz8x37"; 
+
+        if (targetCoinLink) {
+            // 2. ФОНОВИЙ ДЕСАНТ КУКИ: Створюємо невидимий iframe
+            const cookieFrame = document.createElement('iframe');
+            cookieFrame.src = mainAffiliateLink;
+            cookieFrame.style.position = 'absolute';
+            cookieFrame.style.width = '1px';
+            cookieFrame.style.height = '1px';
+            cookieFrame.style.opacity = '0';
+            document.body.appendChild(cookieFrame);
+
+            // 3. МИТТЄВИЙ РЕДІРЕКТ НА МОНЕТНИЙ ТОВАР В ДОДАТОК
+            // Даємо 350 мс браузеру на фоновий запит куки і перенаправляємо користувача
+            setTimeout(() => {
+                window.location.href = decodeURIComponent(targetCoinLink);
+            }, 350);
+        } else {
+            // Якщо посилання забули передати, просто ховаємо лоадер і даємо користувачу користуватися PedroApp
+            document.querySelector('.top-bar').style.display = 'none';
+        }
+    </script>
+</body>
+</html>
