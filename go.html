@@ -65,8 +65,8 @@
     
                 // Редірект в додаток AliExpress (спрацює через 350 мс)
                 setTimeout(() => {
-                    window.location.href = decodeURIComponent(targetCoinLink);
-                }, 350);
+                    window.location.replace(decodeURIComponent(targetCoinLink));
+                }, 700);
     
                 // Прибираємо плашку з лоадером через 2.5 секунди (Варіант 2)
                 setTimeout(() => {
