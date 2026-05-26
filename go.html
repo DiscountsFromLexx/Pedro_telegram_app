@@ -54,7 +54,7 @@
     <div class="top-bar" id="redirect-bar">
         <span id="status-text">Відкриваю додаток AliExpress...</span>
         <div class="loader" id="main-loader"></div>
-        <button class="action-btn" id="manual-btn">Відкрити знижку в додатку 🛍️</button>
+        <button class="action-btn" id="manual-btn">Відкрити посилання в додатку 🛍️</button>
     </div>
 
     <iframe class="app-container" src="./index.html"></iframe>
@@ -110,7 +110,7 @@
                     
                     if (loader && statusText && manualBtn) {
                         loader.style.display = 'none'; // Прибираємо смугу завантаження
-                        statusText.innerText = 'Додаток AliExpress не відкрився автоматично?';
+                        statusText.innerText = 'Додаток AliExpress не відкрився автоматично? ';
                         statusText.style.color = '#666';
                         statusText.style.fontWeight = 'normal';
                         manualBtn.style.display = 'inline-block'; // Запалюємо кнопку
