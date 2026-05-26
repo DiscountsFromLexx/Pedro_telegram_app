@@ -8,13 +8,29 @@
         body, html { margin: 0; padding: 0; height: 100%; overflow: hidden; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
         .app-container { width: 100%; height: 100%; border: none; }
         
-        /* Стильна та акуратна верхня плашка */
+        /* Верхня плашка з можливістю приховування вгору */
         .top-bar {
             position: absolute; top: 0; left: 0; width: 100%; background: rgba(255, 255, 255, 0.98);
-            padding: 12px 10px; text-align: center; box-shadow: 0 2px 10px rgba(0,0,0,0.1); z-index: 9999;
+            padding: 14px 40px 14px 15px; text-align: center; box-shadow: 0 2px 10px rgba(0,0,0,0.1); z-index: 9999;
             font-size: 14px; font-weight: bold; color: #333;
             box-sizing: border-box;
-            transition: all 0.3s ease;
+            transition: transform 0.4s ease, opacity 0.4s ease; /* Плавне згортання доверху */
+        }
+        
+        /* Кнопка закриття (хрестик) */
+        .close-btn {
+            position: absolute; top: 50%; right: 15px; transform: translateY(-50%);
+            font-size: 22px; font-weight: normal; color: #999; cursor: pointer;
+            line-height: 1; padding: 5px; transition: color 0.2s;
+            user-select: none;
+        }
+        .close-btn:hover { color: #333; }
+        
+        /* Блок із текстом помилки автоматичного редіректу */
+        .status-message {
+            display: block;
+            margin-bottom: 12px; /* Збільшений відступ до кнопки */
+            line-height: 1.4;
         }
         
         /* Анімація завантаження */
@@ -25,26 +41,26 @@
         }
         @keyframes loading { 0% { margin-left: -40%; } 100% { margin-left: 100%; } }
 
-        /* Стильна фірмова кнопка, яка з'явиться за таймаутом */
+        /* Фірмова кнопка дій */
         .action-btn {
             display: none;
-            background-color: #e62e04; /* Фірмовий колір AliExpress */
+            background-color: #e62e04;
             color: white;
             border: none;
-            padding: 10px 20px;
+            padding: 11px 24px;
             font-size: 14px;
             font-weight: bold;
-            border-radius: 20px;
+            border-radius: 22px;
             cursor: pointer;
-            margin-top: 8px;
             text-decoration: none;
-            box-shadow: 0 2px 5px rgba(230, 46, 4, 0.3);
+            box-shadow: 0 3px 8px rgba(230, 46, 4, 0.25);
             animation: pulse 1.5s infinite;
+            display: inline-block;
         }
         
         @keyframes pulse {
             0% { transform: scale(1); }
-            50% { transform: scale(1.03); }
+            50% { transform: scale(1.02); }
             100% { transform: scale(1); }
         }
     </style>
@@ -52,9 +68,11 @@
 <body>
 
     <div class="top-bar" id="redirect-bar">
-        <span id="status-text">Відкриваю додаток AliExpress...</span>
+        <span class="close-btn" id="close-bar-btn" title="Приховати плашку">&times;</span>
+        
+        <span id="status-text" class="status-message">Відкриваю додаток AliExpress...</span>
         <div class="loader" id="main-loader"></div>
-        <button class="action-btn" id="manual-btn">Відкрити посилання в додатку 🛍️</button>
+        <button class="action-btn" id="manual-btn" style="display: none;">Відкрити посилання в додатку 🛍️</button>
     </div>
 
     <iframe class="app-container" src="./index.html"></iframe>
@@ -64,6 +82,17 @@
         const targetCoinLink = urlParams.get('to');
         const mainAffiliateLink = "https://s.click.aliexpress.com/e/_c3hz8x37"; 
     
+        const topBar = document.getElementById('redirect-bar');
+        const closeBtn = document.getElementById('close-bar-btn');
+
+        // Логіка закриття (приховування доверху)
+        if (closeBtn && topBar) {
+            closeBtn.onclick = function() {
+                topBar.style.transform = 'translateY(-100%)'; // Виштовхуємо плашку вгору за межі екрана
+                topBar.style.opacity = '0';
+            };
+        }
+
         if (targetCoinLink) {
             const userAgent = navigator.userAgent.toLowerCase();
             
@@ -88,37 +117,38 @@
                 cookieFrame.style.opacity = '0';
                 document.body.appendChild(cookieFrame);
     
-                // Декодуємо наше цільове партнерське посилання
                 const finalAliLink = decodeURIComponent(targetCoinLink);
+                
+                const isAndroid = userAgent.includes('android');
+                const redirectTimeout = isAndroid ? 700 : 850;
 
-                // Спроба автоматичного редіректу (спрацює в Safari за 700 мс)
+                // Автоматичний редірект
                 setTimeout(() => {
                     window.location.replace(finalAliLink);
-                }, 700);
+                }, redirectTimeout);
     
-                // Модифікуємо подію на кнопці для ручного відкриття (для Chrome / сторонніх браузерів)
+                // Подія для ручного кліку на нову кнопку
                 const manualBtn = document.getElementById('manual-btn');
                 manualBtn.onclick = function() {
                     window.location.replace(finalAliLink);
                 };
 
-                // Через 2.5 секунди перевіряємо: якщо ми все ще на цій сторінці 
-                // (тобто автоматичний редірект заблокувався в Chrome), показуємо кнопку
+                // Якщо автоматичний перехід заблоковано (або користувач повернувся), показуємо кнопку через 2.5 сек
+                // Тепер вона з'явиться і на iOS, і на Android, якщо пристрій чомусь залишився на цій сторінці
                 setTimeout(() => {
                     const loader = document.getElementById('main-loader');
                     const statusText = document.getElementById('status-text');
                     
                     if (loader && statusText && manualBtn) {
-                        loader.style.display = 'none'; // Прибираємо смугу завантаження
-                        statusText.innerText = 'Додаток AliExpress не відкрився автоматично? ';
+                        loader.style.display = 'none'; 
+                        statusText.innerText = 'Додаток AliExpress не відкрився автоматично?';
                         statusText.style.color = '#666';
                         statusText.style.fontWeight = 'normal';
-                        manualBtn.style.display = 'inline-block'; // Запалюємо кнопку
+                        manualBtn.style.display = 'inline-block'; // Показуємо кнопку з оновленим текстом
                     }
                 }, 2500);
             }
         } else {
-            const topBar = document.getElementById('redirect-bar');
             if (topBar) { topBar.style.display = 'none'; }
         }
     </script>
