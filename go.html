@@ -8,23 +8,42 @@
         body, html { margin: 0; padding: 0; height: 100%; overflow: hidden; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
         .app-container { width: 100%; height: 100%; border: none; }
         
-        /* Верхня плашка */
+        /* Модернізована компактна плашка */
         .top-bar {
             position: absolute; top: 0; left: 0; width: 100%; background: rgba(255, 255, 255, 0.98);
-            padding: 12px 15px; text-align: center; box-shadow: 0 2px 10px rgba(0,0,0,0.1); z-index: 9999;
-            font-size: 14px; color: #333;
+            padding: 10px 15px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); z-index: 9999;
             box-sizing: border-box;
             transition: transform 0.4s ease, opacity 0.4s ease;
         }
-        
-        .status-message {
-            display: inline-block;
-            font-weight: bold;
-            vertical-align: middle;
+
+        /* Контейнер для вирівнювання елементів в один рядок */
+        .bar-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
         }
         
-        /* Червоний акцент на таймері */
-        #timer-countdown { color: #e62e04; font-weight: 800; font-size: 15px; }
+        /* Початковий стан повідомлення розробника */
+        .status-message {
+            font-size: 14px;
+            font-weight: bold;
+            color: #333;
+            width: 100%;
+            text-align: center;
+        }
+
+        /* Блок таймера, який з'являється знизу під кнопкою */
+        .timer-text {
+            display: none;
+            font-size: 11px;
+            color: #777;
+            margin-top: 4px;
+            text-align: left;
+            padding-left: 2px;
+        }
+        
+        #timer-countdown { color: #e62e04; font-weight: 800; }
         
         /* Лінійка завантаження */
         .loader { height: 3px; width: 100%; background-color: #f3f3f3; position: absolute; bottom: 0; left: 0; overflow: hidden; }
@@ -34,42 +53,64 @@
         }
         @keyframes loading { 0% { margin-left: -40%; } 100% { margin-left: 100%; } }
 
-        /* Стильні кнопки */
-        .btn-group { margin-top: 8px; display: flex; justify-content: center; gap: 10px; }
-        
+        /* Компактна квадратна кнопка за твоїми розмірами */
         .action-btn {
+            display: none;
             background-color: #e62e04;
-            color: white; border: none; padding: 8px 16px;
-            font-size: 13px; font-weight: bold; border-radius: 15px;
+            color: white; border: none; 
+            padding: 8px 14px;
+            font-size: 13px; font-weight: bold; 
+            border-radius: 4px; /* Квадратні кути */
             cursor: pointer; text-decoration: none;
-            box-shadow: 0 2px 5px rgba(230, 46, 4, 0.2);
+            box-shadow: 0 2px 4px rgba(230, 46, 4, 0.2);
+            white-space: nowrap;
         }
         
-        .cancel-btn {
-            background-color: #66CDAA;
-            color: #555; border: 1px solid #ddd; padding: 8px 16px;
-            font-size: 13px; font-weight: bold; border-radius: 15px;
-            cursor: pointer; transition: background 0.2s;
+        /* Зона скасування праворуч */
+        .keep-open-zone {
+            display: none;
+            align-items: center;
+            gap: 6px;
+            cursor: pointer;
+            user-select: none;
+            color: #888;
+            transition: color 0.2s;
         }
-        .cancel-btn:hover { background-color: #eee; }
+        .keep-open-zone:hover { color: #333; }
+        
+        .keep-open-text {
+            font-size: 11px;
+            font-weight: normal;
+        }
+        
+        .close-btn {
+            font-size: 20px;
+            line-height: 1;
+            font-weight: bold;
+        }
     </style>
 </head>
 <body>
 
     <div class="top-bar" id="redirect-bar">
-        <div id="status-container">
+        <div class="bar-content" id="main-content-zone">
             <span id="status-text" class="status-message">Відкриваю додаток AliExpress...</span>
+            
+            <button class="action-btn" id="manual-btn">Відкрити в додатку</button>
+            
+            <div class="keep-open-zone" id="cancel-close-zone">
+                <span class="keep-open-text">Не закривати вкладку</span>
+                <span class="close-btn">&times;</span>
+            </div>
         </div>
         
-        <div class="btn-group">
-            <button class="action-btn" id="manual-btn" style="display: none;">Відкрити посилання в додатку 🛍️</button>
-            <button class="cancel-btn" id="cancel-close-btn" style="display: none;">Залишитись в PedroApp 🏠</button>
+        <div class="timer-text" id="bottom-timer-container">
+            Вкладка закриється автоматично через <span id="timer-countdown">10</span> сек
         </div>
         
         <div class="loader" id="main-loader"></div>
     </div>
 
-    <!-- Твій повноцінний бот-додаток PedroApp на фоні -->
     <iframe class="app-container" src="./index.html"></iframe>
 
     <script>
@@ -79,15 +120,16 @@
     
         const topBar = document.getElementById('redirect-bar');
         const manualBtn = document.getElementById('manual-btn');
-        const cancelBtn = document.getElementById('cancel-close-btn');
+        const cancelZone = document.getElementById('cancel-close-zone');
         const statusText = document.getElementById('status-text');
         const loader = document.getElementById('main-loader');
+        const bottomTimer = document.getElementById('bottom-timer-container');
 
         let autoCloseTimer = null;
         let countdownInterval = null;
-        let timeLeft = 10; // Час у секундах до автозакриття сторінки
+        let timeLeft = 10; // Твій зменшений таймаут
 
-        // Функція плавного приховування плашки вгору
+        // Функція плавного приховування плашки доверху
         function hideTopBar() {
             if (topBar) {
                 topBar.style.transform = 'translateY(-100%)';
@@ -95,12 +137,12 @@
             }
         }
 
-        // Логіка кнопки "Залишитись в PedroApp"
-        if (cancelBtn) {
-            cancelBtn.onclick = function() {
-                clearTimeout(autoCloseTimer);       // Скасовуємо закриття вкладки
+        // Логіка скасування закриття (Права зона: хрестик + текст)
+        if (cancelZone) {
+            cancelZone.onclick = function() {
+                clearTimeout(autoCloseTimer);       // Зупиняємо закриття вкладки
                 clearInterval(countdownInterval);   // Зупиняємо лічильник
-                hideTopBar();                       // Ховаємо плашку вгору
+                hideTopBar();                       // Ховаємо панель вгору
             };
         }
 
@@ -114,54 +156,49 @@
             } else {
                 // --- ЖИВА ЛЮДИНА ---
                 
-                // Десант фонової куки
                 const cookieFrame = document.createElement('iframe');
                 cookieFrame.src = mainAffiliateLink;
-                cookieFrame.style.position = 'absolute';
-                cookieFrame.style.width = '1px'; cookieFrame.style.height = '1px'; cookieFrame.style.opacity = '0';
+                cookieFrame.style.position = 'absolute'; cookieFrame.style.width = '1px'; cookieFrame.style.height = '1px'; cookieFrame.style.opacity = '0';
                 document.body.appendChild(cookieFrame);
     
                 const finalAliLink = decodeURIComponent(targetCoinLink);
                 const isAndroid = userAgent.includes('android');
                 const redirectTimeout = isAndroid ? 700 : 850;
 
-                // 1. Автоматичний редірект в додаток Алі
+                // Автоматичний редірект
                 setTimeout(() => {
                     window.location.replace(finalAliLink);
                 }, redirectTimeout);
     
-                // Налаштування ручної кнопки "Відкрити"
                 if (manualBtn) {
                     manualBtn.onclick = function() {
                         window.location.replace(finalAliLink);
                     };
                 }
 
-                // 2. ЗАПУСК ТАЙМЕРУ АВТОЗАКРИТТЯ (через 2.5 сек після старту, коли Алі вже мав відкритися)
+                // Перебудова інтерфейсу після завершення спроби автопереходу
                 setTimeout(() => {
-                    if (loader) loader.style.display = 'none'; // Прибираємо бігунок лоадера
+                    if (loader) loader.style.display = 'none';
+                    if (statusText) statusText.style.display = 'none'; // Прибираємо довгий початковий текст
                     
-                    // Показуємо кнопки "Відкрити" та "Залишитись"
+                    // Вмикаємо нову структуру елементів
                     if (manualBtn) manualBtn.style.display = 'inline-block';
-                    if (cancelBtn) cancelBtn.style.display = 'inline-block';
-                    
-                    // Оновлюємо текст і вмикаємо зворотний відлік
-                    statusText.innerHTML = 'Вкладка закриється автоматично через <span id="timer-countdown">' + timeLeft + '</span> сек';
-                    statusText.style.fontWeight = 'normal';
-                    statusText.style.color = '#666';
+                    if (cancelZone) cancelZone.style.display = 'flex';
+                    if (bottomTimer) bottomTimer.style.display = 'block';
 
-                    // Інтервал для оновлення цифри на екрані щосекунди
+                    // Запуск лічильника у нижньому блоці
+                    const countdownEl = document.getElementById('timer-countdown');
+                    if (countdownEl) countdownEl.innerText = timeLeft;
+
                     countdownInterval = setInterval(() => {
                         timeLeft--;
-                        const countdownEl = document.getElementById('timer-countdown');
                         if (countdownEl) countdownEl.innerText = timeLeft;
-                        
                         if (timeLeft <= 0) {
                             clearInterval(countdownInterval);
                         }
                     }, 1000);
 
-                    // Сам запуск команди на закриття вікна
+                    // Команда на закриття
                     autoCloseTimer = setTimeout(() => {
                         window.close();
                     }, timeLeft * 1000);
