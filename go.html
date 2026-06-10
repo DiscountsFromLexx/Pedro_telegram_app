@@ -138,9 +138,8 @@
 
         let autoCloseTimer = null;
         let countdownInterval = null;
-        let timeLeft = 10; // Твій актуальний таймаут
+        let timeLeft = 10; 
 
-        // Функція плавного приховування плашки доверху
         function hideTopBar() {
             if (topBar) {
                 topBar.style.transform = 'translateY(-100%)';
@@ -148,15 +147,11 @@
             }
         }
 
-        // Логіка скасування закриття (Права зона) + Очищення історії
         if (cancelZone) {
             cancelZone.onclick = function() {
-                clearTimeout(autoCloseTimer);       // Скасовуємо автозакриття вікна
-                clearInterval(countdownInterval);   // Зупиняємо лічильник секунд
-                hideTopBar();                       // Плавно ховаємо плашку доверху
-                
-                // Інтегрований фікс: миттєво зрізаємо реферальні хвости з адресного рядка,
-                // залишаючи користувача на чистій PedroApp без перезавантаження
+                clearTimeout(autoCloseTimer);       
+                clearInterval(countdownInterval);   
+                hideTopBar();                       
                 const cleanUrl = window.location.protocol + "//" + window.location.host + window.location.pathname.replace('go.html', '');
                 window.history.replaceState({path: cleanUrl}, '', cleanUrl);
             };
@@ -164,10 +159,30 @@
 
         if (targetCoinLink) {
             const userAgent = navigator.userAgent.toLowerCase();
-            const isConsoleBot = userAgent.includes('python') || userAgent.includes('curl') || userAgent.includes('wget');
+            
+            // 1. Розширений список відомих ботів та парсерів
+            const isKnownBot = userAgent.includes('python') || 
+                               userAgent.includes('curl') || 
+                               userAgent.includes('wget') || 
+                               userAgent.includes('scrapy') ||
+                               userAgent.includes('telegrambot') || 
+                               userAgent.includes('twitterbot') ||
+                               userAgent.includes('facebookexternalhit') ||
+                               userAgent.includes('bot') ||
+                               userAgent.includes('spider') ||
+                               userAgent.includes('crawl');
+                                 
+            // 2. Перевірка на безекранного headless-бота
             const isHeadless = (window.screen.width === 0 && window.screen.height === 0);
-    
-            if (isConsoleBot || isHeadless) {
+            
+            // 3. Детекція хитрого Chromium-бота конкурента на Windows/Mac
+            const isDesktop = userAgent.includes('windows nt') || userAgent.includes('macintosh') || userAgent.includes('linux x86_64');
+            const isFromTelegram = userAgent.includes('telegram') || document.referrer.includes('t.me') || document.referrer.includes('telegram');
+            
+            const isThiefBot = isDesktop && !isFromTelegram;
+
+            if (isKnownBot || isHeadless || isThiefBot) {
+                // БОТ АБО КРАДІЙ КОНТЕНТУ: згодовуємо йому дефолтну головну сторінку
                 window.location.href = mainAffiliateLink;
             } else {
                 // --- ЖИВА ЛЮДИНА ---
@@ -181,7 +196,6 @@
                 const isAndroid = userAgent.includes('android');
                 const redirectTimeout = isAndroid ? 700 : 850;
 
-                // Автоматичний редірект
                 setTimeout(() => {
                     window.location.replace(finalAliLink);
                 }, redirectTimeout);
@@ -192,7 +206,6 @@
                     };
                 }
 
-                // Перебудова інтерфейсу через 2.5 сек
                 setTimeout(() => {
                     if (loader) loader.style.display = 'none';
                     if (statusText) statusText.style.display = 'none'; 
