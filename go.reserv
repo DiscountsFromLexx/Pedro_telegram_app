@@ -11,11 +11,11 @@
         /* Модернізована компактна плашка */
         .top-bar {
             position: absolute; 
-            top: -4; 
+            top: -4px; 
             left: 0; 
             width: 100%; 
             background: rgba(255, 255, 255, 0.98);
-            /* Зменшуємо відступ зверху/знизу з 10px до 6px */
+            /* Твій компактний відступ */
             padding: 6px 15px; 
             box-shadow: 0 2px 10px rgba(0,0,0,0.1); 
             z-index: 9999;
@@ -40,7 +40,7 @@
             text-align: center;
         }
 
-        /* Блок таймера, який з'являється знизу під кнопкою */
+        /* Твій центрований блок таймера зі шрифтом 14px */
         .timer-text {
             display: none;
             font-size: 14px;
@@ -60,14 +60,14 @@
         }
         @keyframes loading { 0% { margin-left: -40%; } 100% { margin-left: 100%; } }
 
-        /* Компактна квадратна кнопка за твоїми розмірами */
+        /* Компактна квадратна кнопка */
         .action-btn {
             display: none;
             background-color: #e62e04;
             color: white; border: none; 
             padding: 8px 14px;
             font-size: 12px; font-weight: bold; 
-            border-radius: 4px; /* Квадратні кути */
+            border-radius: 4px;
             cursor: pointer; text-decoration: none;
             box-shadow: 0 2px 4px rgba(230, 46, 4, 0.2);
             white-space: nowrap;
@@ -85,6 +85,7 @@
         }
         .keep-open-zone:hover { color: #333; }
         
+        /* Твій шрифт 14px для скасування */
         .keep-open-text {
             font-size: 14px;
             font-weight: normal;
@@ -123,7 +124,10 @@
     <script>
         const urlParams = new URLSearchParams(window.location.search);
         const targetCoinLink = urlParams.get('to');
+        // const mainAffiliateLink = "https://s.click.aliexpress.com/e/_c3KPumuD";
+        // const mainAffiliateLink = "https://s.click.aliexpress.com/e/_c4NjxwKh";
         const mainAffiliateLink = "https://s.click.aliexpress.com/e/_c3hz8x37"; 
+        // const mainAffiliateLink = "https://s.click.aliexpress.com/e/_c3iOB3Ah";
     
         const topBar = document.getElementById('redirect-bar');
         const manualBtn = document.getElementById('manual-btn');
@@ -134,7 +138,7 @@
 
         let autoCloseTimer = null;
         let countdownInterval = null;
-        let timeLeft = 10; // Твій зменшений таймаут
+        let timeLeft = 10; // Твій актуальний таймаут
 
         // Функція плавного приховування плашки доверху
         function hideTopBar() {
@@ -144,12 +148,17 @@
             }
         }
 
-        // Логіка скасування закриття (Права зона: хрестик + текст)
+        // Логіка скасування закриття (Права зона) + Очищення історії
         if (cancelZone) {
             cancelZone.onclick = function() {
-                clearTimeout(autoCloseTimer);       // Зупиняємо закриття вкладки
-                clearInterval(countdownInterval);   // Зупиняємо лічильник
-                hideTopBar();                       // Ховаємо панель вгору
+                clearTimeout(autoCloseTimer);       // Скасовуємо автозакриття вікна
+                clearInterval(countdownInterval);   // Зупиняємо лічильник секунд
+                hideTopBar();                       // Плавно ховаємо плашку доверху
+                
+                // Інтегрований фікс: миттєво зрізаємо реферальні хвости з адресного рядка,
+                // залишаючи користувача на чистій PedroApp без перезавантаження
+                const cleanUrl = window.location.protocol + "//" + window.location.host + window.location.pathname.replace('go.html', '');
+                window.history.replaceState({path: cleanUrl}, '', cleanUrl);
             };
         }
 
@@ -183,17 +192,15 @@
                     };
                 }
 
-                // Перебудова інтерфейсу після завершення спроби автопереходу
+                // Перебудова інтерфейсу через 2.5 сек
                 setTimeout(() => {
                     if (loader) loader.style.display = 'none';
-                    if (statusText) statusText.style.display = 'none'; // Прибираємо довгий початковий текст
+                    if (statusText) statusText.style.display = 'none'; 
                     
-                    // Вмикаємо нову структуру елементів
                     if (manualBtn) manualBtn.style.display = 'inline-block';
                     if (cancelZone) cancelZone.style.display = 'flex';
                     if (bottomTimer) bottomTimer.style.display = 'block';
 
-                    // Запуск лічильника у нижньому блоці
                     const countdownEl = document.getElementById('timer-countdown');
                     if (countdownEl) countdownEl.innerText = timeLeft;
 
@@ -205,7 +212,6 @@
                         }
                     }, 1000);
 
-                    // Команда на закриття
                     autoCloseTimer = setTimeout(() => {
                         window.close();
                     }, timeLeft * 1000);
