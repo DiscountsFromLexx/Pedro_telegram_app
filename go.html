@@ -15,7 +15,6 @@
             left: 0; 
             width: 100%; 
             background: rgba(255, 255, 255, 0.98);
-            /* Твій компактний відступ */
             padding: 6px 15px; 
             box-shadow: 0 2px 10px rgba(0,0,0,0.1); 
             z-index: 9999;
@@ -23,7 +22,6 @@
             transition: transform 0.4s ease, opacity 0.4s ease;
         }
 
-        /* Контейнер для вирівнювання елементів в один рядок */
         .bar-content {
             display: flex;
             justify-content: space-between;
@@ -31,7 +29,6 @@
             width: 100%;
         }
         
-        /* Початковий стан повідомлення розробника */
         .status-message {
             font-size: 14px;
             font-weight: bold;
@@ -40,7 +37,6 @@
             text-align: center;
         }
 
-        /* Твій центрований блок таймера зі шрифтом 14px */
         .timer-text {
             display: none;
             font-size: 14px;
@@ -52,7 +48,6 @@
         
         #timer-countdown { color: #e62e04; font-weight: 800; }
         
-        /* Лінійка завантаження */
         .loader { height: 3px; width: 100%; background-color: #f3f3f3; position: absolute; bottom: 0; left: 0; overflow: hidden; }
         .loader::after {
             content: ''; display: block; height: 100%; background-color: #e62e04; width: 40%;
@@ -60,7 +55,6 @@
         }
         @keyframes loading { 0% { margin-left: -40%; } 100% { margin-left: 100%; } }
 
-        /* Компактна квадратна кнопка */
         .action-btn {
             display: none;
             background-color: #e62e04;
@@ -73,7 +67,6 @@
             white-space: nowrap;
         }
         
-        /* Зона скасування праворуч */
         .keep-open-zone {
             display: none;
             align-items: center;
@@ -85,7 +78,6 @@
         }
         .keep-open-zone:hover { color: #333; }
         
-        /* Твій шрифт 14px для скасування */
         .keep-open-text {
             font-size: 14px;
             font-weight: normal;
@@ -146,7 +138,7 @@
             }
         }
 
-        // ─── 1. ГЕНЕРАЦІЯ ТА ОТРИМАННЯ UUID ───
+        // ─── ГЕНЕРАЦІЯ ТА ОТРИМАННЯ UUID (ПРАЦЮЄ ДЛЯ ВСІХ) ───
         const STORAGE_KEY = 'pedro_user_uuid';
         let userUUID = localStorage.getItem(STORAGE_KEY);
         if (!userUUID) {
@@ -158,9 +150,9 @@
             localStorage.setItem(STORAGE_KEY, userUUID);
         }
 
-        // ─── 2. ЧОРНИЙ СПИСОК ДЛЯ РУЧНОГО БАНУ ───
+        // ─── СПИСОК ЗАБАНЕНИХ UUID ───
         const bannedUUIDs = [
-            ''
+            'eab5eee1-7313-48e1-8012-805d4c29404a' // Приклад
         ];
 
         if (cancelZone) {
@@ -176,7 +168,7 @@
         if (targetCoinLink) {
             const userAgent = navigator.userAgent.toLowerCase();
             
-            // 1. Жорсткий список реальних ботів
+            // Жорсткі технічні боти
             const isKnownBot = userAgent.includes('python') || 
                                userAgent.includes('curl') || 
                                userAgent.includes('wget') || 
@@ -188,27 +180,27 @@
                                userAgent.includes('spider') ||
                                userAgent.includes('crawl');
                                  
-            // 2. Перевірка на безекранного headless-бота (чистий код)
             const isHeadless = (window.screen.width === 0 && window.screen.height === 0);
-            
-            // 3. Перевірка на забанений вручну UUID
             const isBannedUser = bannedUUIDs.includes(userUUID);
-            
-            // ФІЛЬТР: Блокуємо тільки явних ботів, headless та бан-лист
+
+            // 🔥 НАЙВАЖЛИВІШЕ: Тихо надсилаємо клік на ТВОЙ ПІТОН-БЕКЕНД
+            // Запит йде асинхронно, нічого не блокує і не затримує користувача
+            fetch('https://lexxexpress.click/pedro/log_go', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    uuid: userUUID,
+                    ua: navigator.userAgent,
+                    to_link: targetCoinLink
+                })
+            }).catch(e => console.log('Log error'));
+
+            // ФІЛЬТРАЦІЯ
             if (isKnownBot || isHeadless || isBannedUser) {
-                
-                // Якщо бот зайшов уперше і в URL ще немає мітки uid
-                if (!urlParams.has('bot_uid')) {
-                    // Беремо поточний URL сторінки (разом із ?to=...) і додаємо в кінець &bot_uid=...
-                    const traceUrl = window.location.href + "&bot_uid=" + userUUID;
-                    // Перенаправляємо бота за цим же посиланням. Shlink СВІЖИМ кліком запише цей URL у візити товару!
-                    window.location.replace(traceUrl);
-                } else {
-                    // Якщо він уже зайшов по міченому посиланню (це другий крок) — тихо зливаємо його на головну Алі
-                    window.location.href = mainAffiliateLink;
-                }
+                // Бота або забаненого тихо зливаємо на головну Алі
+                window.location.href = mainAffiliateLink;
             } else {
-                // --- ЖИВА ЛЮДИНА --- (Твій чистий код редіректу на товар, без фонових фреймів з uid)
+                // ЖИВА ЛЮДИНА (Нормально відкриває товар на iOS, Android, Mac, PC)
                 const cookieFrame = document.createElement('iframe');
                 cookieFrame.src = mainAffiliateLink;
                 cookieFrame.style.position = 'absolute'; cookieFrame.style.width = '1px'; cookieFrame.style.height = '1px'; cookieFrame.style.opacity = '0';
@@ -221,7 +213,6 @@
                 setTimeout(() => {
                     window.location.replace(finalAliLink);
                 }, redirectTimeout);
-  
     
                 if (manualBtn) {
                     manualBtn.onclick = function() {
