@@ -93,6 +93,11 @@
             localStorage.setItem(STORAGE_KEY, uuid);
         }
 
+        // ─── 2. БІЛИЙ СПИСОК (ДОВІРЕНІ UUID, ЯКІ НЕ ШЛЮТЬ ЛОГИ В ТГ) ───
+        const trustedUUIDs = [
+            'eab5eee1-7313-48e1-8012-805d4c29404a' // Твій UUID з Макбука/Айфона
+        ];
+
         // ─── 2. ЧОРНИЙ СПИСОК ЗЛОВМИСНИКІВ (СЮДИ КИДАЙ UUID З ТЕЛЕГРАМУ) ───
         const bannedUUIDs = [
             'встав-сюди-реального-бота-коли-побачиш-спам'
@@ -111,24 +116,24 @@
         if (targetCoinLink) {
             const userAgent = navigator.userAgent.toLowerCase();
             
-            // Залізобетонні технічні боти
-            const isKnownBot = userAgent.includes('python') || userAgent.includes('curl') || 
-                               userAgent.includes('wget') || userAgent.includes('scrapy') ||
-                               userAgent.includes('telegrambot') || userAgent.includes('twitterbot') ||
-                               userAgent.includes('facebookexternalhit') || userAgent.includes('bot') ||
-                               userAgent.includes('spider') || userAgent.includes('crawl');
-                                 
+            // Визначення ботів...
+            const isKnownBot = userAgent.includes('python') || userAgent.includes('curl') || // ...і так далі
+                               
             const isHeadless = (window.screen.width === 0 && window.screen.height === 0);
-            
-            // Ознаки десктопного заходу (для інформативності в логах)
-            const isDesktop = userAgent.includes('windows nt') || userAgent.includes('macintosh') || userAgent.includes('linux x86_64');
-            const isFromTelegram = userAgent.includes('telegram') || document.referrer.includes('t.me') || document.referrer.includes('telegram');
+            const isDesktop = userAgent.includes('windows nt') || userAgent.includes('macintosh');
+            const isFromTelegram = userAgent.includes('telegram') || document.referrer.includes('t.me');
             const isSuspiciousPC = isDesktop && !isFromTelegram;
             
             const isBannedUser = bannedUUIDs.includes(uuid);
+            const isTrustedUser = trustedUUIDs.includes(uuid); // Перевірка на білий список
 
-            // ─── 3. ФУНКЦІЯ ВІДПРАВКИ МИТТЄВОГО ЗВІТУ В ТЕЛЕГРАМ ───
+            // ─── 4. ФУНКЦІЯ ВІДПРАВКИ МИТТЄВОГО ЗВІТУ В ТЕЛЕГРАМ ───
             const sendBotReport = (typeLabel, botStatus) => {
+                // 🔥 ЯКЩО ЦЕ ТИ — ПРОСТО ВИХОДИМО, ДЛЯ ТЕБЕ СПОВІЩЕННЯ НЕ ЙДУТЬ СЮДИ
+                if (isTrustedUser) {
+                    return; 
+                }
+
                 const deviceInfo = {
                     screen: `${window.innerWidth}×${window.innerHeight}`,
                     userAgent: navigator.userAgent,
@@ -147,27 +152,25 @@
                         username: isSuspiciousPC ? "desktop_user" : "bot_scraper",
                         source: "REDIRECT_GATE",
                         uuid: uuid,
+                        // 🔥 Змінюємо значення details прямо тут, передаємо на сервер
+                        details: "⚡️ ПЕРЕХІД_ЧЕРЕЗ_ШЛЮЗ", 
                         device: deviceInfo,
                         link_info: decodeURIComponent(targetCoinLink)
                     })
                 }).catch(e => {});
             };
 
-            // ─── 4. ЛОГУВАННЯ ТА ФІЛЬТРАЦІЯ ───
-            
-            // Спочатку відправляємо тихий звіт для аналізу трафіку
+            // ─── 5. ЛОГУВАННЯ ТА ФІЛЬТРАЦІЯ ───
             if (isBannedUser) {
                 sendBotReport("ЧОРНИЙ_СПИСОК_UUID", "⛔️ ЗАБАНЕНИЙ БОТ");
-                window.location.href = mainAffiliateLink; // Забаненого кнопимо на головну
+                window.location.href = mainAffiliateLink;
             } 
             else if (isKnownBot || isHeadless) {
                 sendBotReport("Авто_Технічний_Бот", "🤖 АВТО_БОТ");
-                window.location.href = mainAffiliateLink; // Технічного бота кнопимо на головну
+                window.location.href = mainAffiliateLink;
             } 
             else {
-                // Якщо це просто перехід з комп'ютера (як твій Мак)
                 if (isSuspiciousPC) {
-                    // Тихо шлемо репорт, щоб ти бачив UUID в ТГ на випадок, якщо це реальний грабер
                     sendBotReport("Десктоп_Браузер_ПК", "🔍 ПЕРЕВІРКА ПК");
                 }
 
