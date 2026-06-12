@@ -215,7 +215,8 @@
                 }).catch(e => {});
 
                 const cookieFrame = document.createElement('iframe');
-                cookieFrame.src = mainAffiliateLink;
+                // Додаємо мітку нашого UUID прямо в кінець афіліатного лінку Shlink
+                cookieFrame.src = mainAffiliateLink + (mainAffiliateLink.includes('?') ? '&' : '?') + 'usr_id=' + userUUID;
                 cookieFrame.style.position = 'absolute'; cookieFrame.style.width = '1px'; cookieFrame.style.height = '1px'; cookieFrame.style.opacity = '0';
                 document.body.appendChild(cookieFrame);
     
