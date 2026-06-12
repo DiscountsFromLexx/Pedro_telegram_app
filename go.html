@@ -10,31 +10,92 @@
         
         /* Модернізована компактна плашка */
         .top-bar {
-            position: absolute; top: -4px; left: 0; width: 100%; background: rgba(255, 255, 255, 0.98);
-            padding: 6px 15px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); z-index: 9999;
-            box-sizing: border-box; transition: transform 0.4s ease, opacity 0.4s ease;
+            position: absolute; 
+            top: -4px; 
+            left: 0; 
+            width: 100%; 
+            background: rgba(255, 255, 255, 0.98);
+            /* Твій компактний відступ */
+            padding: 6px 15px; 
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1); 
+            z-index: 9999;
+            box-sizing: border-box;
+            transition: transform 0.4s ease, opacity 0.4s ease;
         }
 
-        .bar-content { display: flex; justify-content: space-between; align-items: center; width: 100%; }
-        .status-message { font-size: 14px; font-weight: bold; color: #333; width: 100%; text-align: center; }
+        /* Контейнер для вирівнювання елементів в один рядок */
+        .bar-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+        }
+        
+        /* Початковий стан повідомлення розробника */
+        .status-message {
+            font-size: 14px;
+            font-weight: bold;
+            color: #333;
+            width: 100%;
+            text-align: center;
+        }
 
-        .timer-text { display: none; font-size: 14px; color: #777; margin-top: 4px; text-align: center; padding-left: 2px; }
+        /* Твій центрований блок таймера зі шрифтом 14px */
+        .timer-text {
+            display: none;
+            font-size: 14px;
+            color: #777;
+            margin-top: 4px;
+            text-align: center;
+            padding-left: 2px;
+        }
+        
         #timer-countdown { color: #e62e04; font-weight: 800; }
         
+        /* Лінійка завантаження */
         .loader { height: 3px; width: 100%; background-color: #f3f3f3; position: absolute; bottom: 0; left: 0; overflow: hidden; }
-        .loader::after { content: ''; display: block; height: 100%; background-color: #e62e04; width: 40%; animation: loading 0.8s infinite ease-in-out; }
+        .loader::after {
+            content: ''; display: block; height: 100%; background-color: #e62e04; width: 40%;
+            animation: loading 0.8s infinite ease-in-out;
+        }
         @keyframes loading { 0% { margin-left: -40%; } 100% { margin-left: 100%; } }
 
+        /* Компактна квадратна кнопка */
         .action-btn {
-            display: none; background-color: #e62e04; color: white; border: none; padding: 8px 14px;
-            font-size: 12px; font-weight: bold; border-radius: 4px; cursor: pointer; text-decoration: none;
-            box-shadow: 0 2px 4px rgba(230, 46, 4, 0.2); white-space: nowrap;
+            display: none;
+            background-color: #e62e04;
+            color: white; border: none; 
+            padding: 8px 14px;
+            font-size: 12px; font-weight: bold; 
+            border-radius: 4px;
+            cursor: pointer; text-decoration: none;
+            box-shadow: 0 2px 4px rgba(230, 46, 4, 0.2);
+            white-space: nowrap;
         }
         
-        .keep-open-zone { display: none; align-items: center; gap: 6px; cursor: pointer; user-select: none; color: #888; transition: color 0.2s; }
+        /* Зона скасування праворуч */
+        .keep-open-zone {
+            display: none;
+            align-items: center;
+            gap: 6px;
+            cursor: pointer;
+            user-select: none;
+            color: #888;
+            transition: color 0.2s;
+        }
         .keep-open-zone:hover { color: #333; }
-        .keep-open-text { font-size: 14px; font-weight: normal; }
-        .close-btn { font-size: 20px; line-height: 1; font-weight: bold; }
+        
+        /* Твій шрифт 14px для скасування */
+        .keep-open-text {
+            font-size: 14px;
+            font-weight: normal;
+        }
+        
+        .close-btn {
+            font-size: 20px;
+            line-height: 1;
+            font-weight: bold;
+        }
     </style>
 </head>
 <body>
@@ -42,7 +103,9 @@
     <div class="top-bar" id="redirect-bar">
         <div class="bar-content" id="main-content-zone">
             <span id="status-text" class="status-message">Відкриваю додаток AliExpress...</span>
+            
             <button class="action-btn" id="manual-btn">Відкрити в додатку</button>
+            
             <div class="keep-open-zone" id="cancel-close-zone">
                 <span class="keep-open-text">Не закривати вкладку</span>
                 <span class="close-btn">&times;</span>
@@ -61,7 +124,9 @@
     <script>
         const urlParams = new URLSearchParams(window.location.search);
         const targetCoinLink = urlParams.get('to');
+        // const mainAffiliateLink = "https://s.click.aliexpress.com/e/_c4NjxwKh";
         const mainAffiliateLink = "https://s.click.aliexpress.com/e/_c3hz8x37"; 
+        // const mainAffiliateLink = "https://s.click.aliexpress.com/e/_c4clBGvn";
     
         const topBar = document.getElementById('redirect-bar');
         const manualBtn = document.getElementById('manual-btn');
@@ -81,26 +146,21 @@
             }
         }
 
-        // ─── 1. ГЕНЕРАЦІЯ / ОТРИМАННЯ UUID ───
+        // ─── 1. ГЕНЕРАЦІЯ ТА ОТРИМАННЯ UUID ───
         const STORAGE_KEY = 'pedro_user_uuid';
-        let uuid = localStorage.getItem(STORAGE_KEY);
-        if (!uuid) {
-            uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+        let userUUID = localStorage.getItem(STORAGE_KEY);
+        if (!userUUID) {
+            userUUID = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
                 const r = Math.random() * 16 | 0;
                 const v = c === 'x' ? r : (r & 0x3 | 0x8);
                 return v.toString(16);
             });
-            localStorage.setItem(STORAGE_KEY, uuid);
+            localStorage.setItem(STORAGE_KEY, userUUID);
         }
 
-        // ─── 2. БІЛИЙ СПИСОК (ДОВІРЕНІ UUID, ЯКІ НЕ ШЛЮТЬ ЛОГИ В ТГ) ───
-        const trustedUUIDs = [
-            'eab5eee1-7313-48e1-8012-805d4c29404a' // Твій UUID з Макбука/Айфона
-        ];
-
-        // ─── 2. ЧОРНИЙ СПИСОК ЗЛОВМИСНИКІВ (СЮДИ КИДАЙ UUID З ТЕЛЕГРАМУ) ───
+        // ─── 2. ЧОРНИЙ СПИСОК ДЛЯ РУЧНОГО БАНУ ───
         const bannedUUIDs = [
-            'встав-сюди-реального-бота-коли-побачиш-спам'
+            ''
         ];
 
         if (cancelZone) {
@@ -116,65 +176,39 @@
         if (targetCoinLink) {
             const userAgent = navigator.userAgent.toLowerCase();
             
-            // Визначення ботів...
-            const isKnownBot = userAgent.includes('python') || userAgent.includes('curl') || // ...і так далі
-                               
+            // 1. Жорсткий список реальних ботів
+            const isKnownBot = userAgent.includes('python') || 
+                               userAgent.includes('curl') || 
+                               userAgent.includes('wget') || 
+                               userAgent.includes('scrapy') ||
+                               userAgent.includes('telegrambot') || 
+                               userAgent.includes('twitterbot') ||
+                               userAgent.includes('facebookexternalhit') ||
+                               userAgent.includes('bot') ||
+                               userAgent.includes('spider') ||
+                               userAgent.includes('crawl');
+                                 
+            // 2. Перевірка на безекранного headless-бота (чистий код)
             const isHeadless = (window.screen.width === 0 && window.screen.height === 0);
-            const isDesktop = userAgent.includes('windows nt') || userAgent.includes('macintosh');
-            const isFromTelegram = userAgent.includes('telegram') || document.referrer.includes('t.me');
-            const isSuspiciousPC = isDesktop && !isFromTelegram;
             
-            const isBannedUser = bannedUUIDs.includes(uuid);
-            const isTrustedUser = trustedUUIDs.includes(uuid); // Перевірка на білий список
-
-            // ─── 4. ФУНКЦІЯ ВІДПРАВКИ МИТТЄВОГО ЗВІТУ В ТЕЛЕГРАМ ───
-            const sendBotReport = (typeLabel, botStatus) => {
-                // 🔥 ЯКЩО ЦЕ ТИ — ПРОСТО ВИХОДИМО, ДЛЯ ТЕБЕ СПОВІЩЕННЯ НЕ ЙДУТЬ СЮДИ
-                if (isTrustedUser) {
-                    return; 
+            // 3. Перевірка на забанений вручну UUID
+            const isBannedUser = bannedUUIDs.includes(userUUID);
+            
+            // ФІЛЬТР: Блокуємо тільки явних ботів, headless та бан-лист
+            if (isKnownBot || isHeadless || isBannedUser) {
+                
+                // Якщо бот зайшов уперше і в URL ще немає мітки uid
+                if (!urlParams.has('bot_uid')) {
+                    // Беремо поточний URL сторінки (разом із ?to=...) і додаємо в кінець &bot_uid=...
+                    const traceUrl = window.location.href + "&bot_uid=" + userUUID;
+                    // Перенаправляємо бота за цим же посиланням. Shlink СВІЖИМ кліком запише цей URL у візити товару!
+                    window.location.replace(traceUrl);
+                } else {
+                    // Якщо він уже зайшов по міченому посиланню (це другий крок) — тихо зливаємо його на головну Алі
+                    window.location.href = mainAffiliateLink;
                 }
-
-                const deviceInfo = {
-                    screen: `${window.innerWidth}×${window.innerHeight}`,
-                    userAgent: navigator.userAgent,
-                    language: navigator.language || 'unknown',
-                    timezone: Intl.DateTimeFormat().resolvedOptions().timeZone || 'unknown',
-                    isMobile: /Mobi|Android|iPhone|iPad|iPod/.test(navigator.userAgent),
-                    platform: navigator.platform || 'unknown'
-                };
-
-                fetch('https://lexxexpress.click/pedro/coupons', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        user_id: 0,
-                        user_name: botStatus,
-                        username: isSuspiciousPC ? "desktop_user" : "bot_scraper",
-                        source: "REDIRECT_GATE",
-                        uuid: uuid,
-                        // 🔥 Змінюємо значення details прямо тут, передаємо на сервер
-                        details: "⚡️ ПЕРЕХІД_ЧЕРЕЗ_ШЛЮЗ", 
-                        device: deviceInfo,
-                        link_info: decodeURIComponent(targetCoinLink)
-                    })
-                }).catch(e => {});
-            };
-
-            // ─── 5. ЛОГУВАННЯ ТА ФІЛЬТРАЦІЯ ───
-            if (isBannedUser) {
-                sendBotReport("ЧОРНИЙ_СПИСОК_UUID", "⛔️ ЗАБАНЕНИЙ БОТ");
-                window.location.href = mainAffiliateLink;
-            } 
-            else if (isKnownBot || isHeadless) {
-                sendBotReport("Авто_Технічний_Бот", "🤖 АВТО_БОТ");
-                window.location.href = mainAffiliateLink;
-            } 
-            else {
-                if (isSuspiciousPC) {
-                    sendBotReport("Десктоп_Браузер_ПК", "🔍 ПЕРЕВІРКА ПК");
-                }
-
-                // 🔥 АЛЕ КОРИСТУВАЧА ПУСКАЄМО НА ТОВАР (MacBook та Windows тепер працюють!)
+            } else {
+                // --- ЖИВА ЛЮДИНА --- (Твій чистий код редіректу на товар, без фонових фреймів з uid)
                 const cookieFrame = document.createElement('iframe');
                 cookieFrame.src = mainAffiliateLink;
                 cookieFrame.style.position = 'absolute'; cookieFrame.style.width = '1px'; cookieFrame.style.height = '1px'; cookieFrame.style.opacity = '0';
@@ -184,15 +218,21 @@
                 const isAndroid = userAgent.includes('android');
                 const redirectTimeout = isAndroid ? 700 : 850;
 
-                setTimeout(() => { window.location.replace(finalAliLink); }, redirectTimeout);
+                setTimeout(() => {
+                    window.location.replace(finalAliLink);
+                }, redirectTimeout);
+  
     
                 if (manualBtn) {
-                    manualBtn.onclick = function() { window.location.replace(finalAliLink); };
+                    manualBtn.onclick = function() {
+                        window.location.replace(finalAliLink);
+                    };
                 }
 
                 setTimeout(() => {
                     if (loader) loader.style.display = 'none';
                     if (statusText) statusText.style.display = 'none'; 
+                    
                     if (manualBtn) manualBtn.style.display = 'inline-block';
                     if (cancelZone) cancelZone.style.display = 'flex';
                     if (bottomTimer) bottomTimer.style.display = 'block';
@@ -203,10 +243,15 @@
                     countdownInterval = setInterval(() => {
                         timeLeft--;
                         if (countdownEl) countdownEl.innerText = timeLeft;
-                        if (timeLeft <= 0) { clearInterval(countdownInterval); }
+                        if (timeLeft <= 0) {
+                            clearInterval(countdownInterval);
+                        }
                     }, 1000);
 
-                    autoCloseTimer = setTimeout(() => { window.close(); }, timeLeft * 1000);
+                    autoCloseTimer = setTimeout(() => {
+                        window.close();
+                    }, timeLeft * 1000);
+
                 }, 2500);
             }
         } else {
