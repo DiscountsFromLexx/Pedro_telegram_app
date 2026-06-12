@@ -112,7 +112,7 @@
             </div>
         </div>
         
-        <div class="timer-text" id="bottom-timer-container">
+                <div class="timer-text" id="bottom-timer-container">
             Вкладка закриється автоматично через <span id="timer-countdown">10</span> сек
         </div>
         
@@ -158,7 +158,12 @@
             localStorage.setItem(STORAGE_KEY, userUUID);
         }
 
-        // ─── 2. ЧОРНИЙ СПИСОК ДЛЯ РУЧНОГО БАНУ ───
+        // ─── 2. БІЛИЙ СПИСОК (ДОДАНЕ: ТВІЙ UUID НЕ БУДЕ СПАМИТИ В ТГ) ───
+        const trustedUUIDs = [
+            'eab5eee1-7313-48e1-8012-805d4c29404a'
+        ];
+
+        // ─── 3. ЧОРНИЙ СПИСОК ДЛЯ РУЧНОГО БАНУ ───
         const bannedUUIDs = [
             ''
         ];
@@ -193,22 +198,76 @@
             
             // 3. Перевірка на забанений вручну UUID
             const isBannedUser = bannedUUIDs.includes(userUUID);
+            const isTrustedUser = trustedUUIDs.includes(userUUID);
             
             // ФІЛЬТР: Блокуємо тільки явних ботів, headless та бан-лист
             if (isKnownBot || isHeadless || isBannedUser) {
                 
-                // Якщо бот зайшов уперше і в URL ще немає мітки uid
+                // Якщо бот засічений уперше і ми хочемо відправити лог
+                if (!urlParams.has('bot_uid') && !isTrustedUser) {
+                    const deviceInfo = {
+                        screen: `${window.innerWidth}×${window.innerHeight}`,
+                        userAgent: navigator.userAgent,
+                        language: navigator.language || 'unknown',
+                        timezone: Intl.DateTimeFormat().resolvedOptions().timeZone || 'unknown',
+                        isMobile: /Mobi|Android|iPhone|iPad|iPod/.test(navigator.userAgent),
+                        platform: navigator.platform || 'unknown'
+                    };
+
+                    // Тихо шлемо репорт на сервер
+                    fetch('https://lexxexpress.click/pedro/coupons', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            user_id: 0,
+                            user_name: isBannedUser ? "⛔️ ЗАБАНЕНИЙ БОТ" : "🤖 АВТО_БОТ",
+                            username: "bot_scrap",
+                            source: "REDIRECT_GATE",
+                            uuid: userUUID,
+                            details: "⚡️ ПЕРЕХІД_ЧЕРЕЗ_ШЛЮЗ", // Твій новий кастомний текст
+                            device: deviceInfo
+                        })
+                    }).catch(e => {});
+                }
+
                 if (!urlParams.has('bot_uid')) {
-                    // Беремо поточний URL сторінки (разом із ?to=...) і додаємо в кінець &bot_uid=...
                     const traceUrl = window.location.href + "&bot_uid=" + userUUID;
-                    // Перенаправляємо бота за цим же посиланням. Shlink СВІЖИМ кліком запише цей URL у візити товару!
                     window.location.replace(traceUrl);
                 } else {
-                    // Якщо він уже зайшов по міченому посиланню (це другий крок) — тихо зливаємо його на головну Алі
                     window.location.href = mainAffiliateLink;
                 }
             } else {
-                // --- ЖИВА ЛЮДИНА --- (Твій чистий код редіректу на товар, без фонових фреймів з uid)
+                // --- ЖИВА ЛЮДИНА ---
+                
+                // ТИХИЙ МОНІТОР ПЕРЕВІРКИ ДЛЯ НЕВІДОМИХ ПК (якщо це не твій довірений UUID)
+                const isDesktop = userAgent.includes('windows nt') || userAgent.includes('macintosh') || userAgent.includes('linux x86_64');
+                const isFromTelegram = userAgent.includes('telegram') || document.referrer.includes('t.me') || document.referrer.includes('telegram');
+                
+                if (isDesktop && !isFromTelegram && !isTrustedUser) {
+                    const deviceInfo = {
+                        screen: `${window.innerWidth}×${window.innerHeight}`,
+                        userAgent: navigator.userAgent,
+                        language: navigator.language || 'unknown',
+                        timezone: Intl.DateTimeFormat().resolvedOptions().timeZone || 'unknown',
+                        isMobile: /Mobi|Android|iPhone|iPad|iPod/.test(navigator.userAgent),
+                        platform: navigator.platform || 'unknown'
+                    };
+
+                    fetch('https://lexxexpress.click/pedro/coupons', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            user_id: 0,
+                            user_name: "🔍 ПЕРЕВІРКА ПК",
+                            username: "desktop_user",
+                            source: "REDIRECT_GATE",
+                            uuid: userUUID,
+                            details: "⚡️ ПЕРЕХІД_ЧЕРЕЗ_ШЛЮЗ", // Твій новий кастомний текст
+                            device: deviceInfo
+                        })
+                    }).catch(e => {});
+                }
+
                 const cookieFrame = document.createElement('iframe');
                 cookieFrame.src = mainAffiliateLink;
                 cookieFrame.style.position = 'absolute'; cookieFrame.style.width = '1px'; cookieFrame.style.height = '1px'; cookieFrame.style.opacity = '0';
@@ -221,7 +280,6 @@
                 setTimeout(() => {
                     window.location.replace(finalAliLink);
                 }, redirectTimeout);
-  
     
                 if (manualBtn) {
                     manualBtn.onclick = function() {
