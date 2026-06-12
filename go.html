@@ -61,9 +61,7 @@
     <script>
         const urlParams = new URLSearchParams(window.location.search);
         const targetCoinLink = urlParams.get('to');
-        // const mainAffiliateLink = "https://s.click.aliexpress.com/e/_c4NjxwKh";
         const mainAffiliateLink = "https://s.click.aliexpress.com/e/_c3hz8x37"; 
-        // const mainAffiliateLink = "https://s.click.aliexpress.com/e/_c4clBGvn";
     
         const topBar = document.getElementById('redirect-bar');
         const manualBtn = document.getElementById('manual-btn');
@@ -83,7 +81,7 @@
             }
         }
 
-        // ─── 1. ГЕНЕРАЦІЯ / ОТРИМАННЯ ПУБЛІЧНОГО UUID ───
+        // ─── 1. ГЕНЕРАЦІЯ / ОТРИМАННЯ UUID ───
         const STORAGE_KEY = 'pedro_user_uuid';
         let uuid = localStorage.getItem(STORAGE_KEY);
         if (!uuid) {
@@ -95,9 +93,9 @@
             localStorage.setItem(STORAGE_KEY, uuid);
         }
 
-        // ─── 2. ЧОРНИЙ СПИСОК ЗЛОВМИСНИКІВ ───
+        // ─── 2. ЧОРНИЙ СПИСОК ЗЛОВМИСНИКІВ (СЮДИ КИДАЙ UUID З ТЕЛЕГРАМУ) ───
         const bannedUUIDs = [
-            'встав-сюди-id-розумного-бота'
+            'встав-сюди-реального-бота-коли-побачиш-спам'
         ];
 
         if (cancelZone) {
@@ -113,7 +111,7 @@
         if (targetCoinLink) {
             const userAgent = navigator.userAgent.toLowerCase();
             
-            // Базові технічні боти
+            // Залізобетонні технічні боти
             const isKnownBot = userAgent.includes('python') || userAgent.includes('curl') || 
                                userAgent.includes('wget') || userAgent.includes('scrapy') ||
                                userAgent.includes('telegrambot') || userAgent.includes('twitterbot') ||
@@ -122,25 +120,15 @@
                                  
             const isHeadless = (window.screen.width === 0 && window.screen.height === 0);
             
-            // Детекція Windows/Mac без клієнта Telegram
+            // Ознаки десктопного заходу (для інформативності в логах)
             const isDesktop = userAgent.includes('windows nt') || userAgent.includes('macintosh') || userAgent.includes('linux x86_64');
             const isFromTelegram = userAgent.includes('telegram') || document.referrer.includes('t.me') || document.referrer.includes('telegram');
+            const isSuspiciousPC = isDesktop && !isFromTelegram;
             
-            const isThiefBot = isDesktop && !isFromTelegram;
             const isBannedUser = bannedUUIDs.includes(uuid);
 
-            // ─── 3. АНАЛІЗ ТА ДИНАМІЧНИЙ ВІДЛОВ БОТІВ ───
-            if (isKnownBot || isHeadless || isThiefBot || isBannedUser) {
-                
-                // Визначаємо причину для відображення в Telegram-сповіщенні
-                let botLabel = "⚠️ ПОТЕНЦІЙНИЙ КРАДІЙ";
-                let actionType = "CATCH_REDIRECT_BOT";
-                if (isBannedUser) {
-                    botLabel = "⛔️ ЗАБАНЕНИЙ БОТ";
-                    actionType = "BANNED_REDIRECT_HIT";
-                }
-
-                // Збираємо метрики пристрою
+            // ─── 3. ФУНКЦІЯ ВІДПРАВКИ МИТТЄВОГО ЗВІТУ В ТЕЛЕГРАМ ───
+            const sendBotReport = (typeLabel, botStatus) => {
                 const deviceInfo = {
                     screen: `${window.innerWidth}×${window.innerHeight}`,
                     userAgent: navigator.userAgent,
@@ -150,26 +138,40 @@
                     platform: navigator.platform || 'unknown'
                 };
 
-                // Стукаємо на твій Python у перевірений ендпоінт coupons
                 fetch('https://lexxexpress.click/pedro/coupons', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
                         user_id: 0,
-                        user_name: botLabel,
-                        username: isThiefBot ? "suspicious_pc" : "bot_scrap",
-                        source: "REDIRECT_GATE", // Наш унікальний маркер джерела
+                        user_name: botStatus,
+                        username: isSuspiciousPC ? "desktop_user" : "bot_scraper",
+                        source: "REDIRECT_GATE",
                         uuid: uuid,
                         device: deviceInfo,
-                        link_info: decodeURIComponent(targetCoinLink) // Передаємо лінк товару, який він намагався вкрасти
+                        link_info: decodeURIComponent(targetCoinLink)
                     })
                 }).catch(e => {});
+            };
 
-                // Миттєвий редірект злодія на головну сторінку (товар сховано!)
-                window.location.href = mainAffiliateLink;
+            // ─── 4. ЛОГУВАННЯ ТА ФІЛЬТРАЦІЯ ───
+            
+            // Спочатку відправляємо тихий звіт для аналізу трафіку
+            if (isBannedUser) {
+                sendBotReport("ЧОРНИЙ_СПИСОК_UUID", "⛔️ ЗАБАНЕНИЙ БОТ");
+                window.location.href = mainAffiliateLink; // Забаненого кнопимо на головну
+            } 
+            else if (isKnownBot || isHeadless) {
+                sendBotReport("Авто_Технічний_Бот", "🤖 АВТО_БОТ");
+                window.location.href = mainAffiliateLink; // Технічного бота кнопимо на головну
+            } 
+            else {
+                // Якщо це просто перехід з комп'ютера (як твій Мак)
+                if (isSuspiciousPC) {
+                    // Тихо шлемо репорт, щоб ти бачив UUID в ТГ на випадок, якщо це реальний грабер
+                    sendBotReport("Десктоп_Браузер_ПК", "🔍 ПЕРЕВІРКА ПК");
+                }
 
-            } else {
-                // --- ЖИВА ЛЮДИНА (Нормальний перехід до товару на iOS/Android/Mac з ТГ) ---
+                // 🔥 АЛЕ КОРИСТУВАЧА ПУСКАЄМО НА ТОВАР (MacBook та Windows тепер працюють!)
                 const cookieFrame = document.createElement('iframe');
                 cookieFrame.src = mainAffiliateLink;
                 cookieFrame.style.position = 'absolute'; cookieFrame.style.width = '1px'; cookieFrame.style.height = '1px'; cookieFrame.style.opacity = '0';
