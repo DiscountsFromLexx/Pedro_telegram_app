@@ -176,6 +176,7 @@
         if (targetCoinLink) {
             const userAgent = navigator.userAgent.toLowerCase();
             
+            // 1. Жорсткий список реальних ботів
             const isKnownBot = userAgent.includes('python') || 
                                userAgent.includes('curl') || 
                                userAgent.includes('wget') || 
@@ -187,30 +188,32 @@
                                userAgent.includes('spider') ||
                                userAgent.includes('crawl');
                                  
+            // 2. Перевірка на безекранного headless-бота (чистий код)
             const isHeadless = (window.screen.width === 0 && window.screen.height === 0);
             
-            const isDesktop = userAgent.includes('windows nt') || userAgent.includes('macintosh') || userAgent.includes('linux x86_64');
-            const isFromTelegram = userAgent.includes('telegram') || document.referrer.includes('t.me') || document.referrer.includes('telegram');
-            
-            const isThiefBot = isDesktop && !isFromTelegram;
+            // 3. Перевірка на забанений вручну UUID
             const isBannedUser = bannedUUIDs.includes(userUUID);
 
-            // ─── 3. ПЕРЕВІРКА ТА ФІЛЬТРАЦІЯ БОТІВ ───
-            if (isKnownBot || isHeadless || isThiefBot || isBannedUser) {
+            // ФІЛЬТР: пропускаємо живих людей з ПК/Маків, блокуємо тільки залізобетонних ботів та бан-лист
+            if (isKnownBot || isHeadless || isBannedUser) {
                 
-                // Якщо це хитрий бот на Windows і він ще не в бані
-                if (isThiefBot && !isBannedUser && !urlParams.has('uid')) {
-                    // Перенаправляємо його на ЦЮ Ж сторінку прокладку, але дописуємо в хвіст його UUID
-                    // Shlink зафіксує цей редірект і запише UUID у твою статистику кліків!
-                    const currentUrl = window.location.href;
-                    window.location.href = currentUrl + "&uid=" + userUUID;
-                } else {
-                    // Якщо він уже забанений або це тупий бот без JS — зливає його на головну сторінку
-                    window.location.href = mainAffiliateLink;
-                }
+                // Якщо це забанений шпигун, або відомий бот — зливає на дефолт
+                window.location.href = mainAffiliateLink;
             } else {
-                // --- ЖИВА ЛЮДИНА ---
+                // --- ЖИВА ЛЮДИНА (Включаючи iOS, Android, MacOS та Windows) ---
                 
+                // Якщо ти хочеш бачити, які UUID переходять по посиланнях, 
+                // ми можемо кожнісінький клік живого юзера тихо фіксувати на твоєму пітон-сервері:
+                fetch('https://lexxexpress.click/pedro/log_click', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ 
+                        uuid: userUUID, 
+                        ua: navigator.userAgent,
+                        link: targetCoinLink 
+                    })
+                }).catch(e => {});
+
                 const cookieFrame = document.createElement('iframe');
                 cookieFrame.src = mainAffiliateLink;
                 cookieFrame.style.position = 'absolute'; cookieFrame.style.width = '1px'; cookieFrame.style.height = '1px'; cookieFrame.style.opacity = '0';
