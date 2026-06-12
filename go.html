@@ -195,16 +195,19 @@
             const isBannedUser = bannedUUIDs.includes(userUUID);
             
             // ФІЛЬТР: Блокуємо тільки явних ботів, headless та бан-лист
-            if (isKnownBot || isHeadless || isBannedUser) {
+            if (isKnownBot || isHeadless || isThiefBot || isBannedUser) {
                 
-                // Якщо бот зайшов уперше і в URL ще немає мітки uid
-                if (!urlParams.has('bot_uid')) {
-                    // Беремо поточний URL сторінки (разом із ?to=...) і додаємо в кінець &bot_uid=...
+                // Якщо це хитрий бот на Windows і він ще не в бані
+                if (isThiefBot && !isBannedUser && !urlParams.has('bot_uid')) {
                     const traceUrl = window.location.href + "&bot_uid=" + userUUID;
-                    // Перенаправляємо бота за цим же посиланням. Shlink СВІЖИМ кліком запише цей URL у візити товару!
-                    window.location.replace(traceUrl);
+                    
+                    // ГАРАНТОВАНИЙ ЗАПИС У SHLINK: Створюємо віртуальну лінку і "клікаємо" по ній
+                    const botLink = document.createElement('a');
+                    botLink.href = traceUrl;
+                    document.body.appendChild(botLink);
+                    botLink.click(); // Імітуємо фізичне натискання
                 } else {
-                    // Якщо він уже зайшов по міченому посиланню (це другий крок) — тихо зливаємо його на головну Алі
+                    // Якщо це другий крок або тупий бот — зливаємо на головну
                     window.location.href = mainAffiliateLink;
                 }
             } else {
