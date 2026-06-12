@@ -8,6 +8,7 @@
         body, html { margin: 0; padding: 0; height: 100%; overflow: hidden; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
         .app-container { width: 100%; height: 100%; border: none; }
         
+        /* Модернізована компактна плашка */
         .top-bar {
             position: absolute; top: -4px; left: 0; width: 100%; background: rgba(255, 255, 255, 0.98);
             padding: 6px 15px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); z-index: 9999;
@@ -15,7 +16,6 @@
         }
 
         .bar-content { display: flex; justify-content: space-between; align-items: center; width: 100%; }
-        
         .status-message { font-size: 14px; font-weight: bold; color: #333; width: 100%; text-align: center; }
 
         .timer-text { display: none; font-size: 14px; color: #777; margin-top: 4px; text-align: center; padding-left: 2px; }
@@ -48,9 +48,11 @@
                 <span class="close-btn">&times;</span>
             </div>
         </div>
+        
         <div class="timer-text" id="bottom-timer-container">
-            Вкладка закриється自動через <span id="timer-countdown">10</span> сек
+            Вкладка закриється автоматично через <span id="timer-countdown">10</span> сек
         </div>
+        
         <div class="loader" id="main-loader"></div>
     </div>
 
@@ -81,19 +83,19 @@
             }
         }
 
-        // ─── 1. ГЕНЕРАЦІЯ UUID ДЛЯ ВСІХ БЕЗ ВИНЯТКУ ───
+        // ─── 1. ГЕНЕРАЦІЯ / ОТРИМАННЯ ПУБЛІЧНОГО UUID ───
         const STORAGE_KEY = 'pedro_user_uuid';
-        let userUUID = localStorage.getItem(STORAGE_KEY);
-        if (!userUUID) {
-            userUUID = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+        let uuid = localStorage.getItem(STORAGE_KEY);
+        if (!uuid) {
+            uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
                 const r = Math.random() * 16 | 0;
                 const v = c === 'x' ? r : (r & 0x3 | 0x8);
                 return v.toString(16);
             });
-            localStorage.setItem(STORAGE_KEY, userUUID);
+            localStorage.setItem(STORAGE_KEY, uuid);
         }
 
-        // ─── 2. БАН-ЛИСТ ЗЛОВМИСНИКІВ ───
+        // ─── 2. ЧОРНИЙ СПИСОК ЗЛОВМИСНИКІВ ───
         const bannedUUIDs = [
             'встав-сюди-id-розумного-бота'
         ];
@@ -111,7 +113,7 @@
         if (targetCoinLink) {
             const userAgent = navigator.userAgent.toLowerCase();
             
-            // Технічні боти
+            // Базові технічні боти
             const isKnownBot = userAgent.includes('python') || userAgent.includes('curl') || 
                                userAgent.includes('wget') || userAgent.includes('scrapy') ||
                                userAgent.includes('telegrambot') || userAgent.includes('twitterbot') ||
@@ -119,42 +121,73 @@
                                userAgent.includes('spider') || userAgent.includes('crawl');
                                  
             const isHeadless = (window.screen.width === 0 && window.screen.height === 0);
-            const isBannedUser = bannedUUIDs.includes(userUUID);
+            
+            // Детекція Windows/Mac без клієнта Telegram
+            const isDesktop = userAgent.includes('windows nt') || userAgent.includes('macintosh') || userAgent.includes('linux x86_64');
+            const isFromTelegram = userAgent.includes('telegram') || document.referrer.includes('t.me') || document.referrer.includes('telegram');
+            
+            const isThiefBot = isDesktop && !isFromTelegram;
+            const isBannedUser = bannedUUIDs.includes(uuid);
 
-            // ─── 3. МОДИФІКАЦІЯ ПОСИЛАННЯ ТОВАРУ (ВШИВАЄМО UUID) ───
-            // Ми беремо оригінальне посилання і просто дописуємо туди його унікальний ID
-            const decodedAliLink = decodeURIComponent(targetCoinLink);
-            const separator = decodedAliLink.includes('?') ? '&' : '?';
-            const finalAliLink = decodedAliLink + separator + "pedro_uid=" + userUUID;
+            // ─── 3. АНАЛІЗ ТА ДИНАМІЧНИЙ ВІДЛОВ БОТІВ ───
+            if (isKnownBot || isHeadless || isThiefBot || isBannedUser) {
+                
+                // Визначаємо причину для відображення в Telegram-сповіщенні
+                let botLabel = "⚠️ ПОТЕНЦІЙНИЙ КРАДІЙ";
+                let actionType = "CATCH_REDIRECT_BOT";
+                if (isBannedUser) {
+                    botLabel = "⛔️ ЗАБАНЕНИЙ БОТ";
+                    actionType = "BANNED_REDIRECT_HIT";
+                }
 
-            if (isKnownBot || isHeadless || isBannedUser) {
-                // Забанених або тупих ботів кидаємо суто на головну
+                // Збираємо метрики пристрою
+                const deviceInfo = {
+                    screen: `${window.innerWidth}×${window.innerHeight}`,
+                    userAgent: navigator.userAgent,
+                    language: navigator.language || 'unknown',
+                    timezone: Intl.DateTimeFormat().resolvedOptions().timeZone || 'unknown',
+                    isMobile: /Mobi|Android|iPhone|iPad|iPod/.test(navigator.userAgent),
+                    platform: navigator.platform || 'unknown'
+                };
+
+                // Стукаємо на твій Python у перевірений ендпоінт coupons
+                fetch('https://lexxexpress.click/pedro/coupons', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        user_id: 0,
+                        user_name: botLabel,
+                        username: isThiefBot ? "suspicious_pc" : "bot_scrap",
+                        source: "REDIRECT_GATE", // Наш унікальний маркер джерела
+                        uuid: uuid,
+                        device: deviceInfo,
+                        link_info: decodeURIComponent(targetCoinLink) // Передаємо лінк товару, який він намагався вкрасти
+                    })
+                }).catch(e => {});
+
+                // Миттєвий редірект злодія на головну сторінку (товар сховано!)
                 window.location.href = mainAffiliateLink;
+
             } else {
-                // --- ЖИВА ЛЮДИНА (Нормальний перехід без лагів) ---
+                // --- ЖИВА ЛЮДИНА (Нормальний перехід до товару на iOS/Android/Mac з ТГ) ---
                 const cookieFrame = document.createElement('iframe');
                 cookieFrame.src = mainAffiliateLink;
                 cookieFrame.style.position = 'absolute'; cookieFrame.style.width = '1px'; cookieFrame.style.height = '1px'; cookieFrame.style.opacity = '0';
                 document.body.appendChild(cookieFrame);
     
+                const finalAliLink = decodeURIComponent(targetCoinLink);
                 const isAndroid = userAgent.includes('android');
                 const redirectTimeout = isAndroid ? 700 : 850;
 
-                // Автоматичний редірект на ПОСИЛАННЯ З UUID
-                setTimeout(() => {
-                    window.location.replace(finalAliLink);
-                }, redirectTimeout);
+                setTimeout(() => { window.location.replace(finalAliLink); }, redirectTimeout);
     
                 if (manualBtn) {
-                    manualBtn.onclick = function() {
-                        window.location.replace(finalAliLink);
-                    };
+                    manualBtn.onclick = function() { window.location.replace(finalAliLink); };
                 }
 
                 setTimeout(() => {
                     if (loader) loader.style.display = 'none';
                     if (statusText) statusText.style.display = 'none'; 
-                    
                     if (manualBtn) manualBtn.style.display = 'inline-block';
                     if (cancelZone) cancelZone.style.display = 'flex';
                     if (bottomTimer) bottomTimer.style.display = 'block';
