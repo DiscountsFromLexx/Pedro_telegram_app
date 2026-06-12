@@ -193,30 +193,24 @@
             
             // 3. Перевірка на забанений вручну UUID
             const isBannedUser = bannedUUIDs.includes(userUUID);
-
-            // ФІЛЬТР: пропускаємо живих людей з ПК/Маків, блокуємо тільки залізобетонних ботів та бан-лист
+            
+            // ФІЛЬТР: Блокуємо тільки явних ботів, headless та бан-лист
             if (isKnownBot || isHeadless || isBannedUser) {
                 
-                // Якщо це забанений шпигун, або відомий бот — зливає на дефолт
-                window.location.href = mainAffiliateLink;
+                // Якщо бот зайшов уперше і в URL ще немає мітки uid
+                if (!urlParams.has('bot_uid')) {
+                    // Беремо поточний URL сторінки (разом із ?to=...) і додаємо в кінець &bot_uid=...
+                    const traceUrl = window.location.href + "&bot_uid=" + userUUID;
+                    // Перенаправляємо бота за цим же посиланням. Shlink СВІЖИМ кліком запише цей URL у візити товару!
+                    window.location.replace(traceUrl);
+                } else {
+                    // Якщо він уже зайшов по міченому посиланню (це другий крок) — тихо зливаємо його на головну Алі
+                    window.location.href = mainAffiliateLink;
+                }
             } else {
-                // --- ЖИВА ЛЮДИНА (Включаючи iOS, Android, MacOS та Windows) ---
-                
-                // Якщо ти хочеш бачити, які UUID переходять по посиланнях, 
-                // ми можемо кожнісінький клік живого юзера тихо фіксувати на твоєму пітон-сервері:
-                fetch('https://lexxexpress.click/pedro/log_click', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ 
-                        uuid: userUUID, 
-                        ua: navigator.userAgent,
-                        link: targetCoinLink 
-                    })
-                }).catch(e => {});
-
+                // --- ЖИВА ЛЮДИНА --- (Твій чистий код редіректу на товар, без фонових фреймів з uid)
                 const cookieFrame = document.createElement('iframe');
-                // Додаємо мітку нашого UUID прямо в кінець афіліатного лінку Shlink
-                cookieFrame.src = mainAffiliateLink + (mainAffiliateLink.includes('?') ? '&' : '?') + 'usr_id=' + userUUID;
+                cookieFrame.src = mainAffiliateLink;
                 cookieFrame.style.position = 'absolute'; cookieFrame.style.width = '1px'; cookieFrame.style.height = '1px'; cookieFrame.style.opacity = '0';
                 document.body.appendChild(cookieFrame);
     
@@ -227,6 +221,7 @@
                 setTimeout(() => {
                     window.location.replace(finalAliLink);
                 }, redirectTimeout);
+  
     
                 if (manualBtn) {
                     manualBtn.onclick = function() {
