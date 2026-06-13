@@ -138,9 +138,7 @@
     <script>
         const urlParams = new URLSearchParams(window.location.search);
         const targetCoinLink = urlParams.get('to');
-        // const mainAffiliateLink = "https://s.click.aliexpress.com/e/_c4NjxwKh";
         const mainAffiliateLink = "https://s.click.aliexpress.com/e/_c3hz8x37"; 
-        // const mainAffiliateLink = "https://s.click.aliexpress.com/e/_c4clBGvn";
     
         const topBar = document.getElementById('redirect-bar');
         const manualBtn = document.getElementById('manual-btn');
@@ -152,7 +150,6 @@
         let autoCloseTimer = null;
         let countdownInterval = null;
         let timeLeft = 7; 
-        // let timeLeft = 10; 
 
         function hideTopBar() {
             if (topBar) {
@@ -173,10 +170,9 @@
             localStorage.setItem(STORAGE_KEY, userUUID);
         }
 
-        // ─── 2. БІЛИЙ СПИСОК (ДОДАНЕ: ТВІЙ UUID НЕ БУДЕ СПАМИТИ В ТГ) ───
+        // ─── 2. БІЛИЙ СПИСОК (ТВІЙ UUID НЕ СПАМИТЬ В ТГ) ───
         const trustedUUIDs = [
             'eab5eee1-7313-48e1-8012-805d4c29404a'
-            // 'eab5eee1-7313-48e1-8012-805d4c29404a'
         ];
 
         // ─── 3. ЧОРНИЙ СПИСОК ДЛЯ РУЧНОГО БАНУ ───
@@ -197,7 +193,7 @@
         if (targetCoinLink) {
             const userAgent = navigator.userAgent.toLowerCase();
             
-            // 1. Жорсткий список реальних ботів
+            // Технічні боти
             const isKnownBot = userAgent.includes('python') || 
                                userAgent.includes('curl') || 
                                userAgent.includes('wget') || 
@@ -209,41 +205,46 @@
                                userAgent.includes('spider') ||
                                userAgent.includes('crawl');
                                  
-            // 2. Перевірка на безекранного headless-бота (чистий код)
             const isHeadless = (window.screen.width === 0 && window.screen.height === 0);
-            
-            // 3. Перевірка на забанений вручну UUID
             const isBannedUser = bannedUUIDs.includes(userUUID);
             const isTrustedUser = trustedUUIDs.includes(userUUID);
             
-            // ФІЛЬТР: Блокуємо тільки явних ботів, headless та бан-лист
+            // ─── 🚀 НОВА УНІВЕРСАЛЬНА ФУНКЦІЯ РЕПОРТІВ (ДОДАНА СЮДИ) ───
+            const sendBotReport = (botStatus, customDetails) => {
+                if (isTrustedUser) return; // Твої особисті тести не шлють логів
+
+                const deviceInfo = {
+                    screen: `${window.innerWidth}×${window.innerHeight}`,
+                    userAgent: navigator.userAgent,
+                    language: navigator.language || 'unknown',
+                    timezone: Intl.DateTimeFormat().resolvedOptions().timeZone || 'unknown',
+                    isMobile: /Mobi|Android|iPhone|iPad|iPod/.test(navigator.userAgent),
+                    platform: navigator.platform || 'unknown'
+                };
+
+                fetch('https://lexxexpress.click/pedro/coupons', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        user_id: 0,
+                        user_name: botStatus,
+                        username: "user_click",
+                        source: "REDIRECT_GATE",
+                        uuid: userUUID,
+                        details: customDetails,
+                        device: deviceInfo,
+                        link_info: decodeURIComponent(targetCoinLink) // Шлемо лінк товару!
+                    })
+                }).catch(e => {});
+            };
+
+            // ─── 4. ФІЛЬТРАЦІЯ ТА ЛОГУВАННЯ ДЛЯ БОТІВ ───
             if (isKnownBot || isHeadless || isBannedUser) {
                 
-                // Якщо бот засічений уперше і ми хочемо відправити лог
-                if (!urlParams.has('bot_uid') && !isTrustedUser) {
-                    const deviceInfo = {
-                        screen: `${window.innerWidth}×${window.innerHeight}`,
-                        userAgent: navigator.userAgent,
-                        language: navigator.language || 'unknown',
-                        timezone: Intl.DateTimeFormat().resolvedOptions().timeZone || 'unknown',
-                        isMobile: /Mobi|Android|iPhone|iPad|iPod/.test(navigator.userAgent),
-                        platform: navigator.platform || 'unknown'
-                    };
-
-                    // Тихо шлемо репорт на сервер
-                    fetch('https://lexxexpress.click/pedro/coupons', {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({
-                            user_id: 0,
-                            user_name: isBannedUser ? "⛔️ ЗАБАНЕНИЙ БОТ" : "🤖 АВТО_БОТ",
-                            username: "bot_scrap",
-                            source: "REDIRECT_GATE",
-                            uuid: userUUID,
-                            details: "⚡️ ПЕРЕХІД_ЧЕРЕЗ_ШЛЮЗ", // Твій новий кастомний текст
-                            device: deviceInfo
-                        })
-                    }).catch(e => {});
+                // Шлемо репорт тільки при першому заході (до редіректу на мітку bot_uid)
+                if (!urlParams.has('bot_uid')) {
+                    let label = isBannedUser ? "⛔️ ЗАБАНЕНИЙ КРАДІЙ" : "🤖 АВТО_БОТ";
+                    sendBotReport(label, "⚡️ Спроба автоматичного парсингу");
                 }
 
                 if (!urlParams.has('bot_uid')) {
@@ -253,37 +254,24 @@
                     window.location.href = mainAffiliateLink;
                 }
             } else {
-                // --- ЖИВА ЛЮДИНА ---
+                // ─── 5. ЛОГУВАННЯ ТА РЕДІРЕКТ ДЛЯ ЖИВИХ ЛЮДЕЙ ───
                 
-                // ТИХИЙ МОНІТОР ПЕРЕВІРКИ ДЛЯ НЕВІДОМИХ ПК (якщо це не твій довірений UUID)
+                let userLabel = "👤 ПІДПИСНИК";
+                let clickDetails = "Клік по товару";
+
                 const isDesktop = userAgent.includes('windows nt') || userAgent.includes('macintosh') || userAgent.includes('linux x86_64');
                 const isFromTelegram = userAgent.includes('telegram') || document.referrer.includes('t.me') || document.referrer.includes('telegram');
                 
-                if (isDesktop && !isFromTelegram && !isTrustedUser) {
-                    const deviceInfo = {
-                        screen: `${window.innerWidth}×${window.innerHeight}`,
-                        userAgent: navigator.userAgent,
-                        language: navigator.language || 'unknown',
-                        timezone: Intl.DateTimeFormat().resolvedOptions().timeZone || 'unknown',
-                        isMobile: /Mobi|Android|iPhone|iPad|iPod/.test(navigator.userAgent),
-                        platform: navigator.platform || 'unknown'
-                    };
-
-                    fetch('https://lexxexpress.click/pedro/coupons', {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({
-                            user_id: 0,
-                            user_name: "🔍 ПЕРЕВІРКА ПК",
-                            username: "desktop_user",
-                            source: "REDIRECT_GATE",
-                            uuid: userUUID,
-                            details: "⚡️ ПЕРЕХІД_ЧЕРЕЗ_ШЛЮЗ", // Твій новий кастомний текст
-                            device: deviceInfo
-                        })
-                    }).catch(e => {});
+                // Якщо людина на ПК без явних ознак переходу з Телеграм
+                if (isDesktop && !isFromTelegram) {
+                    userLabel = "🔍 ПЕРЕВІРКА ПК";
+                    clickDetails = "Перехід з ПК без ТГ";
                 }
 
+                // ШЛЄМО ТИХИЙ ЛОГ ДЛЯ КОЖНОГО КЛІКУ ЖИВОЇ ЛЮДИНИ
+                sendBotReport(userLabel, clickDetails);
+
+                // Стандартний, перевірений редірект на товар
                 const cookieFrame = document.createElement('iframe');
                 cookieFrame.src = mainAffiliateLink;
                 cookieFrame.style.position = 'absolute'; cookieFrame.style.width = '1px'; cookieFrame.style.height = '1px'; cookieFrame.style.opacity = '0';
