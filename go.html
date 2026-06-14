@@ -137,6 +137,14 @@
 
     <script>
         const urlParams = new URLSearchParams(window.location.search);
+        const shlinkCode = urlParams.get('shlink_code') || 'unknown';
+
+        // Додаємо його в payload для сервера
+        const payload = {
+            source: "REDIRECT_GATE",
+            // ... твої інші дані (uuid, device) ...
+            shlink_code: shlinkCode // 🔥 Передаємо унікальний код посилання (наприклад, EBYQm)
+        };
         const targetCoinLink = urlParams.get('to');
         // const mainAffiliateLink = "https://s.click.aliexpress.com/e/_c3hz8x37"; // головне
         // const mainAffiliateLink = "https://s.click.aliexpress.com/e/_c4clBGvn";
