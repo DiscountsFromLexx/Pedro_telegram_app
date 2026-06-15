@@ -290,7 +290,14 @@
                 cookieFrame.style.position = 'absolute'; cookieFrame.style.width = '1px'; cookieFrame.style.height = '1px'; cookieFrame.style.opacity = '0';
                 document.body.appendChild(cookieFrame);
     
-                const finalAliLink = decodeURIComponent(targetCoinLink);
+                //const finalAliLink = decodeURIComponent(targetCoinLink);
+                let finalAliLink = "";
+                    try {
+                    // Декодуємо з Base64, а потім чистимо від URI-символів
+                    finalAliLink = decodeURIComponent(atob(targetCoinLink));
+                } catch(e) {
+                    finalAliLink = mainAffiliateLink; // якщо зламали параметр — кидаємо на головну
+                }
                 const isAndroid = userAgent.includes('android');
                 const redirectTimeout = isAndroid ? 700 : 850;
 
