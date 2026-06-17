@@ -213,7 +213,9 @@
             const isWindows = userAgent.includes('windows nt');
             
             // 1. Пастка на кругли фейкові версії Chrome (наприклад: chrome/144.0.0.0, chrome/148.0.0.0)
-            const isFakeChromeVersion = /chrome\/\d+\.0\.0\.0/.test(userAgent);
+            // const isFakeChromeVersion = /chrome\/\d+\.0\.0\.0/.test(userAgent);
+            // Стало (Пастка спрацює тільки якщо це Chrome з нулями, але НЕ Opera):
+            const isFakeChromeVersion = /chrome\/\d+\.0\.0\.0/.test(userAgent) && !userAgent.includes('opr') && !userAgent.includes('opera');
             
             // 2. Комбо-пастка: Windows + Chrome + мова RU/EN-US + запуск без Телеграм-реферера
             const isChrome = userAgent.includes('chrome') && !userAgent.includes('edg') && !userAgent.includes('opr');
