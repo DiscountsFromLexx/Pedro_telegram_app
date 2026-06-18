@@ -256,9 +256,8 @@
                 }).catch(e => {});
             };
 
-            // ─── 4. ФІЛЬТРАЦІЯ ТА ЛОКУВАННЯ ДЛЯ БОТІВ (УСІ ПАСТКИ РАЗОМ) ───
-            if (isKnownBot || isHeadless || isBannedUser || isSuspiciousWindowsBot || isVerticalDesktop) {
-    
+            // ─── 4. ФІЛЬТРАЦІЯ ТА ЛОГУВАННЯ ДЛЯ БОТІВ (УСІ ПАСТКИ РАЗОМ) ───
+            if (isKnownBot || isHeadless || isBannedUser || isSuspiciousWindowsBot) {
                 // Шлемо репорт тільки при першому заході
                 if (!urlParams.has('bot_uid')) {
                     let label = "🤖 АВТО_БОТ";
