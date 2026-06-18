@@ -228,14 +228,14 @@
             const isSuspiciousWindowsBot = isWindows && isChrome && !isFromTelegram && (browserLanguage.toLowerCase().startsWith('ru') || browserLanguage.toLowerCase() === 'en-us');
 
             // 🔍 Пастка на мандрівників у часі: Chrome з далекого майбутнього
-            let isChromeFromFuture = false;
-            const chromeMatch = userAgent.match(/chrome\/(\d+)\./);
-            if (chromeMatch) {
-                const chromeVersion = parseInt(chromeMatch[1], 10);
-                if (chromeVersion >= 146) { // Якщо версія 146 і вище — у 2026 році це 100% бот
-                    isChromeFromFuture = true;
-                }
-            }
+            //let isChromeFromFuture = false;
+            // const chromeMatch = userAgent.match(/chrome\/(\d+)\./);
+            // if (chromeMatch) {
+                // const chromeVersion = parseInt(chromeMatch[1], 10);
+              //   if (chromeVersion >= 146) { // Якщо версія 146 і вище — у 2026 році це 100% бот
+                 //   isChromeFromFuture = true;
+             //   }
+         //   }
 
             // Відомі загальнотехнічні боти
             const isKnownBot = userAgent.includes('python') || userAgent.includes('curl') || 
@@ -274,7 +274,7 @@
             };
 
             // ─── 4. ФІЛЬТРАЦІЯ ТА ЛОГУВАННЯ ДЛЯ БОТІВ (УСІ ПАСТКИ РАЗОМ) ───
-            if (isKnownBot || isHeadless || isBannedUser || isSuspiciousWindowsBot || isVerticalDesktop || isChromeFromFuture) {
+            if (isKnownBot || isHeadless || isBannedUser || isSuspiciousWindowsBot || isVerticalDesktop {
     
                 // Шлемо репорт тільки при першому заході
                 if (!urlParams.has('bot_uid')) {
@@ -284,7 +284,7 @@
                     if (isFakeChromeVersion) label = "🚨 ШПИГУН: FAKE CHROME";
                     else if (isSuspiciousWindowsBot) label = "🤖 ПАСТКА: WINDOWS-ПАРСЕР";
                     else if (isBannedUser) label = "⛔️ ЗАБАНЕНИЙ КРАДІЙ";
-                    else if (isChromeFromFuture) label = "🚨 ШПИГУН: CHROME З МАЙБУТНЬОГО"; // <-- ОЦЕ ІДЕАЛЬНЕ МІСЦЕ!
+                    // else if (isChromeFromFuture) label = "🚨 ШПИГУН: CHROME З МАЙБУТНЬОГО"; // <-- ОЦЕ ІДЕАЛЬНЕ МІСЦЕ!
                     
                     sendBotReport(label, "⚡️ Автоматичне відсікання за аномаліями пристрою", mainAffiliateLink);
                 }
