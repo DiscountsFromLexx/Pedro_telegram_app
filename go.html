@@ -256,21 +256,20 @@
                 }).catch(e => {});
             };
 
-            // ─── 4. ФІЛЬТРАЦІЯ ТА ЛОГУВАННЯ ДЛЯ БОТІВ (УСІ ПАСТКИ РАЗОМ) ───
+            // ─── 4. ФІЛЬТРАЦІЯ ТА ЛОКУВАННЯ ДЛЯ БОТІВ (УСІ ПАСТКИ РАЗОМ) ───
             if (isKnownBot || isHeadless || isBannedUser || isSuspiciousWindowsBot || isVerticalDesktop) {
     
                 // Шлемо репорт тільки при першому заході
                 if (!urlParams.has('bot_uid')) {
                     let label = "🤖 АВТО_БОТ";
                     
-                    // Перевіряємо кастомні снайперські мітки
                     if (isFakeChromeVersion) label = "🚨 ШПИГУН: FAKE CHROME";
                     else if (isSuspiciousWindowsBot) label = "🤖 ПАСТКА: WINDOWS-ПАРСЕР";
                     else if (isBannedUser) label = "⛔️ ЗАБАНЕНИЙ КРАДІЙ";
                     
                     sendBotReport(label, "⚡️ Автоматичне відсікання за аномаліями пристрою", mainAffiliateLink);
                 }
-            
+
                 if (!urlParams.has('bot_uid')) {
                     const traceUrl = window.location.href + "&bot_uid=" + userUUID;
                     window.location.replace(traceUrl);
@@ -278,7 +277,7 @@
                     window.location.href = mainAffiliateLink;
                 }
             } else {
-                // ─── 5. ЛОГУВАННЯ ТА РЕДІРЕКТ ДЛЯ ЖИВИХ ЛЮДЕЙ ───
+                // ─── 5. ЛОКУВАННЯ ТА РЕДІРЕКТ ДЛЯ ЖИВИХ ЛЮДЕЙ ───
                 
                 let userLabel = "👤 ПІДПИСНИК";
                 let clickDetails = "Клік по товару";
@@ -287,7 +286,7 @@
                 
                 if (isDesktop && !isFromTelegram) {
                     userLabel = "🔍 ПЕРЕВІРКА ПК";
-                    clickDetails = "Переход з ПК без ТГ";
+                    clickDetails = "Перехід з ПК без ТГ";
                 }
 
                 // 🔥 РОЗУМНЕ ГІБРИДНЕ ДЕКОДУВАННЯ (Для старих і нових посилань)
