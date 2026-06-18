@@ -207,7 +207,9 @@
             const isFromTelegram = userAgent.includes('telegram') || document.referrer.includes('t.me') || document.referrer.includes('telegram');
             const browserLanguage = navigator.language || 'unknown';
                                      
-            const isHeadless = (window.screen.width === 0 && window.screen.height === 0);
+            // const isHeadless = (window.screen.width === 0 && window.screen.height === 0);
+            // Бронебійна пастка на автоматизацію: 0% помилкових спрацьовувань на людях
+            const isHeadless = (window.screen.width === 0 && window.screen.height === 0) || (navigator.webdriver === true);
             const isBannedUser = bannedUUIDs.includes(userUUID);
             const isTrustedUser = trustedUUIDs.includes(userUUID);
             
