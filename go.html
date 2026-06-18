@@ -1,380 +1,371 @@
+А ну подивись я вірно додав // 🔍 Пастка на мандрівників у часі: Chrome з далекого майбутнього та 4. ФІЛЬТРАЦІЯ ТА ЛОГУВАННЯ ДЛЯ БОТІВ 
 <!DOCTYPE html>
 <html lang="uk">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Завантаження AliExpress...</title>
-    <style>
-        body, html { margin: 0; padding: 0; height: 100%; overflow: hidden; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
-        .app-container { width: 100%; height: 100%; border: none; }
-        
-        /* Модернізована компактна плашка */
-        .top-bar {
-            position: absolute; 
-            top: -4px; 
-            left: 0; 
-            width: 100%; 
-            background: rgba(255, 255, 255, 0.98);
-            /* Твій компактний відступ */
-            padding: 6px 15px; 
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1); 
-            z-index: 9999;
-            box-sizing: border-box;
-            transition: transform 0.4s ease, opacity 0.4s ease;
-        }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Завантаження AliExpress...</title>
+    <style>
+        body, html { margin: 0; padding: 0; height: 100%; overflow: hidden; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+        .app-container { width: 100%; height: 100%; border: none; }
+        
+        /* Модернізована компактна плашка */
+        .top-bar {
+            position: absolute; 
+            top: -4px; 
+            left: 0; 
+            width: 100%; 
+            background: rgba(255, 255, 255, 0.98);
+            /* Твій компактний відступ */
+            padding: 6px 15px; 
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1); 
+            z-index: 9999;
+            box-sizing: border-box;
+            transition: transform 0.4s ease, opacity 0.4s ease;
+        }
 
-        /* Контейнер для вирівнювання елементів в один рядок */
-        .bar-content {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            width: 100%;
-        }
-        
-        /* Початковий стан повідомлення розробника */
-        .status-message {
-            font-size: 14px;
-            font-weight: bold;
-            color: #333;
-            width: 100%;
-            text-align: center;
-        }
+        /* Контейнер для вирівнювання елементів в один рядок */
+        .bar-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+        }
+        
+        /* Початковий стан повідомлення розробника */
+        .status-message {
+            font-size: 14px;
+            font-weight: bold;
+            color: #333;
+            width: 100%;
+            text-align: center;
+        }
 
-        /* Твій центрований блок таймера зі шрифтом 14px */
-        .timer-text {
-            display: none;
-            font-size: 14px;
-            color: #777;
-            margin-top: 4px;
-            text-align: center;
-            padding-left: 2px;
-        }
-        
-        #timer-countdown { color: #e62e04; font-weight: 800; }
-        
-        /* Лінійка завантаження */
-        .loader { height: 3px; width: 100%; background-color: #f3f3f3; position: absolute; bottom: 0; left: 0; overflow: hidden; }
-        .loader::after {
-            content: ''; display: block; height: 100%; background-color: #e62e04; width: 40%;
-            animation: loading 0.8s infinite ease-in-out;
-        }
-        @keyframes loading { 0% { margin-left: -40%; } 100% { margin-left: 100%; } }
+        /* Твій центрований блок таймера зі шрифтом 14px */
+        .timer-text {
+            display: none;
+            font-size: 14px;
+            color: #777;
+            margin-top: 4px;
+            text-align: center;
+            padding-left: 2px;
+        }
+        
+        #timer-countdown { color: #e62e04; font-weight: 800; }
+        
+        /* Лінійка завантаження */
+        .loader { height: 3px; width: 100%; background-color: #f3f3f3; position: absolute; bottom: 0; left: 0; overflow: hidden; }
+        .loader::after {
+            content: ''; display: block; height: 100%; background-color: #e62e04; width: 40%;
+            animation: loading 0.8s infinite ease-in-out;
+        }
+        @keyframes loading { 0% { margin-left: -40%; } 100% { margin-left: 100%; } }
 
-        /* Компактна квадратна кнопка */
-        .action-btn {
-            display: none;
-            background-color: #e62e04;
-            color: white; border: none; 
-            padding: 8px 14px;
-            font-size: 12px; font-weight: bold; 
-            border-radius: 4px;
-            cursor: pointer; text-decoration: none;
-            box-shadow: 0 2px 4px rgba(230, 46, 4, 0.2);
-            white-space: nowrap;
-        }
-        
-        /* Зона скасування праворуч */
-        .keep-open-zone {
-            display: none;
-            align-items: center;
-            gap: 6px;
-            cursor: pointer;
-            user-select: none;
-            color: #888;
-            transition: color 0.2s;
-        }
-        .keep-open-zone:hover { color: #333; }
-        
-        /* Твій шрифт 14px для скасування */
-        .keep-open-text {
-            font-size: 14px;
-            font-weight: normal;
-        }
-        
-        .close-btn {
-            font-size: 20px;
-            line-height: 1;
-            font-weight: bold;
-        }
-    </style>
+        /* Компактна квадратна кнопка */
+        .action-btn {
+            display: none;
+            background-color: #e62e04;
+            color: white; border: none; 
+            padding: 8px 14px;
+            font-size: 12px; font-weight: bold; 
+            border-radius: 4px;
+            cursor: pointer; text-decoration: none;
+            box-shadow: 0 2px 4px rgba(230, 46, 4, 0.2);
+            white-space: nowrap;
+        }
+        
+        /* Зона скасування праворуч */
+        .keep-open-zone {
+            display: none;
+            align-items: center;
+            gap: 6px;
+            cursor: pointer;
+            user-select: none;
+            color: #888;
+            transition: color 0.2s;
+        }
+        .keep-open-zone:hover { color: #333; }
+        
+        /* Твій шрифт 14px для скасування */
+        .keep-open-text {
+            font-size: 14px;
+            font-weight: normal;
+        }
+        
+        .close-btn {
+            font-size: 20px;
+            line-height: 1;
+            font-weight: bold;
+        }
+    </style>
 </head>
 <body>
 
-    <noscript>
-        <style>
-            /* Повністю ховаємо весь твій сайт, інтерфейс, кнопки та iframe для пристроїв без JS */
-            #redirect-bar, .app-container { display: none !important; opacity: 0 !important; visibility: hidden !important; }
-            /* Показуємо білий екран або дефолтне повідомлення */
-            .no-js-container { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; font-family: sans-serif; text-align: center; background: #fff; }
-        </style>
-        <div class="no-js-container">
-            <h2>Завантаження...</h2>
-            <p>Для переходу на сторінку товару увімкніть JavaScript або відкрийте посилання у додатку Telegram.</p>
-            <a href="https://s.click.aliexpress.com/e/_c3hz8x37" style="color: #e62e04; font-weight: bold; text-decoration: none; margin-top: 15px; display: inline-block;">Перейти на головну AliExpress</a>
-        </div>
-    </noscript>
-    
-    <div class="top-bar" id="redirect-bar">
-        <div class="bar-content" id="main-content-zone">
-            <span id="status-text" class="status-message">Відкриваю додаток AliExpress...</span>
-            
-            <button class="action-btn" id="manual-btn">Відкрити в додатку</button>
-            
-            <div class="keep-open-zone" id="cancel-close-zone">
-                <span class="keep-open-text">Не закривати вкладку</span>
-                <span class="close-btn">&times;</span>
-            </div>
-        </div>
-        
-        <div class="timer-text" id="bottom-timer-container">
-            Вкладка закриється автоматично через <span id="timer-countdown">7</span> сек
-        </div>
-        
-        <div class="loader" id="main-loader"></div>
-    </div>
+    <noscript>
+        <style>
+            /* Повністю ховаємо весь твій сайт, інтерфейс, кнопки та iframe для пристроїв без JS */
+            #redirect-bar, .app-container { display: none !important; opacity: 0 !important; visibility: hidden !important; }
+            /* Показуємо білий екран або дефолтне повідомлення */
+            .no-js-container { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; font-family: sans-serif; text-align: center; background: #fff; }
+        </style>
+        <div class="no-js-container">
+            <h2>Завантаження...</h2>
+            <p>Для переходу на сторінку товару увімкніть JavaScript або відкрийте посилання у додатку Telegram.</p>
+            <a href="https://s.click.aliexpress.com/e/_c3hz8x37" style="color: #e62e04; font-weight: bold; text-decoration: none; margin-top: 15px; display: inline-block;">Перейти на головну AliExpress</a>
+        </div>
+    </noscript>
+    
+    <div class="top-bar" id="redirect-bar">
+        <div class="bar-content" id="main-content-zone">
+            <span id="status-text" class="status-message">Відкриваю додаток AliExpress...</span>
+            
+            <button class="action-btn" id="manual-btn">Відкрити в додатку</button>
+            
+            <div class="keep-open-zone" id="cancel-close-zone">
+                <span class="keep-open-text">Не закривати вкладку</span>
+                <span class="close-btn">&times;</span>
+            </div>
+        </div>
+        
+        <div class="timer-text" id="bottom-timer-container">
+            Вкладка закриється автоматично через <span id="timer-countdown">7</span> сек
+        </div>
+        
+        <div class="loader" id="main-loader"></div>
+    </div>
 
-    <iframe class="app-container" src="./index.html"></iframe>
+    <iframe class="app-container" src="./index.html"></iframe>
 
-    <script>
-        const urlParams = new URLSearchParams(window.location.search);
-        const shlinkCode = urlParams.get('shlink_code') || 'unknown';
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const shlinkCode = urlParams.get('shlink_code') || 'unknown';
 
-        // Додаємо його в payload для сервера
-        const payload = {
-            source: "REDIRECT_GATE",
-            shlink_code: shlinkCode 
-        };
-        const targetCoinLink = urlParams.get('to');
-        // const mainAffiliateLink = "https://s.click.aliexpress.com/e/_c3hz8x37"; // головне
-        // const mainAffiliateLink = "https://s.click.aliexpress.com/e/_c4clBGvn";
-        // const mainAffiliateLink = "https://s.click.aliexpress.com/e/_c3ESx29T"; // акція
-        const mainAffiliateLink = "https://s.click.aliexpress.com/e/_c4mMcAdL"; // головне 18-06
-    
-        const topBar = document.getElementById('redirect-bar');
-        const manualBtn = document.getElementById('manual-btn');
-        const cancelZone = document.getElementById('cancel-close-zone');
-        const statusText = document.getElementById('status-text');
-        const loader = document.getElementById('main-loader');
-        const bottomTimer = document.getElementById('bottom-timer-container');
+        // Додаємо його в payload для сервера
+        const payload = {
+            source: "REDIRECT_GATE",
+            shlink_code: shlinkCode 
+        };
+        const targetCoinLink = urlParams.get('to');
+        // const mainAffiliateLink = "https://s.click.aliexpress.com/e/_c3hz8x37"; // головне
+        // const mainAffiliateLink = "https://s.click.aliexpress.com/e/_c4clBGvn";
+        // const mainAffiliateLink = "https://s.click.aliexpress.com/e/_c3ESx29T"; // акція
+        const mainAffiliateLink = "https://s.click.aliexpress.com/e/_c4mMcAdL"; // головне 18-06
+    
+        const topBar = document.getElementById('redirect-bar');
+        const manualBtn = document.getElementById('manual-btn');
+        const cancelZone = document.getElementById('cancel-close-zone');
+        const statusText = document.getElementById('status-text');
+        const loader = document.getElementById('main-loader');
+        const bottomTimer = document.getElementById('bottom-timer-container');
 
-        let autoCloseTimer = null;
-        let countdownInterval = null;
-        let timeLeft = 7; 
+        let autoCloseTimer = null;
+        let countdownInterval = null;
+        let timeLeft = 7; 
 
-        function hideTopBar() {
-            if (topBar) {
-                topBar.style.transform = 'translateY(-100%)';
-                topBar.style.opacity = '0';
-            }
-        }
+        function hideTopBar() {
+            if (topBar) {
+                topBar.style.transform = 'translateY(-100%)';
+                topBar.style.opacity = '0';
+            }
+        }
 
-        // ─── 1. ГЕНЕРАЦІЯ ТА ОТРИМАННЯ UUID ───
-        const STORAGE_KEY = 'pedro_user_uuid';
-        let userUUID = localStorage.getItem(STORAGE_KEY);
-        if (!userUUID) {
-            userUUID = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
-                const r = Math.random() * 16 | 0;
-                const v = c === 'x' ? r : (r & 0x3 | 0x8);
-                return v.toString(16);
-            });
-            localStorage.setItem(STORAGE_KEY, userUUID);
-        }
+        // ─── 1. ГЕНЕРАЦІЯ ТА ОТРИМАННЯ UUID ───
+        const STORAGE_KEY = 'pedro_user_uuid';
+        let userUUID = localStorage.getItem(STORAGE_KEY);
+        if (!userUUID) {
+            userUUID = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+                const r = Math.random() * 16 | 0;
+                const v = c === 'x' ? r : (r & 0x3 | 0x8);
+                return v.toString(16);
+            });
+            localStorage.setItem(STORAGE_KEY, userUUID);
+        }
 
-        // ─── 2. БІЛИЙ СПИСОК (ТВІЙ UUID НЕ СПАМИТЬ В ТГ) ───
-        const trustedUUIDs = [
-            // 'eab5eee1-7313-48e1-8012-805d4c29404a' // Мій Мак
-        ];
+        // ─── 2. БІЛИЙ СПИСОК (ТВІЙ UUID НЕ СПАМИТЬ В ТГ) ───
+        const trustedUUIDs = [
+            // 'eab5eee1-7313-48e1-8012-805d4c29404a' // Мій Мак
+        ];
 
-        // ─── 3. ЧОРНИЙ СПИСОК ДЛЯ РУЧНОГО БАНУ ───
-        const bannedUUIDs = [
-            '2d365796-778e-408d-b44d-281b2934881f', // Windows NT 
-            '66d2f374-416c-4bcc-82e5-2e524b341eb0',  // Windows NT (Chrome 148 фейк)
-            '5c08d0f3-225e-4b62-a1ed-9c67e7afc7de', // Майбутня версія Android 16; K
-            '3baab278-b797-4a29-8e04-8ea7582fe426', // Linux парсер Мадрид
-            '77ee6be9-99e2-4033-9620-f6c5087efd22' // Емулятор Android 16 + фейк Chrome 148 (моніторив Admitad лінк)
-        ];
+        // ─── 3. ЧОРНИЙ СПИСОК ДЛЯ РУЧНОГО БАНУ ───
+        const bannedUUIDs = [
+            '2d365796-778e-408d-b44d-281b2934881f', // Windows NT 
+            '66d2f374-416c-4bcc-82e5-2e524b341eb0',  // Windows NT (Chrome 148 фейк)
+            '5c08d0f3-225e-4b62-a1ed-9c67e7afc7de', // Майбутня версія Android 16; K
+            '3baab278-b797-4a29-8e04-8ea7582fe426', // Linux парсер Мадрид
+            '77ee6be9-99e2-4033-9620-f6c5087efd22' // Емулятор Android 16 + фейк Chrome 148 (моніторив Admitad лінк)
+        ];
 
-        if (cancelZone) {
-            cancelZone.onclick = function() {
-                clearTimeout(autoCloseTimer);      
-                clearInterval(countdownInterval);   
-                hideTopBar();                       
-                const cleanUrl = window.location.protocol + "//" + window.location.host + window.location.pathname.replace('go.html', '');
-                window.history.replaceState({path: cleanUrl}, '', cleanUrl);
-            };
-        }
+        if (cancelZone) {
+            cancelZone.onclick = function() {
+                clearTimeout(autoCloseTimer);      
+                clearInterval(countdownInterval);   
+                hideTopBar();                       
+                const cleanUrl = window.location.protocol + "//" + window.location.host + window.location.pathname.replace('go.html', '');
+                window.history.replaceState({path: cleanUrl}, '', cleanUrl);
+            };
+        }
 
-        if (targetCoinLink) {
-            const userAgent = navigator.userAgent.toLowerCase();
-            const isFromTelegram = userAgent.includes('telegram') || document.referrer.includes('t.me') || document.referrer.includes('telegram');
-            const browserLanguage = navigator.language || 'unknown';
-                                     
-            // const isHeadless = (window.screen.width === 0 && window.screen.height === 0);
-            // Бронебійна пастка на автоматизацію: 0% помилкових спрацьовувань на людях
-            const isHeadless = (window.screen.width === 0 && window.screen.height === 0) || (navigator.webdriver === true);
-            const isBannedUser = bannedUUIDs.includes(userUUID);
-            const isTrustedUser = trustedUUIDs.includes(userUUID);
-            
-            // 🎯 СНАЙПЕРСЬКІ МАРКЕРИ ДЛЯ АВТОМАТИЧНОГО ВИЯВЛЕННЯ ШПИГУНА
-            const isWindows = userAgent.includes('windows nt');
-            
-            // 1. Пастка на круглі фейкові версії Chrome — ВИМКНЕНО (заважає реальним користувачам)
-            // const isFakeChromeVersion = /chrome\/\d+\.0\.0\.0/.test(userAgent);
-            // const isFakeChromeVersion = /chrome\/\d+\.0\.0\.0/.test(userAgent) && !userAgent.includes('opr') && !userAgent.includes('opera');
-            const isFakeChromeVersion = false; // Повністю вимикаємо цю перевірку
-            
-            // 2. Комбо-пастка: Windows + Chrome + мова RU/EN-US + запуск без Телеграм-реферера
-            const isChrome = userAgent.includes('chrome') && !userAgent.includes('edg') && !userAgent.includes('opr');
-            const isSuspiciousWindowsBot = isWindows && isChrome && !isFromTelegram && (browserLanguage.toLowerCase().startsWith('ru') || browserLanguage.toLowerCase() === 'en-us');
+        if (targetCoinLink) {
+            const userAgent = navigator.userAgent.toLowerCase();
+            const isFromTelegram = userAgent.includes('telegram') || document.referrer.includes('t.me') || document.referrer.includes('telegram');
+            const browserLanguage = navigator.language || 'unknown';
+                                     
+            // const isHeadless = (window.screen.width === 0 && window.screen.height === 0);
+            // Бронебійна пастка на автоматизацію: 0% помилкових спрацьовувань на людях
+            const isHeadless = (window.screen.width === 0 && window.screen.height === 0) || (navigator.webdriver === true);
+            const isBannedUser = bannedUUIDs.includes(userUUID);
+            const isTrustedUser = trustedUUIDs.includes(userUUID);
+            
+            // 🎯 СНАЙПЕРСЬКІ МАРКЕРИ ДЛЯ АВТОМАТИЧНОГО ВИЯВЛЕННЯ ШПИГУНА
+            const isWindows = userAgent.includes('windows nt');
+            
+            // 1. Пастка на круглі фейкові версії Chrome — ВИМКНЕНО (заважає реальним користувачам)
+            // const isFakeChromeVersion = /chrome\/\d+\.0\.0\.0/.test(userAgent);
+            // const isFakeChromeVersion = /chrome\/\d+\.0\.0\.0/.test(userAgent) && !userAgent.includes('opr') && !userAgent.includes('opera');
+            const isFakeChromeVersion = false; // Повністю вимикаємо цю перевірку
+            
+            // 2. Комбо-пастка: Windows + Chrome + мова RU/EN-US + запуск без Телеграм-реферера
+            const isChrome = userAgent.includes('chrome') && !userAgent.includes('edg') && !userAgent.includes('opr');
+            const isSuspiciousWindowsBot = isWindows && isChrome && !isFromTelegram && (browserLanguage.toLowerCase().startsWith('ru') || browserLanguage.toLowerCase() === 'en-us');
 
-            // 🔍 Пастка на мандрівників у часі: Chrome з далекого майбутнього
-            //let isChromeFromFuture = false;
-            // const chromeMatch = userAgent.match(/chrome\/(\d+)\./);
-            // if (chromeMatch) {
-                // const chromeVersion = parseInt(chromeMatch[1], 10);
-              //   if (chromeVersion >= 146) { // Якщо версія 146 і вище — у 2026 році це 100% бот
-                 //   isChromeFromFuture = true;
-             //   }
-         //   }
+            
 
-            // Відомі загальнотехнічні боти
-            const isKnownBot = userAgent.includes('python') || userAgent.includes('curl') || 
-                               userAgent.includes('wget') || userAgent.includes('scrapy') ||
-                               userAgent.includes('telegrambot') || userAgent.includes('twitterbot') ||
-                               userAgent.includes('facebookexternalhit') || userAgent.includes('bot') ||
-                               userAgent.includes('spider') || userAgent.includes('crawl');
+            // Відомі загальнотехнічні боти
+            const isKnownBot = userAgent.includes('python') || userAgent.includes('curl') || 
+                               userAgent.includes('wget') || userAgent.includes('scrapy') ||
+                               userAgent.includes('telegrambot') || userAgent.includes('twitterbot') ||
+                               userAgent.includes('facebookexternalhit') || userAgent.includes('bot') ||
+                               userAgent.includes('spider') || userAgent.includes('crawl');
 
-            // ─── 🚀 УНІВЕРСАЛЬНА ФУНКЦІЯ РЕПОРТІВ ───
-            const sendBotReport = (botStatus, customDetails, finalUrlToSend) => {
-                if (isTrustedUser) return; // Твої особисті тести не шлють логів
+            // ─── 🚀 УНІВЕРСАЛЬНА ФУНКЦІЯ РЕПОРТІВ ───
+            const sendBotReport = (botStatus, customDetails, finalUrlToSend) => {
+                if (isTrustedUser) return; // Твої особисті тести не шлють логів
 
-                const deviceInfo = {
-                    screen: `${window.innerWidth}×${window.innerHeight}`,
-                    userAgent: navigator.userAgent,
-                    language: navigator.language || 'unknown',
-                    timezone: Intl.DateTimeFormat().resolvedOptions().timeZone || 'unknown',
-                    isMobile: /Mobi|Android|iPhone|iPad|iPod/.test(navigator.userAgent),
-                    platform: navigator.platform || 'unknown'
-                };
+                const deviceInfo = {
+                    screen: `${window.innerWidth}×${window.innerHeight}`,
+                    userAgent: navigator.userAgent,
+                    language: navigator.language || 'unknown',
+                    timezone: Intl.DateTimeFormat().resolvedOptions().timeZone || 'unknown',
+                    isMobile: /Mobi|Android|iPhone|iPad|iPod/.test(navigator.userAgent),
+                    platform: navigator.platform || 'unknown'
+                };
 
-                fetch('https://lexxexpress.click/pedro/coupons', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        user_id: 0,
-                        user_name: botStatus,
-                        username: "user_click",
-                        source: "REDIRECT_GATE",
-                        uuid: userUUID,
-                        details: customDetails,
-                        device: deviceInfo,
-                        link_info: finalUrlToSend // Надсилаємо розшифроване/дефолтне посилання!
-                    })
-                }).catch(e => {});
-            };
+                fetch('https://lexxexpress.click/pedro/coupons', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        user_id: 0,
+                        user_name: botStatus,
+                        username: "user_click",
+                        source: "REDIRECT_GATE",
+                        uuid: userUUID,
+                        details: customDetails,
+                        device: deviceInfo,
+                        link_info: finalUrlToSend // Надсилаємо розшифроване/дефолтне посилання!
+                    })
+                }).catch(e => {});
+            };
 
-            // ─── 4. ФІЛЬТРАЦІЯ ТА ЛОГУВАННЯ ДЛЯ БОТІВ (УСІ ПАСТКИ РАЗОМ) ───
-            if (isKnownBot || isHeadless || isBannedUser || isSuspiciousWindowsBot || isVerticalDesktop {
-    
-                // Шлемо репорт тільки при першому заході
-                if (!urlParams.has('bot_uid')) {
-                    let label = "🤖 АВТО_БОТ";
-                    
-                    // Перевіряємо кастомні снайперські мітки
-                    if (isFakeChromeVersion) label = "🚨 ШПИГУН: FAKE CHROME";
-                    else if (isSuspiciousWindowsBot) label = "🤖 ПАСТКА: WINDOWS-ПАРСЕР";
-                    else if (isBannedUser) label = "⛔️ ЗАБАНЕНИЙ КРАДІЙ";
-                    // else if (isChromeFromFuture) label = "🚨 ШПИГУН: CHROME З МАЙБУТНЬОГО"; // <-- ОЦЕ ІДЕАЛЬНЕ МІСЦЕ!
-                    
-                    sendBotReport(label, "⚡️ Автоматичне відсікання за аномаліями пристрою", mainAffiliateLink);
-                }
-            
-                if (!urlParams.has('bot_uid')) {
-                    const traceUrl = window.location.href + "&bot_uid=" + userUUID;
-                    window.location.replace(traceUrl);
-                } else {
-                    window.location.href = mainAffiliateLink;
-                }
-            } else {
-                // ─── 5. ЛОГУВАННЯ ТА РЕДІРЕКТ ДЛЯ ЖИВИХ ЛЮДЕЙ ───
-                
-                let userLabel = "👤 ПІДПИСНИК";
-                let clickDetails = "Клік по товару";
+            // ─── 4. ФІЛЬТРАЦІЯ ТА ЛОГУВАННЯ ДЛЯ БОТІВ (УСІ ПАСТКИ РАЗОМ) ───
+            if (isKnownBot || isHeadless || isBannedUser || isSuspiciousWindowsBot || isVerticalDesktop) {
+                
+                
+                // Шлемо репорт тільки при першому заході
+                if (!urlParams.has('bot_uid')) {
+                    let label = "🤖 АВТО_БОТ";
+                    if (isFakeChromeVersion) label = "🚨 ШПИГУН: FAKE CHROME";
+                    else if (isSuspiciousWindowsBot) label = "🤖 ПАСТКА: WINDOWS-ПАРСЕР";
+                    else if (isBannedUser) label = "⛔️ ЗАБАНЕНИЙ КРАДІЙ";
+                    
+                    sendBotReport(label, "⚡️ Автоматичне відсікання за аномаліями пристрою", mainAffiliateLink);
+                }
 
-                const isDesktop = userAgent.includes('windows nt') || userAgent.includes('macintosh') || userAgent.includes('linux x86_64');
-                
-                if (isDesktop && !isFromTelegram) {
-                    userLabel = "🔍 ПЕРЕВІРКА ПК";
-                    clickDetails = "Перехід з ПК без ТГ";
-                }
+                if (!urlParams.has('bot_uid')) {
+                    const traceUrl = window.location.href + "&bot_uid=" + userUUID;
+                    window.location.replace(traceUrl);
+                } else {
+                    window.location.href = mainAffiliateLink;
+                }
+            } else {
+                // ─── 5. ЛОГУВАННЯ ТА РЕДІРЕКТ ДЛЯ ЖИВИХ ЛЮДЕЙ ───
+                
+                let userLabel = "👤 ПІДПИСНИК";
+                let clickDetails = "Клік по товару";
 
-                // 🔥 РОЗУМНЕ ГІБРИДНЕ ДЕКОДУВАННЯ (Для старих і нових посилань)
-                let finalAliLink = mainAffiliateLink;
-                if (targetCoinLink) {
-                    try {
-                        const decodedParam = decodeURIComponent(targetCoinLink);
-                        
-                        if (decodedParam.startsWith('http://') || decodedParam.startsWith('https://')) {
-                            finalAliLink = decodedParam; // 👌 Старе посилання
-                        } else {
-                            finalAliLink = atob(decodedParam); // 🔐 Нове Base64 посилання
-                        }
-                    } catch (e) {
-                        console.error("Помилка розшифрування посилання:", e);
-                        finalAliLink = mainAffiliateLink;
-                    }
-                }
+                const isDesktop = userAgent.includes('windows nt') || userAgent.includes('macintosh') || userAgent.includes('linux x86_64');
+                
+                if (isDesktop && !isFromTelegram) {
+                    userLabel = "🔍 ПЕРЕВІРКА ПК";
+                    clickDetails = "Перехід з ПК без ТГ";
+                }
 
-                // ШЛЄМО ТИХИЙ ЛОГ ДЛЯ КОЖНОГО КЛІКУ ЖИВОЇ ЛЮДИНИ (передаємо вже розшифрований лінк)
-                sendBotReport(userLabel, clickDetails, finalAliLink);
-                
-                // Стандартний, перевірений редірект на товар
-                const cookieFrame = document.createElement('iframe');
-                cookieFrame.src = mainAffiliateLink;
-                cookieFrame.style.position = 'absolute'; cookieFrame.style.width = '1px'; cookieFrame.style.height = '1px'; cookieFrame.style.opacity = '0';
-                document.body.appendChild(cookieFrame);
-                
-                const isAndroid = userAgent.includes('android');
-                const redirectTimeout = isAndroid ? 700 : 850;
-                
-                setTimeout(() => {
-                    window.location.replace(finalAliLink);
-                }, redirectTimeout);
-                
-                if (manualBtn) {
-                    manualBtn.onclick = function() {
-                        window.location.replace(finalAliLink);
-                    };
-                }
+                // 🔥 РОЗУМНЕ ГІБРИДНЕ ДЕКОДУВАННЯ (Для старих і нових посилань)
+                let finalAliLink = mainAffiliateLink;
+                if (targetCoinLink) {
+                    try {
+                        const decodedParam = decodeURIComponent(targetCoinLink);
+                        
+                        if (decodedParam.startsWith('http://') || decodedParam.startsWith('https://')) {
+                            finalAliLink = decodedParam; // 👌 Старе посилання
+                        } else {
+                            finalAliLink = atob(decodedParam); // 🔐 Нове Base64 посилання
+                        }
+                    } catch (e) {
+                        console.error("Помилка розшифрування посилання:", e);
+                        finalAliLink = mainAffiliateLink;
+                    }
+                }
 
-                setTimeout(() => {
-                    if (loader) loader.style.display = 'none';
-                    if (statusText) statusText.style.display = 'none'; 
-                    
-                    if (manualBtn) manualBtn.style.display = 'inline-block';
-                    if (cancelZone) cancelZone.style.display = 'flex';
-                    if (bottomTimer) bottomTimer.style.display = 'block';
+                // ШЛЄМО ТИХИЙ ЛОГ ДЛЯ КОЖНОГО КЛІКУ ЖИВОЇ ЛЮДИНИ (передаємо вже розшифрований лінк)
+                sendBotReport(userLabel, clickDetails, finalAliLink);
+                
+                // Стандартний, перевірений редірект на товар
+                const cookieFrame = document.createElement('iframe');
+                cookieFrame.src = mainAffiliateLink;
+                cookieFrame.style.position = 'absolute'; cookieFrame.style.width = '1px'; cookieFrame.style.height = '1px'; cookieFrame.style.opacity = '0';
+                document.body.appendChild(cookieFrame);
+                
+                const isAndroid = userAgent.includes('android');
+                const redirectTimeout = isAndroid ? 700 : 850;
+                
+                setTimeout(() => {
+                    window.location.replace(finalAliLink);
+                }, redirectTimeout);
+                
+                if (manualBtn) {
+                    manualBtn.onclick = function() {
+                        window.location.replace(finalAliLink);
+                    };
+                }
 
-                    const countdownEl = document.getElementById('timer-countdown');
-                    if (countdownEl) countdownEl.innerText = timeLeft;
+                setTimeout(() => {
+                    if (loader) loader.style.display = 'none';
+                    if (statusText) statusText.style.display = 'none'; 
+                    
+                    if (manualBtn) manualBtn.style.display = 'inline-block';
+                    if (cancelZone) cancelZone.style.display = 'flex';
+                    if (bottomTimer) bottomTimer.style.display = 'block';
 
-                    countdownInterval = setInterval(() => {
-                        timeLeft--;
-                        if (countdownEl) countdownEl.innerText = timeLeft;
-                        if (timeLeft <= 0) {
-                            clearInterval(countdownInterval);
-                        }
-                    }, 1000);
+                    const countdownEl = document.getElementById('timer-countdown');
+                    if (countdownEl) countdownEl.innerText = timeLeft;
 
-                    autoCloseTimer = setTimeout(() => {
-                        window.close();
-                    }, timeLeft * 1000);
+                    countdownInterval = setInterval(() => {
+                        timeLeft--;
+                        if (countdownEl) countdownEl.innerText = timeLeft;
+                        if (timeLeft <= 0) {
+                            clearInterval(countdownInterval);
+                        }
+                    }, 1000);
 
-                }, 2500);
-            }
-        } else {
-            if (topBar) { topBar.style.display = 'none'; }
-        }
-    </script>
+                    autoCloseTimer = setTimeout(() => {
+                        window.close();
+                    }, timeLeft * 1000);
+
+                }, 2500);
+            }
+        } else {
+            if (topBar) { topBar.style.display = 'none'; }
+        }
+    </script>
 </body>
 </html>
