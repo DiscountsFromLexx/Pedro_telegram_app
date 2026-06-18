@@ -157,13 +157,13 @@
         // ─── 2. БІЛИЙ СПИСОК ───
         const trustedUUIDs = [];
 
-        // ─── 3. ЧОРНИЙ СПИСОК ───
+        // ─── 3. ЧОРНИЙ СПИСОК ДЛЯ РУЧНОГО БАНУ ───
         const bannedUUIDs = [
-            '2d365796-778e-408d-b44d-281b2934881f', // Windows NT 
-            '66d2f374-416c-4bcc-82e5-2e524b341eb0',  // Windows NT (Chrome 148 фейк)
-            '5c08d0f3-225e-4b62-a1ed-9c67e7afc7de', // Майбутня версія Android 16; K
-            '3baab278-b797-4a29-8e04-8ea7582fe426', // Linux парсер Мадрид
-            '77ee6be9-99e2-4033-9620-f6c5087efd22', // Емулятор Android 16 + фейк Chrome 148 (моніторив Admitad лінк)
+            '2d365796-778e-408d-b44d-281b2934881f', 
+            '66d2f374-416c-4bcc-82e5-2e524b341eb0',  
+            '5c08d0f3-225e-4b62-a1ed-9c67e7afc7de', 
+            '3baab278-b797-4a29-8e04-8ea7582fe426', 
+            '77ee6be9-99e2-4033-9620-f6c5087efd22',
             '4957c765-be37-4b31-ab31-510fde7f6352'
         ];
 
@@ -192,8 +192,21 @@
             const isChrome = userAgent.includes('chrome') && !userAgent.includes('edg') && !userAgent.includes('opr');
             const isSuspiciousWindowsBot = isWindows && isChrome && !isFromTelegram && (browserLanguage.toLowerCase().startsWith('ru') || browserLanguage.toLowerCase() === 'en-us');
 
-            // 🎯 НОВА СНАЙПЕРСЬКІ ПАСТКА: Чистий десктопний Chrome з нулями на Windows (Пастка для нашого фрукта)
+            // 🎯 ПАСТКА №1: Чистий десктопний Chrome з нулями на Windows (Твій улюблений інкогніто-фрукт)
             const isPureDesktopChromeWithZeros = isWindows && userAgent.includes('chrome/') && /chrome\/\d+\.0\.0\.0/.test(userAgent) && !userAgent.includes('opr') && !userAgent.includes('opera') && !userAgent.includes('edg');
+
+            // 🎯 ПАСТКА №2: Динамічний відлов «манрівників у часі» (Любий Chrome версії 146 і вище у 2026 році)
+            let isChromeFromFuture = false;
+            const chromeMatch = userAgent.match(/chrome\/(\d+)\./);
+            if (chromeMatch) {
+                const chromeVersion = parseInt(chromeMatch[1], 10);
+                if (chromeVersion >= 146) { 
+                    isChromeFromFuture = true;
+                }
+            }
+
+            // 🎯 ПАСТКА №3: Android з майбутнього (Емуляція Android 16 і вище)
+            const isAndroidFromFuture = userAgent.includes('android') && (userAgent.includes('android 16') || userAgent.includes('android 17') || userAgent.includes('android 18'));
 
             const isKnownBot = userAgent.includes('python') || userAgent.includes('curl') || 
                                userAgent.includes('wget') || userAgent.includes('scrapy') ||
@@ -231,17 +244,41 @@
             };
 
             // ─── 4. ФІЛЬТРАЦІЯ ТА ЛОГУВАННЯ ДЛЯ БОТІВ (УСІ ПАСТКИ РАЗОМ) ───
-            if (isKnownBot || isHeadless || isBannedUser || isSuspiciousWindowsBot || isPureDesktopChromeWithZeros) {
+            if (isKnownBot || isHeadless || isBannedUser || isSuspiciousWindowsBot || isPureDesktopChromeWithZeros || isChromeFromFuture || isAndroidFromFuture) {
                 // Шлемо репорт тільки при першому заході
                 if (!urlParams.has('bot_uid')) {
                     let label = "🤖 АВТО_БОТ";
+                    let actionTaken = "🚷 ЖОРСТКИЙ БАН: Скрипт заблоковано автоматично. ";
+
+                    if (isFakeChromeVersion) {
+                        label = "🚨 ШПИГУН: FAKE CHROME";
+                        actionTaken += "Відправлено ловити кукі на головну акцію.";
+                    }
+                    else if (isSuspiciousWindowsBot) {
+                        label = "🤖 ПАСТКА: WINDOWS-ПАРСЕР";
+                        actionTaken += "Злито на головний промо-лінк.";
+                    }
+                    else if (isBannedUser) {
+                        label = "⛔️ ЗАБАНЕНИЙ КРАДІЙ";
+                        actionTaken = "🚫 СЕНСАЦІЯ: Старий забанений шпигун повернувся! Посилання на товар заблоковано, скинуто на дефолт.";
+                    }
+                    else if (isPureDesktopChromeWithZeros) {
+                        label = "🚨 ШПИГУН: ДЕСКТОП ХРОМ З НУЛЯМИ";
+                        actionTaken += "Пастка інкогніто спрацювала. Перенаправлено на головну сторінку.";
+                    }
+                    else if (isChromeFromFuture) {
+                        label = "🚨 ШПИГУН: CHROME З МАЙБУТНЬОГО";
+                        actionTaken += "Динамічна пастка виявила несумісну версію Chrome (146+). Доступ закритий.";
+                    }
+                    else if (isAndroidFromFuture) {
+                        label = "🕵️‍♂️ ШПИГУН: АНДРОЇД З МАЙБУТНЬОГО";
+                        actionTaken += "Виявлено емуляцію Android 16+. Перехід до Base64-товару скасовано.";
+                    }
+                    else {
+                        actionTaken += "Технічний робот відправлений на головну.";
+                    }
                     
-                    if (isFakeChromeVersion) label = "🚨 ШПИГУН: FAKE CHROME";
-                    else if (isSuspiciousWindowsBot) label = "🤖 ПАСТКА: WINDOWS-ПАРСЕР";
-                    else if (isBannedUser) label = "⛔️ ЗАБАНЕНИЙ КРАДІЙ";
-                    else if (isPureDesktopChromeWithZeros) label = "🚨 ШПИГУН: ДЕСКТОП ХРОМ З НУЛЯМИ";
-                    
-                    sendBotReport(label, "⚡️ Автоматичне відсікання за аномаліями пристрою", mainAffiliateLink);
+                    sendBotReport(label, actionTaken, mainAffiliateLink);
                 }
 
                 if (!urlParams.has('bot_uid')) {
@@ -251,7 +288,7 @@
                     window.location.href = mainAffiliateLink;
                 }
             } else {
-                // ─── 5. ЛОГУВАННЯ ТА РЕДІРЕКТ ДЛЯ ЖИВИХ ЛЮДЕЙ ───
+                // ─── 5. ЛОКУВАННЯ ТА РЕДІРЕКТ ДЛЯ ЖИВИХ ЛЮДЕЙ ───
                 let userLabel = "👤 ПІДПИСНИК";
                 let clickDetails = "Клік по товару";
 
