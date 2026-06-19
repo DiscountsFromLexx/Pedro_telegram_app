@@ -15,7 +15,6 @@
             left: 0; 
             width: 100%; 
             background: rgba(255, 255, 255, 0.98);
-            /* Твій компактний відступ */
             padding: 6px 15px; 
             box-shadow: 0 2px 10px rgba(0,0,0,0.1); 
             z-index: 9999;
@@ -23,7 +22,6 @@
             transition: transform 0.4s ease, opacity 0.4s ease;
         }
 
-        /* Контейнер для вирівнювання елементів в один рядок */
         .bar-content {
             display: flex;
             justify-content: space-between;
@@ -31,7 +29,6 @@
             width: 100%;
         }
         
-        /* Початковий стан повідомлення розробника */
         .status-message {
             font-size: 14px;
             font-weight: bold;
@@ -40,7 +37,6 @@
             text-align: center;
         }
 
-        /* Твій центрований блок таймера зі шрифтом 14px */
         .timer-text {
             display: none;
             font-size: 14px;
@@ -52,7 +48,6 @@
         
         #timer-countdown { color: #e62e04; font-weight: 800; }
         
-        /* Лінійка завантаження */
         .loader { height: 3px; width: 100%; background-color: #f3f3f3; position: absolute; bottom: 0; left: 0; overflow: hidden; }
         .loader::after {
             content: ''; display: block; height: 100%; background-color: #e62e04; width: 40%;
@@ -60,7 +55,6 @@
         }
         @keyframes loading { 0% { margin-left: -40%; } 100% { margin-left: 100%; } }
 
-        /* Компактна квадратна кнопка */
         .action-btn {
             display: none;
             background-color: #e62e04;
@@ -73,7 +67,6 @@
             white-space: nowrap;
         }
         
-        /* Зона скасування праворуч */
         .keep-open-zone {
             display: none;
             align-items: center;
@@ -85,26 +78,15 @@
         }
         .keep-open-zone:hover { color: #333; }
         
-        /* Твій шрифт 14px для скасування */
-        .keep-open-text {
-            font-size: 14px;
-            font-weight: normal;
-        }
-        
-        .close-btn {
-            font-size: 20px;
-            line-height: 1;
-            font-weight: bold;
-        }
+        .keep-open-text { font-size: 14px; font-weight: normal; }
+        .close-btn { font-size: 20px; line-height: 1; font-weight: bold; }
     </style>
 </head>
 <body>
 
     <noscript>
         <style>
-            /* Повністю ховаємо весь твій сайт, інтерфейс, кнопки та iframe для пристроїв без JS */
             #redirect-bar, .app-container { display: none !important; opacity: 0 !important; visibility: hidden !important; }
-            /* Показуємо білий екран або дефолтне повідомлення */
             .no-js-container { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; font-family: sans-serif; text-align: center; background: #fff; }
         </style>
         <div class="no-js-container">
@@ -117,19 +99,15 @@
     <div class="top-bar" id="redirect-bar">
         <div class="bar-content" id="main-content-zone">
             <span id="status-text" class="status-message">Відкриваю додаток AliExpress...</span>
-            
             <button class="action-btn" id="manual-btn">Відкрити в додатку</button>
-            
             <div class="keep-open-zone" id="cancel-close-zone">
                 <span class="keep-open-text">Не закривати вкладку</span>
                 <span class="close-btn">&times;</span>
             </div>
         </div>
-        
         <div class="timer-text" id="bottom-timer-container">
             Вкладка закриється автоматично через <span id="timer-countdown">7</span> сек
         </div>
-        
         <div class="loader" id="main-loader"></div>
     </div>
 
@@ -139,7 +117,6 @@
         const urlParams = new URLSearchParams(window.location.search);
         const shlinkCode = urlParams.get('shlink_code') || 'unknown';
 
-        // Додаємо його в payload для сервера
         const payload = {
             source: "REDIRECT_GATE",
             shlink_code: shlinkCode 
@@ -177,10 +154,8 @@
             localStorage.setItem(STORAGE_KEY, userUUID);
         }
 
-        // ─── 2. БІЛИЙ СПИСОК (ТВІЙ UUID НЕ СПАМИТЬ В ТГ) ───
-        const trustedUUIDs = [
-            // 'eab5eee1-7313-48e1-8012-805d4c29404a' // Мій Мак
-        ];
+        // ─── 2. БІЛИЙ СПИСОК ───
+        const trustedUUIDs = [];
 
         // ─── 3. ЧОРНИЙ СПИСОК ДЛЯ РУЧНОГО БАНУ ───
         const bannedUUIDs = [
@@ -206,21 +181,32 @@
             const isFromTelegram = userAgent.includes('telegram') || document.referrer.includes('t.me') || document.referrer.includes('telegram');
             const browserLanguage = navigator.language || 'unknown';
                                                      
-            // Бронебійна пастка на автоматизацію: 0% помилкових спрацьовувань на людях
             const isHeadless = (window.screen.width === 0 && window.screen.height === 0) || (navigator.webdriver === true);
             const isBannedUser = bannedUUIDs.includes(userUUID);
             const isTrustedUser = trustedUUIDs.includes(userUUID);
             
-            // 🎯 СНАЙПЕРСЬКІ МАРКЕРИ ДЛЯ АВТОМАТИЧНОГО ВИЯВЛЕННЯ ШПИГУНА
             const isWindows = userAgent.includes('windows nt');
+            const isFakeChromeVersion = false; 
             
-            const isFakeChromeVersion = false; // Повністю вимикаємо цю перевірку
-            
-            // 2. Комбо-пастка: Windows + Chrome + мова RU/EN-US + запуск без Телеграм-реферера
             const isChrome = userAgent.includes('chrome') && !userAgent.includes('edg') && !userAgent.includes('opr');
             const isSuspiciousWindowsBot = isWindows && isChrome && !isFromTelegram && (browserLanguage.toLowerCase().startsWith('ru') || browserLanguage.toLowerCase() === 'en-us');
 
-            // Відомі загальнотехнічні боти
+            // 🎯 ПАСТКА №1: Чистий десктопний Chrome з нулями на Windows (Твій улюблений інкогніто-фрукт)
+            const isPureDesktopChromeWithZeros = isWindows && userAgent.includes('chrome/') && /chrome\/\d+\.0\.0\.0/.test(userAgent) && !userAgent.includes('opr') && !userAgent.includes('opera') && !userAgent.includes('edg');
+
+            // 🎯 ПАСТКА №2: Динамічний відлов «манрівників у часі» (Любий Chrome версії 146 і вище у 2026 році)
+            let isChromeFromFuture = false;
+            const chromeMatch = userAgent.match(/chrome\/(\d+)\./);
+            if (chromeMatch) {
+                const chromeVersion = parseInt(chromeMatch[1], 10);
+                if (chromeVersion >= 146) { 
+                    isChromeFromFuture = true;
+                }
+            }
+
+            // 🎯 ПАСТКА №3: Android з майбутнього (Емуляція Android 16 і вище)
+            const isAndroidFromFuture = userAgent.includes('android') && (userAgent.includes('android 16') || userAgent.includes('android 17') || userAgent.includes('android 18'));
+
             const isKnownBot = userAgent.includes('python') || userAgent.includes('curl') || 
                                userAgent.includes('wget') || userAgent.includes('scrapy') ||
                                userAgent.includes('telegrambot') || userAgent.includes('twitterbot') ||
@@ -229,7 +215,7 @@
 
             // ─── 🚀 УНІВЕРСАЛЬНА ФУНКЦІЯ РЕПОРТІВ ───
             const sendBotReport = (botStatus, customDetails, finalUrlToSend) => {
-                if (isTrustedUser) return; // Твої особисті тести не шлють логів
+                if (isTrustedUser) return; 
 
                 const deviceInfo = {
                     screen: `${window.innerWidth}×${window.innerHeight}`,
@@ -251,22 +237,47 @@
                         uuid: userUUID,
                         details: customDetails,
                         device: deviceInfo,
-                        link_info: finalUrlToSend // Надсилаємо розшифроване/дефолтне посилання!
+                        link_info: finalUrlToSend 
                     })
                 }).catch(e => {});
             };
 
             // ─── 4. ФІЛЬТРАЦІЯ ТА ЛОГУВАННЯ ДЛЯ БОТІВ (УСІ ПАСТКИ РАЗОМ) ───
-            if (isKnownBot || isHeadless || isBannedUser || isSuspiciousWindowsBot) {
+            if (isKnownBot || isHeadless || isBannedUser || isSuspiciousWindowsBot || isPureDesktopChromeWithZeros || isChromeFromFuture || isAndroidFromFuture) {
                 // Шлемо репорт тільки при першому заході
                 if (!urlParams.has('bot_uid')) {
                     let label = "🤖 АВТО_БОТ";
+                    let actionTaken = "🚷 ЖОРСТКИЙ БАН: Скрипт заблоковано автоматично. ";
+
+                    if (isFakeChromeVersion) {
+                        label = "🚨 ШПИГУН: FAKE CHROME";
+                        actionTaken += "Відправлено ловити кукі на головну акцію.";
+                    }
+                    else if (isSuspiciousWindowsBot) {
+                        label = "🤖 ПАСТКА: WINDOWS-ПАРСЕР";
+                        actionTaken += "Злито на головний промо-лінк.";
+                    }
+                    else if (isBannedUser) {
+                        label = "⛔️ ЗАБАНЕНИЙ КРАДІЙ";
+                        actionTaken = "🚫 СЕНСАЦІЯ: Старий забанений шпигун повернувся! Посилання на товар заблоковано, скинуто на дефолт.";
+                    }
+                    else if (isPureDesktopChromeWithZeros) {
+                        label = "🚨 ШПИГУН: ДЕСКТОП ХРОМ З НУЛЯМИ";
+                        actionTaken += "Пастка інкогніто спрацювала. Перенаправлено на головну сторінку.";
+                    }
+                    else if (isChromeFromFuture) {
+                        label = "🚨 ШПИГУН: CHROME З МАЙБУТНЬОГО";
+                        actionTaken += "Динамічна пастка виявила несумісну версію Chrome (146+). Доступ закритий.";
+                    }
+                    else if (isAndroidFromFuture) {
+                        label = "🕵️‍♂️ ШПИГУН: АНДРОЇД З МАЙБУТНЬОГО";
+                        actionTaken += "Виявлено емуляцію Android 16+. Перехід до Base64-товару скасовано.";
+                    }
+                    else {
+                        actionTaken += "Технічний робот відправлений на головну.";
+                    }
                     
-                    if (isFakeChromeVersion) label = "🚨 ШПИГУН: FAKE CHROME";
-                    else if (isSuspiciousWindowsBot) label = "🤖 ПАСТКА: WINDOWS-ПАРСЕР";
-                    else if (isBannedUser) label = "⛔️ ЗАБАНЕНИЙ КРАДІЙ";
-                    
-                    sendBotReport(label, "⚡️ Автоматичне відсікання за аномаліями пристрою", mainAffiliateLink);
+                    sendBotReport(label, actionTaken, mainAffiliateLink);
                 }
 
                 if (!urlParams.has('bot_uid')) {
@@ -277,7 +288,6 @@
                 }
             } else {
                 // ─── 5. ЛОКУВАННЯ ТА РЕДІРЕКТ ДЛЯ ЖИВИХ ЛЮДЕЙ ───
-                
                 let userLabel = "👤 ПІДПИСНИК";
                 let clickDetails = "Клік по товару";
 
@@ -288,16 +298,14 @@
                     clickDetails = "Перехід з ПК без ТГ";
                 }
 
-                // 🔥 РОЗУМНЕ ГІБРИДНЕ ДЕКОДУВАННЯ (Для старих і нових посилань)
                 let finalAliLink = mainAffiliateLink;
                 if (targetCoinLink) {
                     try {
                         const decodedParam = decodeURIComponent(targetCoinLink);
-                        
                         if (decodedParam.startsWith('http://') || decodedParam.startsWith('https://')) {
-                            finalAliLink = decodedParam; // 👌 Старе посилання
+                            finalAliLink = decodedParam; 
                         } else {
-                            finalAliLink = atob(decodedParam); // 🔐 Нове Base64 посилання
+                            finalAliLink = atob(decodedParam); 
                         }
                     } catch (e) {
                         console.error("Помилка розшифрування посилання:", e);
@@ -305,10 +313,8 @@
                     }
                 }
 
-                // ШЛЄМО ТИХИЙ ЛОГ ДЛЯ КОЖНОГО КЛІКУ ЖИВОЇ ЛЮДИНИ (передаємо вже розшифрований лінк)
                 sendBotReport(userLabel, clickDetails, finalAliLink);
                 
-                // Стандартний, перевірений редірект на товар
                 const cookieFrame = document.createElement('iframe');
                 cookieFrame.src = mainAffiliateLink;
                 cookieFrame.style.position = 'absolute'; cookieFrame.style.width = '1px'; cookieFrame.style.height = '1px'; cookieFrame.style.opacity = '0';
