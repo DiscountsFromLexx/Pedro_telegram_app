@@ -228,8 +228,8 @@
                 }
             }
 
-            // 🎯 ПАСТКА №3: Android з майбутнього (Емуляція Android 16 і вище)
-            const isAndroidFromFuture = userAgent.includes('android') && (userAgent.includes('android 16') || userAgent.includes('android 17') || userAgent.includes('android 18'));
+            // 🎯 ПАСТКА №3: Android з майбутнього (Емуляція Android 18 і вище)
+            const isAndroidFromFuture = userAgent.includes('android') && (userAgent.includes('android 18') || userAgent.includes('android 19') || userAgent.includes('android 20'));
 
             const isKnownBot = userAgent.includes('python') || userAgent.includes('curl') || 
                                userAgent.includes('wget') || userAgent.includes('scrapy') ||
@@ -294,7 +294,7 @@
                     }
                     else if (isAndroidFromFuture) {
                         label = "🕵️‍♂️ ШПИГУН: АНДРОЇД З МАЙБУТНЬОГО";
-                        actionTaken += "Виявлено емуляцію Android 16+. Перехід до Base64-товару скасовано.";
+                        actionTaken += "Виявлено емуляцію Android 18+. Перехід до Base64-товару скасовано.";
                     }
                     else {
                         actionTaken += "Технічний робот відправлений на головну.";
