@@ -218,12 +218,12 @@
             // 🎯 ПАСТКА №1: Чистий десктопний Chrome з нулями на Windows (Твій улюблений інкогніто-фрукт)
             const isPureDesktopChromeWithZeros = isWindows && userAgent.includes('chrome/') && /chrome\/\d+\.0\.0\.0/.test(userAgent) && !userAgent.includes('opr') && !userAgent.includes('opera') && !userAgent.includes('edg');
 
-            // 🎯 ПАСТКА №2: Динамічний відлов «мандрівників у часі» (Будь-який Chrome версії 146 і вище у 2026 році)
+            // 🎯 ПАСТКА №2: Динамічний відлов «мандрівників у часі» (Будь-який Chrome версії 180 і вище у 2026 році)
             let isChromeFromFuture = false;
             const chromeMatch = userAgent.match(/chrome\/(\d+)\./);
             if (chromeMatch) {
                 const chromeVersion = parseInt(chromeMatch[1], 10);
-                if (chromeVersion >= 146) { 
+                if (chromeVersion >= 180) { 
                     isChromeFromFuture = true;
                 }
             }
