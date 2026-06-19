@@ -154,7 +154,7 @@
             localStorage.setItem(STORAGE_KEY, userUUID);
         }
 
-        // ─── 2. БІЛИЙ СПИСОК ───
+        // ─── 2. БІЛИЙ СПИСОК (АБСОЛЮТНИЙ ІМУНІТЕТ — ПОВНА ТИША В ТГ) ───
         const trustedUUIDs = [];
 
         // ─── 3. ЧОРНИЙ СПИСОК ДЛЯ РУЧНОГО БАНУ ───
@@ -163,7 +163,10 @@
             '66d2f374-416c-4bcc-82e5-2e524b341eb0',  // Windows NT (Chrome 148 фейк)
             '5c08d0f3-225e-4b62-a1ed-9c67e7afc7de', // Майбутня версія Android 16; K
             '3baab278-b797-4a29-8e04-8ea7582fe426', // Linux парсер Мадрид
-            '77ee6be9-99e2-4033-9620-f6c5087efd22' // Емулятор Android 16 + фейк Chrome 148 (моніторив Admitad лінк)
+            '77ee6be9-99e2-4033-9620-f6c5087efd22', // Емулятор Android 16 + фейк Chrome 148 (моніторив Admitad лінк)
+            '930a64de-f8e7-4fe9-bc9b-bd1d4f89118b', // Нічний Linux-парсер Opera (Обійшов усе 19-06)
+            '7f048ce4-b932-4845-a17a-ccef603a600c', // Парсер-шпигун конкурента не ісруючий SamsungBrowser/30.0
+            '4957c765-be37-4b31-ab31-510fde7f6352' // Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36...
         ];
 
         if (cancelZone) {
@@ -176,7 +179,13 @@
             };
         }
 
-        if (targetCoinLink) {
+        // ─── ГОЛОВНА АСИНХРОННА ЛОГІКА ШЛЮЗУ ───
+        async function processRedirect() {
+            if (!targetCoinLink) {
+                if (topBar) { topBar.style.display = 'none'; }
+                return;
+            }
+
             const userAgent = navigator.userAgent.toLowerCase();
             const isFromTelegram = userAgent.includes('telegram') || document.referrer.includes('t.me') || document.referrer.includes('telegram');
             const browserLanguage = navigator.language || 'unknown';
@@ -184,6 +193,21 @@
             const isHeadless = (window.screen.width === 0 && window.screen.height === 0) || (navigator.webdriver === true);
             const isBannedUser = bannedUUIDs.includes(userUUID);
             const isTrustedUser = trustedUUIDs.includes(userUUID);
+            
+            // ─── 🔍 ДИНАМІЧНЕ ЗАВАНТАЖЕННЯ МІТОК ІЗ TRUSTED.JSON ───
+            let customUserLabel = "👤 ПІДПИСНИК"; 
+            try {
+                // Fetch до файлу trusted.json поруч із go.html на GitHub Pages
+                const trustedResponse = await fetch('./trusted.json?v=' + Date.now());
+                if (trustedResponse.ok) {
+                    const trustedNamesMap = await trustedResponse.json();
+                    if (userUUID in trustedNamesMap) {
+                        customUserLabel = trustedNamesMap[userUUID]; // Змінюємо назву на мітку з файлу
+                    }
+                }
+            } catch (e) {
+                console.error("Не вдалося завантажити trusted.json з Гітхабу:", e);
+            }
             
             const isWindows = userAgent.includes('windows nt');
             const isFakeChromeVersion = false; 
@@ -194,7 +218,7 @@
             // 🎯 ПАСТКА №1: Чистий десктопний Chrome з нулями на Windows (Твій улюблений інкогніто-фрукт)
             const isPureDesktopChromeWithZeros = isWindows && userAgent.includes('chrome/') && /chrome\/\d+\.0\.0\.0/.test(userAgent) && !userAgent.includes('opr') && !userAgent.includes('opera') && !userAgent.includes('edg');
 
-            // 🎯 ПАСТКА №2: Динамічний відлов «манрівників у часі» (Любий Chrome версії 146 і вище у 2026 році)
+            // 🎯 ПАСТКА №2: Динамічний відлов «мандрівників у часі» (Будь-який Chrome версії 146 і вище у 2026 році)
             let isChromeFromFuture = false;
             const chromeMatch = userAgent.match(/chrome\/(\d+)\./);
             if (chromeMatch) {
@@ -213,9 +237,8 @@
                                userAgent.includes('facebookexternalhit') || userAgent.includes('bot') ||
                                userAgent.includes('spider') || userAgent.includes('crawl');
 
-            // ─── 🚀 УНІВЕРСАЛЬНА ФУНКЦІЯ РЕПОРТІВ ───
             const sendBotReport = (botStatus, customDetails, finalUrlToSend) => {
-                if (isTrustedUser) return; 
+                if (isTrustedUser) return; // Якщо UUID у білому списку trustedUUIDs — лог не шлеться
 
                 const deviceInfo = {
                     screen: `${window.innerWidth}×${window.innerHeight}`,
@@ -242,7 +265,7 @@
                 }).catch(e => {});
             };
 
-            // ─── 4. ФІЛЬТРАЦІЯ ТА ЛОГУВАННЯ ДЛЯ БОТІВ (УСІ ПАСТКИ РАЗОМ) ───
+            // ─── 4. ФІЛЬТРАЦІЯ ТА ЛОКУВАННЯ ДЛЯ БОТІВ (УСІ ПАСТКИ РАЗОМ) ───
             if (isKnownBot || isHeadless || isBannedUser || isSuspiciousWindowsBot || isPureDesktopChromeWithZeros || isChromeFromFuture || isAndroidFromFuture) {
                 // Шлемо репорт тільки при першому заході
                 if (!urlParams.has('bot_uid')) {
@@ -288,13 +311,16 @@
                 }
             } else {
                 // ─── 5. ЛОКУВАННЯ ТА РЕДІРЕКТ ДЛЯ ЖИВИХ ЛЮДЕЙ ───
-                let userLabel = "👤 ПІДПИСНИК";
+                let userLabel = customUserLabel; // Використовуємо підтягнуте ім'я з trusted.json
                 let clickDetails = "Клік по товару";
 
                 const isDesktop = userAgent.includes('windows nt') || userAgent.includes('macintosh') || userAgent.includes('linux x86_64');
                 
                 if (isDesktop && !isFromTelegram) {
-                    userLabel = "🔍 ПЕРЕВІРКА ПК";
+                    // Якщо це лівий ПК без ТГ, і при цьому його UUID немає в базі міток — ставимо підозру ПК
+                    if (userLabel === "👤 ПІДПИСНИК") {
+                        userLabel = "🔍 ПЕРЕВІРКА ПК";
+                    }
                     clickDetails = "Перехід з ПК без ТГ";
                 }
 
@@ -358,9 +384,10 @@
 
                 }, 2500);
             }
-        } else {
-            if (topBar) { topBar.style.display = 'none'; }
         }
+
+        // Запускаємо головний асинхронний процес
+        processRedirect();
     </script>
 </body>
 </html>
