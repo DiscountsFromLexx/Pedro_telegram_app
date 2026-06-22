@@ -233,12 +233,22 @@
             // 🎯 ПАСТКА №3: Android з майбутнього (Емуляція Android 18+)
             const isAndroidFromFuture = userAgent.includes('android') && (userAgent.includes('android 18') || userAgent.includes('android 19') || userAgent.includes('android 20'));
 
-            // 🎯 ПАСТКА-ДЕТЕКТОР №3.5: Мобільні круглі нулі (Суто для радара-підсвітки, без бану!)
-            const isSuspiciousMobileZeros = userAgent.includes('mobile') && (
-                /chrome\/(\d+)\.0\.0\.0/.test(userAgent) || 
-                /opr\/(\d+)\.0\.0\.0/.test(userAgent) || 
-                /samsungbrowser\/(\d+)\.0\.0\.0/.test(userAgent)
-            );
+            // 🎯 ПАСТКА-ДЕТЕКТОР №3.5: Прокачаний радар мобільних аномалій
+            // Засікає фейкові мобільні пристрої з нулями, які мають технічні проколи в налаштуваннях
+            const isSuspiciousMobileZeros = userAgent.includes('mobile') && 
+                (
+                    /chrome\/(\d+)\.0\.0\.0/.test(userAgent) || 
+                    /opr\/(\d+)\.0\.0\.0/.test(userAgent) || 
+                    /samsungbrowser\/(\d+)\.0\.0\.0/.test(userAgent)
+                ) && 
+                (
+                    // Аномалія 1: Ширина екрана більша за висоту на "мобілці" (Альбомний режим емулятора)
+                    (window.innerWidth > window.innerHeight) || 
+                    // Аномалія 2: Екран занадто широкий або специфічний (наприклад, твій 1920x380)
+                    (window.innerWidth > 500) || 
+                    // Аномалія 3: Невідповідність заліза (пише Linux x86_64 або Win32 замість мобільного процесора)
+                    (navigator.platform && !/android|arm|iphone|ipad|ipod|macintel/i.test(navigator.platform))
+                );
             
             const isKnownBot = userAgent.includes('python') || userAgent.includes('curl') || 
                                userAgent.includes('wget') || userAgent.includes('scrapy') ||
@@ -322,10 +332,10 @@
                 let userLabel = customUserLabel;
                 let clickDetails = "Клік по товару";
 
-                // [РАДАР] Мобільні круглі нулі — сигналізуємо, але ні в якому разі не блокуємо реальних людей!
+                // [РАДАР] Мобільні аномалії — підсвічуємо нестандартні налаштування бота
                 if (isSuspiciousMobileZeros && userLabel === "👤 ПІДПИСНИК") {
-                    userLabel = "🕵️‍♂️ СУМНІВНИЙ МОБІЛЬНИЙ";
-                    clickDetails = "🚨 ПОПЕРЕДЖЕННЯ: Згенерований User-Agent з нулями (.0.0.0)! Можливий новий бот конкурента.";
+                    userLabel = "🕵️‍♂️ АНОМАЛЬНИЙ МОБІЛЬНИЙ";
+                    clickDetails = `🚨 УВАГА: Виявлено фейковий мобільний! Невідповідність екрану (${window.innerWidth}x${window.innerHeight}) або платформи. Ймовірний парсер.`;
                 }
 
                 const isDesktop = userAgent.includes('windows nt') || userAgent.includes('macintosh') || userAgent.includes('linux x86_64');
