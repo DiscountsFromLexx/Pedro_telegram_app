@@ -160,13 +160,15 @@
         // ─── 3. ЧОРНИЙ СПИСОК ДЛЯ РУЧНОГО БАНУ ───
         const bannedUUIDs = [
             '2d365796-778e-408d-b44d-281b2934881f', // Windows NT 
-            '66d2f374-416c-4bcc-82e5-2e524b341eb0',  // Windows NT (Chrome 148 фейк)
-            '5c08d0f3-225e-4b62-a1ed-9c67e7afc7de', // Майбутня версія Android 16; K
+            '66d2f374-416c-4bcc-82e5-2e524b341eb0', // Windows NT (Chrome 148 фейк)
+            // '5c08d0f3-225e-4b62-a1ed-9c67e7afc7de', // Майбутня версія Android 16; K
             '3baab278-b797-4a29-8e04-8ea7582fe426', // Linux парсер Мадрид
-            '77ee6be9-99e2-4033-9620-f6c5087efd22', // Емулятор Android 16 + фейк Chrome 148 (моніторив Admitad лінк)
+            // '77ee6be9-99e2-4033-9620-f6c5087efd22', // Емулятор Android 16 + фейк Chrome 148 (моніторив Admitad лінк)
             '930a64de-f8e7-4fe9-bc9b-bd1d4f89118b', // Нічний Linux-парсер Opera (Обійшов усе 19-06)
-            '7f048ce4-b932-4845-a17a-ccef603a600c', // Парсер-шпигун конкурента не ісруючий SamsungBrowser/30.0
-            '4957c765-be37-4b31-ab31-510fde7f6352' // Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36...
+            '7f048ce4-b932-4845-a17a-ccef603a600c', // Парсер-шпигун конкурента (Злодій магазинів)
+            '7f7af711-a0e9-4d7e-bbe5-fdc9365cc133', // Фейкова Opera Mobile 99 + Chrome 148 з нулями (Ефіоп 22-06)
+            // '685a7f67-5a29-4ee4-84ba-fe22f95028e6', // Парсер-шпигун конкурента (Злодій магазинів)
+            '4957c765-be37-4b31-ab31-510fde7f6352'  // Windows NT 10.0; Chrome/149.0.0.0 фейк з нулями
         ];
 
         if (cancelZone) {
@@ -218,18 +220,18 @@
             // 🎯 ПАСТКА №1: Чистий десктопний Chrome з нулями на Windows (Твій улюблений інкогніто-фрукт)
             const isPureDesktopChromeWithZeros = isWindows && userAgent.includes('chrome/') && /chrome\/\d+\.0\.0\.0/.test(userAgent) && !userAgent.includes('opr') && !userAgent.includes('opera') && !userAgent.includes('edg');
 
-            // 🎯 ПАСТКА №2: Динамічний відлов «мандрівників у часі» (Будь-який Chrome версії 146 і вище у 2026 році)
+            // 🎯 ПАСТКА №2: Динамічний відлов «мандрівників у часі» (Будь-який Chrome версії 180 і вище у 2026 році)
             let isChromeFromFuture = false;
             const chromeMatch = userAgent.match(/chrome\/(\d+)\./);
             if (chromeMatch) {
                 const chromeVersion = parseInt(chromeMatch[1], 10);
-                if (chromeVersion >= 146) { 
+                if (chromeVersion >= 180) { 
                     isChromeFromFuture = true;
                 }
             }
 
-            // 🎯 ПАСТКА №3: Android з майбутнього (Емуляція Android 16 і вище)
-            const isAndroidFromFuture = userAgent.includes('android') && (userAgent.includes('android 16') || userAgent.includes('android 17') || userAgent.includes('android 18'));
+            // 🎯 ПАСТКА №3: Android з майбутнього (Емуляція Android 18 і вище)
+            const isAndroidFromFuture = userAgent.includes('android') && (userAgent.includes('android 18') || userAgent.includes('android 19') || userAgent.includes('android 20'));
 
             const isKnownBot = userAgent.includes('python') || userAgent.includes('curl') || 
                                userAgent.includes('wget') || userAgent.includes('scrapy') ||
@@ -290,11 +292,11 @@
                     }
                     else if (isChromeFromFuture) {
                         label = "🚨 ШПИГУН: CHROME З МАЙБУТНЬОГО";
-                        actionTaken += "Динамічна пастка виявила несумісну версію Chrome (146+). Доступ закритий.";
+                        actionTaken += "Динамічна пастка виявила несумісну версію Chrome (180+). Доступ закритий.";
                     }
                     else if (isAndroidFromFuture) {
                         label = "🕵️‍♂️ ШПИГУН: АНДРОЇД З МАЙБУТНЬОГО";
-                        actionTaken += "Виявлено емуляцію Android 16+. Перехід до Base64-товару скасовано.";
+                        actionTaken += "Виявлено емуляцію Android 18+. Перехід до Base64-товару скасовано.";
                     }
                     else {
                         actionTaken += "Технічний робот відправлений на головну.";
