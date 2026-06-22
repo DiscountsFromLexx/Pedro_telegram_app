@@ -191,7 +191,7 @@
             const userAgent = navigator.userAgent.toLowerCase();
             const isFromTelegram = userAgent.includes('telegram') || document.referrer.includes('t.me') || document.referrer.includes('telegram');
             const browserLanguage = navigator.language || 'unknown';
-                                                     
+                                                             
             const isHeadless = (window.screen.width === 0 && window.screen.height === 0) || (navigator.webdriver === true);
             const isBannedUser = bannedUUIDs.includes(userUUID);
             const isTrustedUser = trustedUUIDs.includes(userUUID);
@@ -199,12 +199,11 @@
             // ─── 🔍 ДИНАМІЧНЕ ЗАВАНТАЖЕННЯ МІТОК ІЗ TRUSTED.JSON ───
             let customUserLabel = "👤 ПІДПИСНИК"; 
             try {
-                // Fetch до файлу trusted.json поруч із go.html на GitHub Pages
                 const trustedResponse = await fetch('./trusted.json?v=' + Date.now());
                 if (trustedResponse.ok) {
                     const trustedNamesMap = await trustedResponse.json();
                     if (userUUID in trustedNamesMap) {
-                        customUserLabel = trustedNamesMap[userUUID]; // Змінюємо назву на мітку з файлу
+                        customUserLabel = trustedNamesMap[userUUID];
                     }
                 }
             } catch (e) {
@@ -217,10 +216,10 @@
             const isChrome = userAgent.includes('chrome') && !userAgent.includes('edg') && !userAgent.includes('opr');
             const isSuspiciousWindowsBot = isWindows && isChrome && !isFromTelegram && (browserLanguage.toLowerCase().startsWith('ru') || browserLanguage.toLowerCase() === 'en-us');
 
-            // 🎯 ПАСТКА №1: Чистий десктопний Chrome з нулями на Windows (Твій улюблений інкогніто-фрукт)
+            // 🎯 ПАСТКА №1: Чистий десктопний Chrome з нулями на Windows
             const isPureDesktopChromeWithZeros = isWindows && userAgent.includes('chrome/') && /chrome\/\d+\.0\.0\.0/.test(userAgent) && !userAgent.includes('opr') && !userAgent.includes('opera') && !userAgent.includes('edg');
 
-            // 🎯 ПАСТКА №2: Динамічний відлов «мандрівників у часі» (Будь-який Chrome версії 180 і вище у 2026 році)
+            // 🎯 ПАСТКА №2: Динамічний відлов «мандрівників у часі» (Chrome 180+)
             let isChromeFromFuture = false;
             const chromeMatch = userAgent.match(/chrome\/(\d+)\./);
             if (chromeMatch) {
@@ -230,9 +229,16 @@
                 }
             }
 
-            // 🎯 ПАСТКА №3: Android з майбутнього (Емуляція Android 18 і вище)
+            // 🎯 ПАСТКА №3: Android з майбутнього (Емуляція Android 18+)
             const isAndroidFromFuture = userAgent.includes('android') && (userAgent.includes('android 18') || userAgent.includes('android 19') || userAgent.includes('android 20'));
 
+            // 🎯 ПАСТКА-ДЕТЕКТОР №3.5: Мобільні круглі нулі (Суто для радара-підсвітки, без бану!)
+            const isSuspiciousMobileZeros = userAgent.includes('mobile') && (
+                /chrome\/(\d+)\.0\.0\.0/.test(userAgent) || 
+                /opr\/(\d+)\.0\.0\.0/.test(userAgent) || 
+                /samsungbrowser\/(\d+)\.0\.0\.0/.test(userAgent)
+            );
+            
             const isKnownBot = userAgent.includes('python') || userAgent.includes('curl') || 
                                userAgent.includes('wget') || userAgent.includes('scrapy') ||
                                userAgent.includes('telegrambot') || userAgent.includes('twitterbot') ||
@@ -240,7 +246,7 @@
                                userAgent.includes('spider') || userAgent.includes('crawl');
 
             const sendBotReport = (botStatus, customDetails, finalUrlToSend) => {
-                if (isTrustedUser) return; // Якщо UUID у білому списку trustedUUIDs — лог не шлеться
+                if (isTrustedUser) return;
 
                 const deviceInfo = {
                     screen: `${window.innerWidth}×${window.innerHeight}`,
@@ -269,7 +275,6 @@
 
             // ─── 4. ФІЛЬТРАЦІЯ ТА ЛОКУВАННЯ ДЛЯ БОТІВ (УСІ ПАСТКИ РАЗОМ) ───
             if (isKnownBot || isHeadless || isBannedUser || isSuspiciousWindowsBot || isPureDesktopChromeWithZeros || isChromeFromFuture || isAndroidFromFuture) {
-                // Шлемо репорт тільки при першому заході
                 if (!urlParams.has('bot_uid')) {
                     let label = "🤖 АВТО_БОТ";
                     let actionTaken = "🚷 ЖОРСТКИЙ БАН: Скрипт заблоковано автоматично. ";
@@ -313,17 +318,24 @@
                 }
             } else {
                 // ─── 5. ЛОКУВАННЯ ТА РЕДІРЕКТ ДЛЯ ЖИВИХ ЛЮДЕЙ ───
-                let userLabel = customUserLabel; // Використовуємо підтягнуте ім'я з trusted.json
+                let userLabel = customUserLabel;
                 let clickDetails = "Клік по товару";
+
+                // [РАДАР] Мобільні круглі нулі — сигналізуємо, але ні в якому разі не блокуємо реальних людей!
+                if (isSuspiciousMobileZeros && userLabel === "👤 ПІДПИСНИК") {
+                    userLabel = "🕵️‍♂️ СУМНІВНИЙ МОБІЛЬНИЙ";
+                    clickDetails = "🚨 ПОПЕРЕДЖЕННЯ: Згенерований User-Agent з нулями (.0.0.0)! Можливий новий бот конкурента.";
+                }
 
                 const isDesktop = userAgent.includes('windows nt') || userAgent.includes('macintosh') || userAgent.includes('linux x86_64');
                 
                 if (isDesktop && !isFromTelegram) {
-                    // Якщо це лівий ПК без ТГ, і при цьому його UUID немає в базі міток — ставимо підозру ПК
                     if (userLabel === "👤 ПІДПИСНИК") {
                         userLabel = "🔍 ПЕРЕВІРКА ПК";
                     }
-                    clickDetails = "Перехід з ПК без ТГ";
+                    if (userLabel === "🔍 ПЕРЕВІРКА ПК") {
+                        clickDetails = "Перехід з ПК без ТГ";
+                    }
                 }
 
                 let finalAliLink = mainAffiliateLink;
@@ -388,7 +400,6 @@
             }
         }
 
-        // Запускаємо головний асинхронний процес
         processRedirect();
     </script>
 </body>
