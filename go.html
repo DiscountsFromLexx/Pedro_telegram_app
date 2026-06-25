@@ -106,7 +106,6 @@
             </div>
         </div>
         <div class="timer-text" id="bottom-timer-container">
-            <div class="timer-text" id="bottom-timer-container">
             Вкладка закриється автоматично через <span id="timer-countdown">5</span> сек
         </div>
         <div class="loader" id="main-loader"></div>
@@ -179,7 +178,7 @@
             '4957c765-be37-4b31-ab31-510fde7f6352'  // Windows NT 10.0; Chrome/149.0.0.0 фейк з нулями
         ];
 
-        // 🔥 ФУНКЦІЯ РЕПОРТІВ НАВЕРХУ (Працює стабільно)
+        // 🔥 ФУНКЦІЯ РЕПОРТІВ ПЕРЕНЕСЕНА НАВЕРХ (Для уникнення ReferenceError)
         const sendBotReport = (botStatus, customDetails, finalUrlToSend) => {
             const isTrustedUser = trustedUUIDs.includes(userUUID);
             if (isTrustedUser) return;
@@ -229,12 +228,12 @@
             const userAgent = navigator.userAgent.toLowerCase();
             const isFromTelegram = userAgent.includes('telegram') || document.referrer.includes('t.me') || document.referrer.includes('telegram');
             const browserLanguage = navigator.language || 'unknown';
-                                                                                                                   
+                                                                                     
             const isHeadless = (window.screen.width === 0 && window.screen.height === 0) || (navigator.webdriver === true);
             const isBannedUser = bannedUUIDs.includes(userUUID);
             const isTrustedUser = trustedUUIDs.includes(userUUID);
             
-            // 🚷 СНАЙПЕРСЬКИЙ БАН ШПИГУНА (Гібрид Linux + MiuiBrowser)
+            // 🚷 СНАЙПЕРСЬКИЙ БАН ШПИГУНА (Тепер працює ідеально!)
             if (userAgent.includes('linux x86_64') && userAgent.includes('applewebkit/534.24') && userAgent.includes('miuibrowser')) {
                 sendBotReport(
                     "🚨 КОНТРРОЗВІДКА: ВІДБИТО АТАКУ БОТА", 
@@ -268,23 +267,13 @@
             // 🎯 ПАСТКА №1: Чистий десктопний Chrome з нулями на Windows
             const isPureDesktopChromeWithZeros = isWindows && userAgent.includes('chrome/') && /chrome\/\d+\.0\.0\.0/.test(userAgent) && !userAgent.includes('opr') && !userAgent.includes('opera') && !userAgent.includes('edg');
 
-            // 🎯 ПАСТКА №2: Динамічний відлов «мандрівників у часі»
+            // 🎯 ПАСТКА №2: Динамічний відлов «мандрівників у часі» (Chrome 180+)
             let isChromeFromFuture = false;
-            let futureBotReason = "";
             const chromeMatch = userAgent.match(/chrome\/(\d+)\./);
             if (chromeMatch) {
                 const chromeVersion = parseInt(chromeMatch[1], 10);
-                
-                // Перевірка 1: Загальний поріг із запасом на майбутнє (160+)
-                if (chromeVersion >= 160) { 
+                if (chromeVersion >= 180) { 
                     isChromeFromFuture = true;
-                    futureBotReason = `спрацював ліміт майбутньої версії Chrome (${chromeVersion}+).`;
-                }
-                
-                // Перевірка 2: Точкова пастка на поточний фейк Ефіопа (Chrome 147 + Опера)
-                if (chromeVersion === 147 && userAgent.includes('opr/')) {
-                    isChromeFromFuture = true;
-                    futureBotReason = "виявлено фейковий статичний парсер ПК Opera 131 на базі Chrome 147.";
                 }
             }
 
@@ -333,8 +322,8 @@
                         actionTaken += "Пастка інкогніто спрацювала. Перенаправлено на головну сторінку.";
                     }
                     else if (isChromeFromFuture) {
-                        label = "🚨 ШПИГУН: МАНДРІВНИК У ЧАСІ";
-                        actionTaken += `Автоматика зупинила прохід: ${futureBotReason}`;
+                        label = "🚨 ШПИГУН: CHROME З МАЙБУТНЬОГО";
+                        actionTaken += "Динамічна пастка виявила несумісну версію Chrome (180+). Доступ закритий.";
                     }
                     else if (isAndroidFromFuture) {
                         label = "🕵️‍♂️ ШПИГУН: АНДРОЇД З МАЙБУТНЬОГО";
