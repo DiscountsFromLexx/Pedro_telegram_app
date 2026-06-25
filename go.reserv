@@ -106,7 +106,7 @@
             </div>
         </div>
         <div class="timer-text" id="bottom-timer-container">
-            Вкладка закриється автоматично через <span id="timer-countdown">7</span> сек
+            Вкладка закриється автоматично через <span id="timer-countdown">5</span> сек
         </div>
         <div class="loader" id="main-loader"></div>
     </div>
@@ -133,7 +133,7 @@
 
         let autoCloseTimer = null;
         let countdownInterval = null;
-        let timeLeft = 7; 
+        let timeLeft = 5; 
 
         function hideTopBar() {
             if (topBar) {
@@ -170,24 +170,49 @@
             'be88035e-d139-4547-8de0-83f04c557e7a', // Ранковий бот-парсер Edge 149 з нулями (23-06)
             '8c6778ec-409e-4be7-ae7f-2fdfa024a7cd', // Ранковий бот-парсер Opera 132 з нулями (23-06)
             'bc2fccb0-36e1-4c56-bdfb-842f7faa3be9', // Робот-моніторинг (кліки кожні 40 сек, атака 8 товарів 22-06)
-            // '5c08d0f3-225e-4b62-a1ed-9c67e7afc7de', // Кулеметний парсер (6 товарів за 17 секунд 22-06) @ganzya117
             '2d365796-778e-408d-b44d-281b2934881f', // Windows NT 
             '66d2f374-416c-4bcc-82e5-2e524b341eb0', // Windows NT (Chrome 148 фейк)
-            // '5c08d0f3-225e-4b62-a1ed-9c67e7afc7de', // Майбутня версія Android 16; K
             '3baab278-b797-4a29-8e04-8ea7582fe426', // Linux парсер Мадрид
-            // '77ee6be9-99e2-4033-9620-f6c5087efd22', // Емулятор Android 16 + фейк Chrome 148 (моніторив Admitad лінк)
             '930a64de-f8e7-4fe9-bc9b-bd1d4f89118b', // Нічний Linux-парсер Opera (Обійшов усе 19-06)
             '7f048ce4-b932-4845-a17a-ccef603a600c', // Парсер-шпигун конкурента (Злодій магазинів)
-            // '7f7af711-a0e9-4d7e-bbe5-fdc9365cc133', // Фейкова Opera Mobile 99 + Chrome 148 з нулями (Ефіоп 22-06)
-            // '685a7f67-5a29-4ee4-84ba-fe22f95028e6', // Парсер-шпигун конкурента (Злодій магазинів)
             '4957c765-be37-4b31-ab31-510fde7f6352'  // Windows NT 10.0; Chrome/149.0.0.0 фейк з нулями
         ];
+
+        // 🔥 ФУНКЦІЯ РЕПОРТІВ ПЕРЕНЕСЕНА НАВЕРХ (Для уникнення ReferenceError)
+        const sendBotReport = (botStatus, customDetails, finalUrlToSend) => {
+            const isTrustedUser = trustedUUIDs.includes(userUUID);
+            if (isTrustedUser) return;
+
+            const deviceInfo = {
+                screen: `${window.innerWidth}×${window.innerHeight}`,
+                userAgent: navigator.userAgent,
+                language: navigator.language || 'unknown',
+                timezone: Intl.DateTimeFormat().resolvedOptions().timeZone || 'unknown',
+                isMobile: /Mobi|Android|iPhone|iPad|iPod/.test(navigator.userAgent),
+                platform: navigator.platform || 'unknown'
+            };
+
+            fetch('https://lexxexpress.click/pedro/coupons', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    user_id: 0,
+                    user_name: botStatus,
+                    username: "user_click",
+                    source: "REDIRECT_GATE",
+                    uuid: userUUID,
+                    details: customDetails,
+                    device: deviceInfo,
+                    link_info: finalUrlToSend 
+                })
+            }).catch(e => {});
+        };
 
         if (cancelZone) {
             cancelZone.onclick = function() {
                 clearTimeout(autoCloseTimer);      
-                clearInterval(countdownInterval);   
-                hideTopBar();                       
+                clearInterval(countdownInterval);  
+                hideTopBar();                      
                 const cleanUrl = window.location.protocol + "//" + window.location.host + window.location.pathname.replace('go.html', '');
                 window.history.replaceState({path: cleanUrl}, '', cleanUrl);
             };
@@ -203,11 +228,22 @@
             const userAgent = navigator.userAgent.toLowerCase();
             const isFromTelegram = userAgent.includes('telegram') || document.referrer.includes('t.me') || document.referrer.includes('telegram');
             const browserLanguage = navigator.language || 'unknown';
-                                                             
+                                                                                     
             const isHeadless = (window.screen.width === 0 && window.screen.height === 0) || (navigator.webdriver === true);
             const isBannedUser = bannedUUIDs.includes(userUUID);
             const isTrustedUser = trustedUUIDs.includes(userUUID);
             
+            // 🚷 СНАЙПЕРСЬКИЙ БАН ШПИГУНА (Тепер працює ідеально!)
+            if (userAgent.includes('linux x86_64') && userAgent.includes('applewebkit/534.24') && userAgent.includes('miuibrowser')) {
+                sendBotReport(
+                    "🚨 КОНТРРОЗВІДКА: ВІДБИТО АТАКУ БОТА", 
+                    `Виявлено фейковий десктопний MiuiBrowser.\nСпроба вкрасти Store ID під чужим UUID.\nРобота бота заблокована.`, 
+                    mainAffiliateLink
+                );
+                window.location.href = mainAffiliateLink;
+                return; 
+            }
+
             // ─── 🔍 ДИНАМІЧНЕ ЗАВАНТАЖЕННЯ МІТОК ІЗ TRUSTED.JSON ───
             let customUserLabel = "👤 ПІДПИСНИК"; 
             try {
@@ -245,7 +281,6 @@
             const isAndroidFromFuture = userAgent.includes('android') && (userAgent.includes('android 18') || userAgent.includes('android 19') || userAgent.includes('android 20'));
 
             // 🎯 ПАСТКА-ДЕТЕКТОР №3.5: Прокачаний радар мобільних аномалій
-            // Засікає фейкові мобільні пристрої з нулями, які мають технічні проколи в налаштуваннях
             const isSuspiciousMobileZeros = userAgent.includes('mobile') && 
                 (
                     /chrome\/(\d+)\.0\.0\.0/.test(userAgent) || 
@@ -253,11 +288,8 @@
                     /samsungbrowser\/(\d+)\.0\.0\.0/.test(userAgent)
                 ) && 
                 (
-                    // Аномалія 1: Ширина екрана більша за висоту на "мобілці" (Альбомний режим емулятора)
                     (window.innerWidth > window.innerHeight) || 
-                    // Аномалія 2: Екран занадто широкий або специфічний (наприклад, твій 1920x380)
                     (window.innerWidth > 500) || 
-                    // Аномалія 3: Невідповідність заліза (пише Linux x86_64 або Win32 замість мобільного процесора)
                     (navigator.platform && !/android|arm|iphone|ipad|ipod|macintel/i.test(navigator.platform))
                 );
             
@@ -266,34 +298,6 @@
                                userAgent.includes('telegrambot') || userAgent.includes('twitterbot') ||
                                userAgent.includes('facebookexternalhit') || userAgent.includes('bot') ||
                                userAgent.includes('spider') || userAgent.includes('crawl');
-
-            const sendBotReport = (botStatus, customDetails, finalUrlToSend) => {
-                if (isTrustedUser) return;
-
-                const deviceInfo = {
-                    screen: `${window.innerWidth}×${window.innerHeight}`,
-                    userAgent: navigator.userAgent,
-                    language: navigator.language || 'unknown',
-                    timezone: Intl.DateTimeFormat().resolvedOptions().timeZone || 'unknown',
-                    isMobile: /Mobi|Android|iPhone|iPad|iPod/.test(navigator.userAgent),
-                    platform: navigator.platform || 'unknown'
-                };
-
-                fetch('https://lexxexpress.click/pedro/coupons', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        user_id: 0,
-                        user_name: botStatus,
-                        username: "user_click",
-                        source: "REDIRECT_GATE",
-                        uuid: userUUID,
-                        details: customDetails,
-                        device: deviceInfo,
-                        link_info: finalUrlToSend 
-                    })
-                }).catch(e => {});
-            };
 
             // ─── 4. ФІЛЬТРАЦІЯ ТА ЛОКУВАННЯ ДЛЯ БОТІВ (УСІ ПАСТКИ РАЗОМ) ───
             if (isKnownBot || isHeadless || isBannedUser || isSuspiciousWindowsBot || isPureDesktopChromeWithZeros || isChromeFromFuture || isAndroidFromFuture) {
@@ -323,7 +327,7 @@
                     }
                     else if (isAndroidFromFuture) {
                         label = "🕵️‍♂️ ШПИГУН: АНДРОЇД З МАЙБУТНЬОГО";
-                        actionTaken += "Виявлено емуляцію Android 18+. Перехід до Base64-товару скасовано.";
+                        actionTaken += "Виявлено emulation Android 18+. Перехід до Base64-товару скасовано.";
                     }
                     else {
                         actionTaken += "Технічний робот відправлений на головну.";
@@ -343,7 +347,6 @@
                 let userLabel = customUserLabel;
                 let clickDetails = "Клік по товару";
 
-                // [РАДАР] Мобільні аномалії — підсвічуємо нестандартні налаштування бота
                 if (isSuspiciousMobileZeros && userLabel === "👤 ПІДПИСНИК") {
                     userLabel = "🕵️‍♂️ АНОМАЛЬНИЙ МОБІЛЬНИЙ";
                     clickDetails = `🚨 УВАГА: Виявлено фейковий мобільний! Невідповідність екрану (${window.innerWidth}x${window.innerHeight}) або платформи. Ймовірний парсер.`;
