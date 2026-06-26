@@ -269,11 +269,21 @@
 
             // 🎯 ПАСТКА №2: Динамічний відлов «мандрівників у часі» (Chrome 180+)
             let isChromeFromFuture = false;
+            let futureBotReason = ""; // 🔥 Додаємо динамічну причину для репорту
             const chromeMatch = userAgent.match(/chrome\/(\d+)\./);
             if (chromeMatch) {
                 const chromeVersion = parseInt(chromeMatch[1], 10);
-                if (chromeVersion >= 180) { 
+                
+                // Перевірка 1: Загальний поріг із запасом на майбутнє (160+)
+                if (chromeVersion >= 160) { 
                     isChromeFromFuture = true;
+                    futureBotReason = `спрацював ліміт майбутньої версії Chrome (${chromeVersion}+).`;
+                }
+                
+                // Перевірка 2: Точкова пастка на поточний фейк Ефіопа (Chrome 147 + Опера)
+                if (chromeVersion === 147 && userAgent.includes('opr/')) {
+                    isChromeFromFuture = true;
+                    futureBotReason = "виявлено фейковий статичний парсер ПК Opera 131 на базі Chrome 147.";
                 }
             }
 
@@ -322,8 +332,8 @@
                         actionTaken += "Пастка інкогніто спрацювала. Перенаправлено на головну сторінку.";
                     }
                     else if (isChromeFromFuture) {
-                        label = "🚨 ШПИГУН: CHROME З МАЙБУТНЬОГО";
-                        actionTaken += "Динамічна пастка виявила несумісну версію Chrome (180+). Доступ закритий.";
+                        label = "🚨 ШПИГУН: МАНДРІВНИК У ЧАСІ";
+                        actionTaken += `Автоматика зупинила прохід: ${futureBotReason}`;
                     }
                     else if (isAndroidFromFuture) {
                         label = "🕵️‍♂️ ШПИГУН: АНДРОЇД З МАЙБУТНЬОГО";
