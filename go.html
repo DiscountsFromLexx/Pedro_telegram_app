@@ -115,7 +115,19 @@
 
     <script>
         const urlParams = new URLSearchParams(window.location.search);
-        const shlinkCode = urlParams.get('shlink_code') || 'unknown';
+        let shlinkCode = urlParams.get('shlink_code');
+        
+        // 🎯 ПАСТКА-ПЕРЕХОПЛЮВАЧ: Якщо Shlink не передав код в URL, дістаємо його з реферера
+        if (!shlinkCode && document.referrer && document.referrer.includes('lexxexpress.click')) {
+            try {
+                const parts = document.referrer.split('/');
+                const lastPart = parts[parts.length - 1].split('?')[0];
+                if (lastPart && lastPart.length >= 3 && lastPart.length <= 10) {
+                    shlinkCode = lastPart;
+                }
+            } catch(e) {}
+        }
+        shlinkCode = shlinkCode || 'unknown';
 
         const payload = {
             source: "REDIRECT_GATE",
