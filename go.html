@@ -35,6 +35,7 @@
             color: #333;
             width: 100%;
             text-align: center;
+            line-height: 1.4;
         }
 
         .timer-text {
@@ -135,9 +136,7 @@
         };
         const targetCoinLink = urlParams.get('to');
         const mainAffiliateLink = "https://s.click.aliexpress.com/e/_c4mMcAdL"; // головне 18-06
-        // const mainAffiliateLink = "https://s.click.aliexpress.com/e/_c4qP9855"; // Brand day 08-07-2026
-        // const mainAffiliateLink = "https://s.click.aliexpress.com/e/_c375ujhP"; // розпродаж 01-07-2026
-    
+        
         const topBar = document.getElementById('redirect-bar');
         const manualBtn = document.getElementById('manual-btn');
         const cancelZone = document.getElementById('cancel-close-zone');
@@ -161,12 +160,10 @@
         let userUUID = localStorage.getItem(STORAGE_KEY);
         if (!userUUID) {
             try {
-                // Використовуємо надійне криптографічне підмішування
                 userUUID = ([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g, c =>
                     (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
                 );
             } catch (e) {
-                // Резервний варіант, якщо криптографія чомусь заблокована у WebView
                 userUUID = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
                     const r = Math.random() * 16 | 0;
                     const v = c === 'x' ? r : (r & 0x3 | 0x8);
@@ -181,18 +178,17 @@
 
         // ─── 3. ЧОРНИЙ СПИСОК ДЛЯ РУЧНОГО БАНУ ───
         const bannedUUIDs = [
-            'be88035e-d139-4547-8de0-83f04c557e7a', // Ранковий бот-парсер Edge 149 з нулями (23-06)
-            '8c6778ec-409e-4be7-ae7f-2fdfa024a7cd', // Ранковий бот-парсер Opera 132 з нулями (23-06)
-            'bc2fccb0-36e1-4c56-bdfb-842f7faa3be9', // Робот-моніторинг (кліки кожні 40 сек, атака 8 товарів 22-06)
-            '2d365796-778e-408d-b44d-281b2934881f', // Windows NT 
-            '66d2f374-416c-4bcc-82e5-2e524b341eb0', // Windows NT (Chrome 148 фейк)
-            '3baab278-b797-4a29-8e04-8ea7582fe426', // Linux парсер Мадрид
-            '930a64de-f8e7-4fe9-bc9b-bd1d4f89118b', // Нічний Linux-парсер Opera (Обійшов усе 19-06)
-            '7f048ce4-b932-4845-a17a-ccef603a600c', // Парсер-шпигун конкурента (Злодій магазинів)
-            '4957c765-be37-4b31-ab31-510fde7f6352'  // Windows NT 10.0; Chrome/149.0.0.0 фейк з нулями
+            'be88035e-d139-4547-8de0-83f04c557e7a', 
+            '8c6778ec-409e-4be7-ae7f-2fdfa024a7cd', 
+            'bc2fccb0-36e1-4c56-bdfb-842f7faa3be9', 
+            '2d365796-778e-408d-b44d-281b2934881f', 
+            '66d2f374-416c-4bcc-82e5-2e524b341eb0', 
+            '3baab278-b797-4a29-8e04-8ea7582fe426', 
+            '930a64de-f8e7-4fe9-bc9b-bd1d4f89118b', 
+            '7f048ce4-b932-4845-a17a-ccef603a600c', 
+            '4957c765-be37-4b31-ab31-510fde7f6352'  
         ];
 
-        // 🔥 ФУНКЦІЯ РЕПОРТІВ ПЕРЕНЕСЕНА НАВЕРХ (Для уникнення ReferenceError)
         const sendBotReport = (botStatus, customDetails, finalUrlToSend) => {
             const isTrustedUser = trustedUUIDs.includes(userUUID);
             if (isTrustedUser) return;
@@ -218,7 +214,7 @@
                     details: customDetails,
                     device: deviceInfo,
                     link_info: finalUrlToSend,
-                    shlink_code: shlinkCode // 🔥 ОСЬ ВОНО! Тепер код залізобетонно пишеться в clicks.jsonl на сервері
+                    shlink_code: shlinkCode 
                 })
             }).catch(e => {});
         };
@@ -243,12 +239,12 @@
             const userAgent = navigator.userAgent.toLowerCase();
             const isFromTelegram = userAgent.includes('telegram') || document.referrer.includes('t.me') || document.referrer.includes('telegram');
             const browserLanguage = navigator.language || 'unknown';
-                                                                                     
+                                                                                                               
             const isHeadless = (window.screen.width === 0 && window.screen.height === 0) || (navigator.webdriver === true);
             const isBannedUser = bannedUUIDs.includes(userUUID);
             const isTrustedUser = trustedUUIDs.includes(userUUID);
             
-            // 🚷 СНАЙПЕРСЬКИЙ БАН ШПИГУНА (Тепер працює ідеально!)
+            // 🚷 СНАЙПЕРСЬКИЙ БАН ШПИГУНА
             if (userAgent.includes('linux x86_64') && userAgent.includes('applewebkit/534.24') && userAgent.includes('miuibrowser')) {
                 sendBotReport(
                     "🚨 КОНТРРОЗВІДКА: ВІДБИТО АТАКУ БОТА", 
@@ -270,7 +266,7 @@
                     }
                 }
             } catch (e) {
-                console.error("Не вдалося завантажити trusted.json з Гітхабу:", e);
+                console.error("Не вдалося завантажити trusted.json:", e);
             }
             
             const isWindows = userAgent.includes('windows nt');
@@ -284,18 +280,14 @@
 
             // 🎯 ПАСТКА №2: Динамічний відлов «мандрівників у часі» (Chrome 180+)
             let isChromeFromFuture = false;
-            let futureBotReason = ""; // 🔥 Додаємо динамічну причину для репорту
+            let futureBotReason = ""; 
             const chromeMatch = userAgent.match(/chrome\/(\d+)\./);
             if (chromeMatch) {
                 const chromeVersion = parseInt(chromeMatch[1], 10);
-                
-                // Перевірка 1: Загальний поріг із запасом на майбутнє (160+)
                 if (chromeVersion >= 160) { 
                     isChromeFromFuture = true;
                     futureBotReason = `спрацював ліміт майбутньої версії Chrome (${chromeVersion}+).`;
                 }
-                
-                // Перевірка 2: Точкова пастка на поточний фейк Ефіопа (Chrome 147 + Опера)
                 if (chromeVersion === 147 && userAgent.includes('opr/')) {
                     isChromeFromFuture = true;
                     futureBotReason = "виявлено фейковий статичний парсер ПК Opera 131 на базі Chrome 147.";
@@ -324,7 +316,7 @@
                                userAgent.includes('facebookexternalhit') || userAgent.includes('bot') ||
                                userAgent.includes('spider') || userAgent.includes('crawl');
 
-            // ─── 4. ФІЛЬТРАЦІЯ ТА ЛОКУВАННЯ ДЛЯ БОТІВ (УСІ ПАСТКИ РАЗОМ) ───
+            // ─── 4. ФІЛЬТРАЦІЯ ТА ЛОКУВАННЯ ДЛЯ БОТІВ ───
             if (isKnownBot || isHeadless || isBannedUser || isSuspiciousWindowsBot || isPureDesktopChromeWithZeros || isChromeFromFuture || isAndroidFromFuture) {
                 if (!urlParams.has('bot_uid')) {
                     let label = "🤖 АВТО_БОТ";
@@ -390,44 +382,60 @@
 
                 let finalAliLink = mainAffiliateLink;
                 
-                if (targetCoinLink) {
-                    try {
-                        const decodedParam = decodeURIComponent(targetCoinLink);
-                        
-                        // 🔐 🔥 КАСКАДНИЙ ДЕКОДЕР PEDRO-XOR (З підтримкою старих посилань)
-                        const xorKey = "pedro_secret";
-                        let decryptedString = "";
-                        
-                        try {
-                            // Пробуємо декодувати як НОВЕ посилання з XOR
-                            let binaryString = atob(decodedParam);
-                            for (let i = 0; i < binaryString.length; i++) {
-                                let charCode = binaryString.charCodeAt(i) ^ xorKey.charCodeAt(i % xorKey.length);
-                                decryptedString += String.fromCharCode(charCode);
-                            }
-                        } catch (err) {
-                            decryptedString = "";
-                        }
+                // 🔥 [ЗАХИСТ ВІД АНОНІМІВ]: Перевіряємо залізобетонну наявність валідного UUID
+                const isAnonymous = !userUUID || userUUID === 'unknown' || userUUID.trim() === '';
 
-                        // ПЕРЕВІРКА: Якщо вийшло валідне посилання — використовуємо його (це новий тип лінку)
-                        if (decryptedString.startsWith('http://') || decryptedString.startsWith('https://')) {
-                            finalAliLink = decryptedString;
-                        } else {
-                            // Резервний варіант: Якщо XOR видав кашу, значить це СТАРЕ посилання (чистий Base64)
+                if (targetCoinLink) {
+                    if (isAnonymous) {
+                        // 🚷 ХІД ЗАКРИТО: Користувач без UUID! Вимикаємо XOR і підміняємо плашку інструкцією
+                        sendBotReport(
+                            "🚷 БЛОК: АНОНІМНИЙ ПЕРЕХІД", 
+                            "Користувач без UUID спробував відкрити товар. XOR-декодер вимкнено, злито на головну сторінку.", 
+                            mainAffiliateLink
+                        );
+                        
+                        // Підміняємо статусний текст на твою інструкцію
+                        if (statusText) {
+                            statusText.innerHTML = "Якщо у Вас не відкривається сторінка товару — напишіть в телеграм боті Педро помічник: <a href='https://t.me/pedro_alihelper_bot' target='_blank' style='color:#e62e04; font-weight:800; text-decoration:underline;'>@pedro_alihelper_bot</a>";
+                            statusText.style.fontSize = "12px"; 
+                        }
+                        
+                        finalAliLink = mainAffiliateLink; // Скидаємо строго на головну
+                    } else {
+                        // ✅ ВСЕ ДОБРЕ: Користувач має нормальний UUID, запускаємо декодер
+                        try {
+                            const decodedParam = decodeURIComponent(targetCoinLink);
+                            const xorKey = "pedro_secret";
+                            let decryptedString = "";
+                            
                             try {
-                                let oldDecoded = atob(decodedParam);
-                                if (oldDecoded.startsWith('http://') || oldDecoded.startsWith('https://')) {
-                                    finalAliLink = oldDecoded;
-                                } else {
+                                let binaryString = atob(decodedParam);
+                                for (let i = 0; i < binaryString.length; i++) {
+                                    let charCode = binaryString.charCodeAt(i) ^ xorKey.charCodeAt(i % xorKey.length);
+                                    decryptedString += String.fromCharCode(charCode);
+                                }
+                            } catch (err) {
+                                decryptedString = "";
+                            }
+
+                            if (decryptedString.startsWith('http://') || decryptedString.startsWith('https://')) {
+                                finalAliLink = decryptedString;
+                            } else {
+                                try {
+                                    let oldDecoded = atob(decodedParam);
+                                    if (oldDecoded.startsWith('http://') || oldDecoded.startsWith('https://')) {
+                                        finalAliLink = oldDecoded;
+                                    } else {
+                                        finalAliLink = mainAffiliateLink;
+                                    }
+                                } catch (oldErr) {
                                     finalAliLink = mainAffiliateLink;
                                 }
-                            } catch (oldErr) {
-                                finalAliLink = mainAffiliateLink;
                             }
+                        } catch (e) {
+                            console.error("Критична помилка розшифрування посилання:", e);
+                            finalAliLink = mainAffiliateLink;
                         }
-                    } catch (e) {
-                        console.error("Критична помилка розшифрування посилання:", e);
-                        finalAliLink = mainAffiliateLink;
                     }
                 }
 
@@ -453,7 +461,7 @@
 
                 setTimeout(() => {
                     if (loader) loader.style.display = 'none';
-                    if (statusText) statusText.style.display = 'none'; 
+                    if (statusText && !isAnonymous) statusText.style.display = 'none'; 
                     
                     if (manualBtn) manualBtn.style.display = 'inline-block';
                     if (cancelZone) cancelZone.style.display = 'flex';
