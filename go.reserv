@@ -135,6 +135,8 @@
         };
         const targetCoinLink = urlParams.get('to');
         const mainAffiliateLink = "https://s.click.aliexpress.com/e/_c4mMcAdL"; // головне 18-06
+        // const mainAffiliateLink = "https://s.click.aliexpress.com/e/_c4qP9855"; // Brand day 08-07-2026
+        // const mainAffiliateLink = "https://s.click.aliexpress.com/e/_c375ujhP"; // розпродаж 01-07-2026
     
         const topBar = document.getElementById('redirect-bar');
         const manualBtn = document.getElementById('manual-btn');
@@ -387,16 +389,44 @@
                 }
 
                 let finalAliLink = mainAffiliateLink;
+                
                 if (targetCoinLink) {
                     try {
                         const decodedParam = decodeURIComponent(targetCoinLink);
-                        if (decodedParam.startsWith('http://') || decodedParam.startsWith('https://')) {
-                            finalAliLink = decodedParam; 
+                        
+                        // 🔐 🔥 КАСКАДНИЙ ДЕКОДЕР PEDRO-XOR (З підтримкою старих посилань)
+                        const xorKey = "pedro_secret";
+                        let decryptedString = "";
+                        
+                        try {
+                            // Пробуємо декодувати як НОВЕ посилання з XOR
+                            let binaryString = atob(decodedParam);
+                            for (let i = 0; i < binaryString.length; i++) {
+                                let charCode = binaryString.charCodeAt(i) ^ xorKey.charCodeAt(i % xorKey.length);
+                                decryptedString += String.fromCharCode(charCode);
+                            }
+                        } catch (err) {
+                            decryptedString = "";
+                        }
+
+                        // ПЕРЕВІРКА: Якщо вийшло валідне посилання — використовуємо його (це новий тип лінку)
+                        if (decryptedString.startsWith('http://') || decryptedString.startsWith('https://')) {
+                            finalAliLink = decryptedString;
                         } else {
-                            finalAliLink = atob(decodedParam); 
+                            // Резервний варіант: Якщо XOR видав кашу, значить це СТАРЕ посилання (чистий Base64)
+                            try {
+                                let oldDecoded = atob(decodedParam);
+                                if (oldDecoded.startsWith('http://') || oldDecoded.startsWith('https://')) {
+                                    finalAliLink = oldDecoded;
+                                } else {
+                                    finalAliLink = mainAffiliateLink;
+                                }
+                            } catch (oldErr) {
+                                finalAliLink = mainAffiliateLink;
+                            }
                         }
                     } catch (e) {
-                        console.error("Помилка розшифрування посилання:", e);
+                        console.error("Критична помилка розшифрування посилання:", e);
                         finalAliLink = mainAffiliateLink;
                     }
                 }
