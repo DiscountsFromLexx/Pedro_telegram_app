@@ -136,9 +136,6 @@
         };
         const targetCoinLink = urlParams.get('to');
         const mainAffiliateLink = "https://s.click.aliexpress.com/e/_c3gkvif9"; // Fun Summer Savings 26-07-2026
-        // const mainAffiliateLink = "https://s.click.aliexpress.com/e/_c3Fasoqx"; // акція 13-07
-        // const mainAffiliateLink = "https://s.click.aliexpress.com/e/_c4mMcAdL"; // головне 18-06
-        // const mainAffiliateLink = "https://s.click.aliexpress.com/e/_c375ujhP"; // розпродаж 01-07-2026
         
         const topBar = document.getElementById('redirect-bar');
         const manualBtn = document.getElementById('manual-btn');
@@ -266,6 +263,7 @@
 
             fetch('https://lexxexpress.click/pedro/coupons', {
                 method: 'POST',
+                keepalive: true, // 🎯 КРИТИЧНО: Гарантує доставку запиту навіть при редіректі!
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
                     user_id: 0,
@@ -313,7 +311,7 @@
                     `Виявлено фейковий десктопний MiuiBrowser.\nСпроба вкрасти Store ID під чужим UUID.\nРобота бота заблокована.`, 
                     mainAffiliateLink
                 );
-                window.location.href = mainAffiliateLink;
+                setTimeout(() => { window.location.href = mainAffiliateLink; }, 150);
                 return; 
             }
 
@@ -364,10 +362,8 @@
                 if (hwResponse.ok) {
                     const bannedHWData = await hwResponse.json();
                     if (Array.isArray(bannedHWData)) {
-                        // Якщо файл створено як масив: ["dev_1", "dev_2"]
                         isBannedHardware = bannedHWData.includes(deviceFP.webImei);
                     } else if (typeof bannedHWData === 'object' && bannedHWData !== null) {
-                        // Якщо файл створено як об'єкт з коментарями: { "dev_1": "Батя" }
                         isBannedHardware = deviceFP.webImei in bannedHWData;
                     }
                 }
@@ -394,7 +390,7 @@
                                userAgent.includes('facebookexternalhit') || userAgent.includes('bot') ||
                                userAgent.includes('spider') || userAgent.includes('crawl');
 
-            // ─── 4. ФІЛЬТРАЦІЯ ТА ЛОКУВАННЯ ДЛЯ БОТІВ (ДОДАНО isBannedHardware) ───
+            // ─── 4. ФІЛЬТРАЦІЯ ТА ЛОКУВАННЯ ДЛЯ БОТІВ ───
             if (isKnownBot || isHeadless || isBannedUser || isBannedHardware || isSuspiciousWindowsBot || isPureDesktopChromeWithZeros || isChromeFromFuture || isAndroidFromFuture) {
                 if (!urlParams.has('bot_uid')) {
                     let label = "🤖 АВТО_БОТ";
@@ -429,11 +425,16 @@
                     }
                     
                     sendBotReport(label, actionTaken, mainAffiliateLink);
-                }
 
-                if (!urlParams.has('bot_uid')) {
-                    const traceUrl = window.location.href + "&bot_uid=" + userUUID;
-                    window.location.replace(traceUrl);
+                    // 🎯 ДАЄМО 150мс ДЛЯ ГАРАНТОВАНОЇ ВІДПРАВКИ ТА ВИКОНУЄМО ЄДИНИЙ РЕДІРЕКТ
+                    setTimeout(() => {
+                        if (!urlParams.has('bot_uid')) {
+                            const traceUrl = window.location.href + "&bot_uid=" + userUUID;
+                            window.location.replace(traceUrl);
+                        } else {
+                            window.location.href = mainAffiliateLink;
+                        }
+                    }, 150);
                 } else {
                     window.location.href = mainAffiliateLink;
                 }
