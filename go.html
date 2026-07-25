@@ -135,10 +135,7 @@
             shlink_code: shlinkCode 
         };
         const targetCoinLink = urlParams.get('to');
-        const mainAffiliateLink = "https://s.click.aliexpress.com/e/_c3gkvif9"; //  Fun Summer Savings 26-07-2026
-        // const mainAffiliateLink = "https://s.click.aliexpress.com/e/_c3Fasoqx"; // акція 13-07
-        // const mainAffiliateLink = "https://s.click.aliexpress.com/e/_c4mMcAdL"; // головне 18-06
-        // const mainAffiliateLink = "https://s.click.aliexpress.com/e/_c375ujhP"; // розпродаж 01-07-2026
+        const mainAffiliateLink = "https://s.click.aliexpress.com/e/_c3gkvif9"; // Fun Summer Savings 26-07-2026
         
         const topBar = document.getElementById('redirect-bar');
         const manualBtn = document.getElementById('manual-btn');
@@ -256,7 +253,12 @@
                 language: navigator.language || 'unknown',
                 timezone: Intl.DateTimeFormat().resolvedOptions().timeZone || 'unknown',
                 isMobile: /Mobi|Android|iPhone|iPad|iPod/.test(navigator.userAgent),
-                platform: navigator.platform || 'unknown'
+                platform: navigator.platform || 'unknown',
+                // 🎯 НОВІ ЗОЛОТІ МАРКЕРИ ДЛЯ КОНТРРОЗВІДКИ:
+                web_imei: deviceFP.webImei,
+                canvas_hash: deviceFP.canvasHash,
+                cores: deviceFP.cores,
+                pixel_ratio: deviceFP.pixelRatio
             };
 
             fetch('https://lexxexpress.click/pedro/coupons', {
@@ -296,7 +298,7 @@
             const userAgent = navigator.userAgent.toLowerCase();
             const isFromTelegram = userAgent.includes('telegram') || document.referrer.includes('t.me') || document.referrer.includes('telegram');
             const browserLanguage = navigator.language || 'unknown';
-                                                                                                               
+                                                                                                                                        
             const isHeadless = (window.screen.width === 0 && window.screen.height === 0) || (navigator.webdriver === true);
             const isBannedUser = bannedUUIDs.includes(userUUID);
             const isTrustedUser = trustedUUIDs.includes(userUUID);
@@ -327,15 +329,13 @@
             }
             
             const isWindows = userAgent.includes('windows nt');
-            const isFakeChromeVersion = false; 
-            
             const isChrome = userAgent.includes('chrome') && !userAgent.includes('edg') && !userAgent.includes('opr');
             const isSuspiciousWindowsBot = isWindows && isChrome && !isFromTelegram && (browserLanguage.toLowerCase().startsWith('ru') || browserLanguage.toLowerCase() === 'en-us');
 
             // 🎯 ПАСТКА №1: Чистий десктопний Chrome з нулями на Windows
             const isPureDesktopChromeWithZeros = isWindows && userAgent.includes('chrome/') && /chrome\/\d+\.0\.0\.0/.test(userAgent) && !userAgent.includes('opr') && !userAgent.includes('opera') && !userAgent.includes('edg');
 
-            // 🎯 ПАСТКА №2: Динамічний відлов «мандрівників у часі» (Chrome 180+)
+            // 🎯 ПАСТКА №2: Динамічний відлов «мандрівників у часі» (Chrome 160+)
             let isChromeFromFuture = false;
             let futureBotReason = ""; 
             const chromeMatch = userAgent.match(/chrome\/(\d+)\./);
@@ -354,6 +354,12 @@
             // 🎯 ПАСТКА №3: Android з майбутнього (Емуляція Android 18+)
             const isAndroidFromFuture = userAgent.includes('android') && (userAgent.includes('android 18') || userAgent.includes('android 19') || userAgent.includes('android 20'));
 
+            // ─── 3.1 ЧОРНИЙ СПИСОК ВЕБ-IMEI (ЗАБАНО-ЗАЛІЗО) ───
+            const bannedWebIMEIs = [
+                // сюди ти будеш вставляти dev_xxxxxx Баті/Ефіопа
+            ];
+            const isBannedHardware = bannedWebIMEIs.includes(deviceFP.webImei);
+            
             // 🎯 ПАСТКА-ДЕТЕКТОР №3.5: Прокачаний радар мобільних аномалій
             const isSuspiciousMobileZeros = userAgent.includes('mobile') && 
                 (
@@ -373,15 +379,15 @@
                                userAgent.includes('facebookexternalhit') || userAgent.includes('bot') ||
                                userAgent.includes('spider') || userAgent.includes('crawl');
 
-            // ─── 4. ФІЛЬТРАЦІЯ ТА ЛОКУВАННЯ ДЛЯ БОТІВ ───
-            if (isKnownBot || isHeadless || isBannedUser || isSuspiciousWindowsBot || isPureDesktopChromeWithZeros || isChromeFromFuture || isAndroidFromFuture) {
+            // ─── 4. ФІЛЬТРАЦІЯ ТА ЛОКУВАННЯ ДЛЯ БОТІВ (ДОДАНО isBannedHardware) ───
+            if (isKnownBot || isHeadless || isBannedUser || isBannedHardware || isSuspiciousWindowsBot || isPureDesktopChromeWithZeros || isChromeFromFuture || isAndroidFromFuture) {
                 if (!urlParams.has('bot_uid')) {
                     let label = "🤖 АВТО_БОТ";
                     let actionTaken = "🚷 ЖОРСТКИЙ БАН: Скрипт заблоковано автоматично. ";
 
-                    if (isFakeChromeVersion) {
-                        label = "🚨 ШПИГУН: FAKE CHROME";
-                        actionTaken += "Відправлено ловити кукі на головну акцію.";
+                    if (isBannedHardware) {
+                        label = "⛔️ ЗАБАНЕНЕ ЗАЛІЗО (WEB-IMEI)";
+                        actionTaken = `🚫 СЕНСАЦІЯ: Крадій спробував пройти в інкогніто/з новим UUID! Злопоймано за Web-IMEI (${deviceFP.webImei}). Скинуто на дефолт.`;
                     }
                     else if (isSuspiciousWindowsBot) {
                         label = "🤖 ПАСТКА: WINDOWS-ПАРСЕР";
@@ -444,20 +450,19 @@
 
                 if (targetCoinLink) {
                     if (isAnonymous) {
-                        // 🚷 ХІД ЗАКРИТО: Користувач без UUID! Вимикаємо XOR і підміняємо плашку інструкцією
+                        // 🚷 ХІД ЗАКРИТО: Користувач без UUID!
                         sendBotReport(
                             "🚷 БЛОК: АНОНІМНИЙ ПЕРЕХІД", 
                             "Користувач без UUID спробував відкрити товар. XOR-декодер вимкнено, злито на головну сторінку.", 
                             mainAffiliateLink
                         );
                         
-                        // Підміняємо статусний текст на твою інструкцію
                         if (statusText) {
                             statusText.innerHTML = "Якщо у Вас не відкривається сторінка товару — напишіть в телеграм боті Педро помічник: <a href='https://t.me/pedro_alihelper_bot' target='_blank' style='color:#e62e04; font-weight:800; text-decoration:underline;'>@pedro_alihelper_bot</a>";
                             statusText.style.fontSize = "12px"; 
                         }
                         
-                        finalAliLink = mainAffiliateLink; // Скидаємо строго на головну
+                        finalAliLink = mainAffiliateLink;
                     } else {
                         // ✅ ВСЕ ДОБРЕ: Користувач має нормальний UUID, запускаємо декодер
                         try {
