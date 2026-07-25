@@ -426,7 +426,13 @@
                     
                     sendBotReport(label, actionTaken, mainAffiliateLink);
 
-                    // 🎯 ДАЄМО 150мс ДЛЯ ГАРАНТОВАНОЇ ВІДПРАВКИ ТА ВИКОНУЄМО ЄДИНИЙ РЕДІРЕКТ
+                    // 🎯 ПІДМІНА ТЕКСТУ НА ПЛАШЦІ ДЛЯ ЗАБАНЕНИХ / АНОМАЛЬНИХ
+                    if (statusText) {
+                        statusText.innerHTML = "Якщо у Вас не відкривається товар в додатку — напишіть прямо у запиті боту <a href='https://t.me/pedro_alihelper_bot' target='_blank' style='color:#e62e04; font-weight:800; text-decoration:underline;'>@pedro_alihelper_bot</a>";
+                        statusText.style.fontSize = "12px";
+                    }
+
+                    // 🎯 ДАЄМО 150мс ДЛЯ ГАРАНТОВАНОЇ ВІДПРАВКИ ТА ВИКОНУЄМО РЕДІРЕКТ
                     setTimeout(() => {
                         if (!urlParams.has('bot_uid')) {
                             const traceUrl = window.location.href + "&bot_uid=" + userUUID;
@@ -436,6 +442,11 @@
                         }
                     }, 150);
                 } else {
+                    // Якщо вже є bot_uid в URL — показуємо напис та перенаправляємо на дефолтну акцію
+                    if (statusText) {
+                        statusText.innerHTML = "Якщо у Вас не відкривається товар в додатку — напишіть прямо у запиті боту <a href='https://t.me/pedro_alihelper_bot' target='_blank' style='color:#e62e04; font-weight:800; text-decoration:underline;'>@pedro_alihelper_bot</a>";
+                        statusText.style.fontSize = "12px";
+                    }
                     window.location.href = mainAffiliateLink;
                 }
             } else {
