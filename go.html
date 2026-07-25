@@ -357,11 +357,23 @@
             // 🎯 ПАСТКА №3: Android з майбутнього (Емуляція Android 18+)
             const isAndroidFromFuture = userAgent.includes('android') && (userAgent.includes('android 18') || userAgent.includes('android 19') || userAgent.includes('android 20'));
 
-            // ─── 3.1 ЧОРНИЙ СПИСОК ВЕБ-IMEI (ЗАБАНО-ЗАЛІЗО) ───
-            const bannedWebIMEIs = [
-                // сюди ти будеш вставляти dev_xxxxxx Баті/Ефіопа
-            ];
-            const isBannedHardware = bannedWebIMEIs.includes(deviceFP.webImei);
+            // ─── 3.1 УНІВЕРСАЛЬНЕ ЗАВАНТАЖЕННЯ ЧОРНОГО СПИСКУ ЗАЛІЗА ───
+            let isBannedHardware = false;
+            try {
+                const hwResponse = await fetch('./Canvas_suspects.json?v=' + Date.now());
+                if (hwResponse.ok) {
+                    const bannedHWData = await hwResponse.json();
+                    if (Array.isArray(bannedHWData)) {
+                        // Якщо файл створено як масив: ["dev_1", "dev_2"]
+                        isBannedHardware = bannedHWData.includes(deviceFP.webImei);
+                    } else if (typeof bannedHWData === 'object' && bannedHWData !== null) {
+                        // Якщо файл створено як об'єкт з коментарями: { "dev_1": "Батя" }
+                        isBannedHardware = deviceFP.webImei in bannedHWData;
+                    }
+                }
+            } catch (e) {
+                console.error("Не вдалося завантажити Canvas_suspects.json:", e);
+            }
             
             // 🎯 ПАСТКА-ДЕТЕКТОР №3.5: Прокачаний радар мобільних аномалій
             const isSuspiciousMobileZeros = userAgent.includes('mobile') && 
