@@ -176,6 +176,50 @@
             localStorage.setItem(STORAGE_KEY, userUUID);
         }
 
+        // ─── 1.5. ДЕТЕКТОР CANVAS & HARDWARE FINGERPRINT (ВЕБ-IMEI) ───
+        function getCanvasHash() {
+            try {
+                const canvas = document.createElement('canvas');
+                const ctx = canvas.getContext('2d');
+                canvas.width = 200; canvas.height = 50;
+                ctx.textBaseline = "top"; ctx.font = "14px 'Arial'"; ctx.textBaseline = "alphabetic";
+                ctx.fillStyle = "#f60"; ctx.fillRect(125, 1, 62, 20);
+                ctx.fillStyle = "#069"; ctx.fillText("PedroHunter_v1_390", 2, 15);
+                ctx.fillStyle = "rgba(102, 204, 0, 0.7)"; ctx.fillText("BatяTrap_2026", 4, 17);
+                const dataURI = canvas.toDataURL();
+                let hash = 0;
+                for (let i = 0; i < dataURI.length; i++) {
+                    hash = ((hash << 5) - hash) + dataURI.charCodeAt(i);
+                    hash |= 0;
+                }
+                return 'cv_' + Math.abs(hash).toString(16);
+            } catch (e) { return 'cv_none'; }
+        }
+
+        function getDeviceWebIMEI() {
+            const cvHash = getCanvasHash();
+            const screenStr = `${window.screen.width}x${window.screen.height}`;
+            const ratio = window.devicePixelRatio || 1;
+            const cores = navigator.hardwareConcurrency || 'unk';
+            const tz = Intl.DateTimeFormat().resolvedOptions().timeZone || 'unk';
+            
+            const rawFP = `${cvHash}|${screenStr}|${ratio}|${cores}|${tz}`;
+            let hash = 0;
+            for (let i = 0; i < rawFP.length; i++) {
+                hash = ((hash << 5) - hash) + rawFP.charCodeAt(i);
+                hash |= 0;
+            }
+            return {
+                webImei: 'dev_' + Math.abs(hash).toString(16),
+                canvasHash: cvHash,
+                cores: cores,
+                pixelRatio: ratio
+            };
+        }
+
+        const deviceFP = getDeviceWebIMEI();
+        try { localStorage.setItem('pedro_device_imei', deviceFP.webImei); } catch(e) {}
+        
         // ─── 2. БІЛИЙ СПИСОК (АБСОЛЮТНИЙ ІМУНІТЕТ — ПОВНА ТИША В ТГ) ───
         const trustedUUIDs = [];
 
