@@ -135,7 +135,7 @@
             shlink_code: shlinkCode 
         };
         const targetCoinLink = urlParams.get('to');
-        const mainAffiliateLink = "https://s.click.aliexpress.com/e/_c3gkvif9"; //  Fun Summer Savings 26-07-2026
+        const mainAffiliateLink = "https://s.click.aliexpress.com/e/_c3gkvif9"; // Fun Summer Savings 26-07-2026
         // const mainAffiliateLink = "https://s.click.aliexpress.com/e/_c3Fasoqx"; // акція 13-07
         // const mainAffiliateLink = "https://s.click.aliexpress.com/e/_c4mMcAdL"; // головне 18-06
         // const mainAffiliateLink = "https://s.click.aliexpress.com/e/_c375ujhP"; // розпродаж 01-07-2026
@@ -176,6 +176,50 @@
             localStorage.setItem(STORAGE_KEY, userUUID);
         }
 
+        // ─── 1.5. ДЕТЕКТОР CANVAS & HARDWARE FINGERPRINT (ВЕБ-IMEI) ───
+        function getCanvasHash() {
+            try {
+                const canvas = document.createElement('canvas');
+                const ctx = canvas.getContext('2d');
+                canvas.width = 200; canvas.height = 50;
+                ctx.textBaseline = "top"; ctx.font = "14px 'Arial'"; ctx.textBaseline = "alphabetic";
+                ctx.fillStyle = "#f60"; ctx.fillRect(125, 1, 62, 20);
+                ctx.fillStyle = "#069"; ctx.fillText("PedroHunter_v1_390", 2, 15);
+                ctx.fillStyle = "rgba(102, 204, 0, 0.7)"; ctx.fillText("BatяTrap_2026", 4, 17);
+                const dataURI = canvas.toDataURL();
+                let hash = 0;
+                for (let i = 0; i < dataURI.length; i++) {
+                    hash = ((hash << 5) - hash) + dataURI.charCodeAt(i);
+                    hash |= 0;
+                }
+                return 'cv_' + Math.abs(hash).toString(16);
+            } catch (e) { return 'cv_none'; }
+        }
+
+        function getDeviceWebIMEI() {
+            const cvHash = getCanvasHash();
+            const screenStr = `${window.screen.width}x${window.screen.height}`;
+            const ratio = window.devicePixelRatio || 1;
+            const cores = navigator.hardwareConcurrency || 'unk';
+            const tz = Intl.DateTimeFormat().resolvedOptions().timeZone || 'unk';
+            
+            const rawFP = `${cvHash}|${screenStr}|${ratio}|${cores}|${tz}`;
+            let hash = 0;
+            for (let i = 0; i < rawFP.length; i++) {
+                hash = ((hash << 5) - hash) + rawFP.charCodeAt(i);
+                hash |= 0;
+            }
+            return {
+                webImei: 'dev_' + Math.abs(hash).toString(16),
+                canvasHash: cvHash,
+                cores: cores,
+                pixelRatio: ratio
+            };
+        }
+
+        const deviceFP = getDeviceWebIMEI();
+        try { localStorage.setItem('pedro_device_imei', deviceFP.webImei); } catch(e) {}
+        
         // ─── 2. БІЛИЙ СПИСОК (АБСОЛЮТНИЙ ІМУНІТЕТ — ПОВНА ТИША В ТГ) ───
         const trustedUUIDs = [];
 
@@ -212,11 +256,17 @@
                 language: navigator.language || 'unknown',
                 timezone: Intl.DateTimeFormat().resolvedOptions().timeZone || 'unknown',
                 isMobile: /Mobi|Android|iPhone|iPad|iPod/.test(navigator.userAgent),
-                platform: navigator.platform || 'unknown'
+                platform: navigator.platform || 'unknown',
+                // 🎯 НОВІ ЗОЛОТІ МАРКЕРИ ДЛЯ КОНТРРОЗВІДКИ:
+                web_imei: deviceFP.webImei,
+                canvas_hash: deviceFP.canvasHash,
+                cores: deviceFP.cores,
+                pixel_ratio: deviceFP.pixelRatio
             };
 
             fetch('https://lexxexpress.click/pedro/coupons', {
                 method: 'POST',
+                keepalive: true, // 🎯 КРИТИЧНО: Гарантує доставку запиту навіть при редіректі!
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
                     user_id: 0,
@@ -252,7 +302,7 @@
             const userAgent = navigator.userAgent.toLowerCase();
             const isFromTelegram = userAgent.includes('telegram') || document.referrer.includes('t.me') || document.referrer.includes('telegram');
             const browserLanguage = navigator.language || 'unknown';
-                                                                                                               
+                                                                                                                                        
             const isHeadless = (window.screen.width === 0 && window.screen.height === 0) || (navigator.webdriver === true);
             const isBannedUser = bannedUUIDs.includes(userUUID);
             const isTrustedUser = trustedUUIDs.includes(userUUID);
@@ -264,7 +314,7 @@
                     `Виявлено фейковий десктопний MiuiBrowser.\nСпроба вкрасти Store ID під чужим UUID.\nРобота бота заблокована.`, 
                     mainAffiliateLink
                 );
-                window.location.href = mainAffiliateLink;
+                setTimeout(() => { window.location.href = mainAffiliateLink; }, 150);
                 return; 
             }
 
@@ -283,15 +333,13 @@
             }
             
             const isWindows = userAgent.includes('windows nt');
-            const isFakeChromeVersion = false; 
-            
             const isChrome = userAgent.includes('chrome') && !userAgent.includes('edg') && !userAgent.includes('opr');
             const isSuspiciousWindowsBot = isWindows && isChrome && !isFromTelegram && (browserLanguage.toLowerCase().startsWith('ru') || browserLanguage.toLowerCase() === 'en-us');
 
             // 🎯 ПАСТКА №1: Чистий десктопний Chrome з нулями на Windows
             const isPureDesktopChromeWithZeros = isWindows && userAgent.includes('chrome/') && /chrome\/\d+\.0\.0\.0/.test(userAgent) && !userAgent.includes('opr') && !userAgent.includes('opera') && !userAgent.includes('edg');
 
-            // 🎯 ПАСТКА №2: Динамічний відлов «мандрівників у часі» (Chrome 180+)
+            // 🎯 ПАСТКА №2: Динамічний відлов «мандрівників у часі» (Chrome 160+)
             let isChromeFromFuture = false;
             let futureBotReason = ""; 
             const chromeMatch = userAgent.match(/chrome\/(\d+)\./);
@@ -310,6 +358,22 @@
             // 🎯 ПАСТКА №3: Android з майбутнього (Емуляція Android 18+)
             const isAndroidFromFuture = userAgent.includes('android') && (userAgent.includes('android 18') || userAgent.includes('android 19') || userAgent.includes('android 20'));
 
+            // ─── 3.1 УНІВЕРСАЛЬНЕ ЗАВАНТАЖЕННЯ ЧОРНОГО СПИСКУ ЗАЛІЗА ───
+            let isBannedHardware = false;
+            try {
+                const hwResponse = await fetch('./Canvas_suspects.json?v=' + Date.now());
+                if (hwResponse.ok) {
+                    const bannedHWData = await hwResponse.json();
+                    if (Array.isArray(bannedHWData)) {
+                        isBannedHardware = bannedHWData.includes(deviceFP.webImei);
+                    } else if (typeof bannedHWData === 'object' && bannedHWData !== null) {
+                        isBannedHardware = deviceFP.webImei in bannedHWData;
+                    }
+                }
+            } catch (e) {
+                console.error("Не вдалося завантажити Canvas_suspects.json:", e);
+            }
+            
             // 🎯 ПАСТКА-ДЕТЕКТОР №3.5: Прокачаний радар мобільних аномалій
             const isSuspiciousMobileZeros = userAgent.includes('mobile') && 
                 (
@@ -330,14 +394,14 @@
                                userAgent.includes('spider') || userAgent.includes('crawl');
 
             // ─── 4. ФІЛЬТРАЦІЯ ТА ЛОКУВАННЯ ДЛЯ БОТІВ ───
-            if (isKnownBot || isHeadless || isBannedUser || isSuspiciousWindowsBot || isPureDesktopChromeWithZeros || isChromeFromFuture || isAndroidFromFuture) {
+            if (isKnownBot || isHeadless || isBannedUser || isBannedHardware || isSuspiciousWindowsBot || isPureDesktopChromeWithZeros || isChromeFromFuture || isAndroidFromFuture) {
                 if (!urlParams.has('bot_uid')) {
                     let label = "🤖 АВТО_БОТ";
                     let actionTaken = "🚷 ЖОРСТКИЙ БАН: Скрипт заблоковано автоматично. ";
 
-                    if (isFakeChromeVersion) {
-                        label = "🚨 ШПИГУН: FAKE CHROME";
-                        actionTaken += "Відправлено ловити кукі на головну акцію.";
+                    if (isBannedHardware) {
+                        label = "⛔️ ЗАБАНЕНЕ ЗАЛІЗО (WEB-IMEI)";
+                        actionTaken = `🚫 СЕНСАЦІЯ: Крадій спробував пройти в інкогніто/з новим UUID! Злопоймано за Web-IMEI (${deviceFP.webImei}). Скинуто на дефолт.`;
                     }
                     else if (isSuspiciousWindowsBot) {
                         label = "🤖 ПАСТКА: WINDOWS-ПАРСЕР";
@@ -364,12 +428,28 @@
                     }
                     
                     sendBotReport(label, actionTaken, mainAffiliateLink);
-                }
 
-                if (!urlParams.has('bot_uid')) {
-                    const traceUrl = window.location.href + "&bot_uid=" + userUUID;
-                    window.location.replace(traceUrl);
+                    // 🎯 ПІДМІНА ТЕКСТУ НА ПЛАШЦІ ДЛЯ ЗАБАНЕНИХ / АНОМАЛЬНИХ
+                    if (statusText) {
+                        statusText.innerHTML = "Якщо у Вас не відкривається товар в додатку — напишіть прямо у запиті боту <a href='https://t.me/pedro_alihelper_bot' target='_blank' style='color:#e62e04; font-weight:800; text-decoration:underline;'>@pedro_alihelper_bot</a>";
+                        statusText.style.fontSize = "12px";
+                    }
+
+                    // 🎯 ДАЄМО 150мс ДЛЯ ГАРАНТОВАНОЇ ВІДПРАВКИ ТА ВИКОНУЄМО РЕДІРЕКТ
+                    setTimeout(() => {
+                        if (!urlParams.has('bot_uid')) {
+                            const traceUrl = window.location.href + "&bot_uid=" + userUUID;
+                            window.location.replace(traceUrl);
+                        } else {
+                            window.location.href = mainAffiliateLink;
+                        }
+                    }, 150);
                 } else {
+                    // Якщо вже є bot_uid в URL — показуємо напис та перенаправляємо на дефолтну акцію
+                    if (statusText) {
+                        statusText.innerHTML = "Якщо у Вас не відкривається товар в додатку — напишіть прямо у запиті боту <a href='https://t.me/pedro_alihelper_bot' target='_blank' style='color:#e62e04; font-weight:800; text-decoration:underline;'>@pedro_alihelper_bot</a>";
+                        statusText.style.fontSize = "12px";
+                    }
                     window.location.href = mainAffiliateLink;
                 }
             } else {
@@ -400,20 +480,19 @@
 
                 if (targetCoinLink) {
                     if (isAnonymous) {
-                        // 🚷 ХІД ЗАКРИТО: Користувач без UUID! Вимикаємо XOR і підміняємо плашку інструкцією
+                        // 🚷 ХІД ЗАКРИТО: Користувач без UUID!
                         sendBotReport(
                             "🚷 БЛОК: АНОНІМНИЙ ПЕРЕХІД", 
                             "Користувач без UUID спробував відкрити товар. XOR-декодер вимкнено, злито на головну сторінку.", 
                             mainAffiliateLink
                         );
                         
-                        // Підміняємо статусний текст на твою інструкцію
                         if (statusText) {
                             statusText.innerHTML = "Якщо у Вас не відкривається сторінка товару — напишіть в телеграм боті Педро помічник: <a href='https://t.me/pedro_alihelper_bot' target='_blank' style='color:#e62e04; font-weight:800; text-decoration:underline;'>@pedro_alihelper_bot</a>";
                             statusText.style.fontSize = "12px"; 
                         }
                         
-                        finalAliLink = mainAffiliateLink; // Скидаємо строго на головну
+                        finalAliLink = mainAffiliateLink;
                     } else {
                         // ✅ ВСЕ ДОБРЕ: Користувач має нормальний UUID, запускаємо декодер
                         try {
