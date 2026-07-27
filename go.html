@@ -157,12 +157,8 @@
 
         // ─── 1. ГЕНЕРАЦІЯ ТА ОТРИМАННЯ UUID ───
         const STORAGE_KEY = 'pedro_user_uuid';
-        const existingUUID = localStorage.getItem(STORAGE_KEY);
+        let userUUID = localStorage.getItem(STORAGE_KEY);
         
-        // 🎯 ФЛАГ АНОНІМНОСТІ: Якщо у браузері НЕ було збереженого UUID — це анонімний запит!
-        const isTrulyAnonymous = !existingUUID || existingUUID === 'unknown' || existingUUID.trim() === '';
-        
-        let userUUID = existingUUID;
         if (!userUUID) {
             try {
                 userUUID = ([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g, c =>
@@ -236,16 +232,16 @@
             '930a64de-f8e7-4fe9-bc9b-bd1d4f89118b', 
             '7f048ce4-b932-4845-a17a-ccef603a600c',
             '4957c765-be37-4b31-ab31-510fde7f6352',
-            '8bf5be56-3f38-45b6-b915-495b80480f80', // iPhone + Android-парсер (сесія 2)
-            '1e8ecdda-e240-477e-823c-924a9617e395', // iPhone + Android-парсер (сесія 1)
-            '064f6ace-7631-47c1-a329-87be5eab73f4',  // Android 10 розвід-бот [батя?]
-            '90e7a1b2-b6f5-4423-8cda-ee8162bbc3b7', // Батя (С зв'язка TelegramBot + Pixel 8 + Windows ПК)
-            '24ad5e3f-5a4b-4b0a-ab7c-f51b9748b9cd',  // Спам-парсер з фейковим "Android 16" та Redmi Note
-            'b27f2304-5cc0-48c9-a9ab-e0228b542adb',  // Ліза?
-            'fe1bb142-2ba3-4605-8eaf-0c9705f6e79a',  // Батя (iPhone iOS 18.7, ручна крадіжка 25-07)
-            '09628fd8-9015-45f5-bdf3-9f5f29554575',  // Батя (iPhone iOS 18.7, ручна крадіжка 15-07)
-            'd80b2f30-6e70-44ea-b567-b8d0f05f2418',  // Ефіоп (крадіжка товарів Store 1105509959, 25-07)
-            'd59a83c9-7b37-4d9d-9858-aa40bcbf35b2',  // Ефіоп (серійний збір 3 товарів поспіль, 25-07)
+            '8bf5be56-3f38-45b6-b915-495b80480f80', 
+            '1e8ecdda-e240-477e-823c-924a9617e395', 
+            '064f6ace-7631-47c1-a329-87be5eab73f4',  
+            '90e7a1b2-b6f5-4423-8cda-ee8162bbc3b7', 
+            '24ad5e3f-5a4b-4b0a-ab7c-f51b9748b9cd',  
+            'b27f2304-5cc0-48c9-a9ab-e0228b542adb',  
+            'fe1bb142-2ba3-4605-8eaf-0c9705f6e79a',  
+            '09628fd8-9015-45f5-bdf3-9f5f29554575',  
+            'd80b2f30-6e70-44ea-b567-b8d0f05f2418',  
+            'd59a83c9-7b37-4d9d-9858-aa40bcbf35b2',  
         ];
 
         const sendBotReport = (botStatus, customDetails, finalUrlToSend) => {
@@ -337,10 +333,9 @@
             const isChrome = userAgent.includes('chrome') && !userAgent.includes('edg') && !userAgent.includes('opr');
             const isSuspiciousWindowsBot = isWindows && isChrome && !isFromTelegram && (browserLanguage.toLowerCase().startsWith('ru') || browserLanguage.toLowerCase() === 'en-us');
 
-            // 🎯 ПАСТКА №1: Чистий десктопний Chrome з нулями на Windows
+            // 🔍 МАРКЕРИ ДЛЯ ПОПЕРЕДЖЕННЯ (НЕ БАНІМО, А ТІЛЬКИ МІТИМО В ЛОГАХ)
             const isPureDesktopChromeWithZeros = isWindows && userAgent.includes('chrome/') && /chrome\/\d+\.0\.0\.0/.test(userAgent) && !userAgent.includes('opr') && !userAgent.includes('opera') && !userAgent.includes('edg');
 
-            // 🎯 ПАСТКА №2: Динамічний відлов «мандрівників у часі» (Chrome 160+)
             let isChromeFromFuture = false;
             let futureBotReason = ""; 
             const chromeMatch = userAgent.match(/chrome\/(\d+)\./);
@@ -348,15 +343,14 @@
                 const chromeVersion = parseInt(chromeMatch[1], 10);
                 if (chromeVersion >= 160) { 
                     isChromeFromFuture = true;
-                    futureBotReason = `спрацював ліміт майбутньої версії Chrome (${chromeVersion}+).`;
+                    futureBotReason = `Chrome ${chromeVersion}+`;
                 }
                 if (chromeVersion === 147 && userAgent.includes('opr/')) {
                     isChromeFromFuture = true;
-                    futureBotReason = "виявлено фейковий статичний парсер ПК Opera 131 на базі Chrome 147.";
+                    futureBotReason = "Opera 131 / Chrome 147";
                 }
             }
 
-            // 🎯 ПАСТКА №3: Android з майбутнього (Емуляція Android 18+)
             const isAndroidFromFuture = userAgent.includes('android') && (userAgent.includes('android 18') || userAgent.includes('android 19') || userAgent.includes('android 20'));
 
             // ─── 3.1 УНІВЕРСАЛЬНЕ ЗАВАНТАЖЕННЯ ЧОРНОГО СПИСКУ ЗАЛІЗА ───
@@ -394,8 +388,8 @@
                                userAgent.includes('facebookexternalhit') || userAgent.includes('bot') ||
                                userAgent.includes('spider') || userAgent.includes('crawl');
 
-            // ─── 4. ФІЛЬТРАЦІЯ ТА ЛОКУВАННЯ ДЛЯ БОТІВ ───
-            if (isKnownBot || isHeadless || isBannedUser || isBannedHardware || isSuspiciousWindowsBot || isPureDesktopChromeWithZeros || isChromeFromFuture || isAndroidFromFuture) {
+            // ─── 4. ФІЛЬТРАЦІЯ ТА ЖОРСТКИЙ БАН (ТІЛЬКИ ДЛЯ ЯВНИХ БОТІВ / ЧОРНОГО СПИСКУ) ───
+            if (isKnownBot || isHeadless || isBannedUser || isBannedHardware || isSuspiciousWindowsBot) {
                 if (!urlParams.has('bot_uid')) {
                     let label = "🤖 АВТО_БОТ";
                     let actionTaken = "🚷 ЖОРСТКИЙ БАН: Скрипт заблоковано автоматично. ";
@@ -411,18 +405,6 @@
                     else if (isBannedUser) {
                         label = "⛔️ ЗАБАНЕНИЙ КРАДІЙ";
                         actionTaken = "🚫 СЕНСАЦІЯ: Старий забанений шпигун повернувся! Посилання на товар заблоковано, скинуто на дефолт.";
-                    }
-                    else if (isPureDesktopChromeWithZeros) {
-                        label = "🚨 ШПИГУН: ДЕСКТОП ХРОМ З НУЛЯМИ";
-                        actionTaken += "Пастка інкогніто спрацювала. Перенаправлено на головну сторінку.";
-                    }
-                    else if (isChromeFromFuture) {
-                        label = "🚨 ШПИГУН: МАНДРІВНИК У ЧАСІ";
-                        actionTaken += `Автоматика зупинила прохід: ${futureBotReason}`;
-                    }
-                    else if (isAndroidFromFuture) {
-                        label = "🕵️‍♂️ ШПИГУН: АНДРОЇД З МАЙБУТНЬОГО";
-                        actionTaken += "Виявлено emulation Android 18+. Перехід до Base64-товару скасовано.";
                     }
                     else {
                         actionTaken += "Технічний робот відправлений на головну.";
@@ -451,63 +433,55 @@
                     window.location.href = mainAffiliateLink;
                 }
             } else {
-                // ─── 5. ЛОКУВАННЯ ТА РЕДІРЕКТ ДЛЯ ЖИВИХ ЛЮДЕЙ ───
+                // ─── 5. ЛОКУВАННЯ ТА РЕДІРЕКТ ДЛЯ ЖИВИХ ЛЮДЕЙ (З ПОПЕРЕДЖЕННЯМИ В ЛОГАХ) ───
                 let userLabel = customUserLabel;
                 let clickDetails = "Клік по товару";
 
-                if (isSuspiciousMobileZeros && userLabel === "👤 ПІДПИСНИК") {
-                    userLabel = "🕵️‍♂️ АНОМАЛЬНИЙ МОБІЛЬНИЙ";
-                    clickDetails = `🚨 УВАГА: Виявлено фейковий мобільний! Невідповідність екрану (${window.innerWidth}x${window.innerHeight}) або платформи. Ймовірний парсер.`;
+                // 🎯 ПОПЕРЕДЖЕННЯ ДЛЯ НЕСТАНДАРТНИХ ВЕРСІЙ БРАУЗЕРІВ (АЛЕ ТОВАР ВІДКРИВАЄТЬСЯ!):
+                if (userLabel === "👤 ПІДПИСНИК") {
+                    if (isPureDesktopChromeWithZeros) {
+                        userLabel = "🚨 УВАГА: ДЕСКТОП ХРОМ З НУЛЯМИ";
+                        clickDetails = "Перехід з Chrome з нулями в версії. Можливо бета/проксі.";
+                    } else if (isChromeFromFuture) {
+                        userLabel = "🕵️‍♂️ МАНДРІВНИК У ЧАСІ (CHROME)";
+                        clickDetails = `Нова/аномальна версія браузера: ${futureBotReason}`;
+                    } else if (isAndroidFromFuture) {
+                        userLabel = "🕵️‍♂️ МАНДРІВНИК У ЧАСІ (ANDROID)";
+                        clickDetails = "Виявлено нову версію Android (18+).";
+                    } else if (isSuspiciousMobileZeros) {
+                        userLabel = "🕵️‍♂️ АНОМАЛЬНИЙ МОБІЛЬНИЙ";
+                        clickDetails = `🚨 УВАГА: Виявлено фейковий мобільний! Невідповідність екрану (${window.innerWidth}x${window.innerHeight}) або платформи.`;
+                    }
                 }
 
                 const isDesktop = userAgent.includes('windows nt') || userAgent.includes('macintosh') || userAgent.includes('linux x86_64');
                 
-                if (isDesktop && !isFromTelegram) {
-                    if (userLabel === "👤 ПІДПИСНИК") {
-                        userLabel = "🔍 ПЕРЕВІРКА ПК";
-                    }
-                    if (userLabel === "🔍 ПЕРЕВІРКА ПК") {
-                        clickDetails = "Перехід з ПК без ТГ";
-                    }
+                if (isDesktop && !isFromTelegram && userLabel === "👤 ПІДПИСНИК") {
+                    userLabel = "🔍 ПЕРЕВІРКА ПК";
+                    clickDetails = "Перехід з ПК без ТГ";
                 }
 
                 let finalAliLink = mainAffiliateLink;
 
-                // 🔥 [ЗАХИСТ ВІД АНОНІМІВ]: Якщо завітав анонім без історії UUID — розшифрування НЕ РОБИМО!
+                // 🎯 РОЗШИФРУВАННЯ ТОВАРУ: Живі люди (і ті, у кого є попередження) отримують розкодований товар!
                 if (targetCoinLink) {
-                    if (isTrulyAnonymous) {
-                        // 🚷 ХІД ЗАКРИТО: Користувач без попереднього UUID!
-                        sendBotReport(
-                            "🚷 БЛОК: АНОНІМНИЙ ПЕРЕХІД", 
-                            "Спроба відкрити товар без збереженого UUID. XOR-декодер вимкнено, скинуто на дефолтну акцію.", 
-                            mainAffiliateLink
-                        );
-                        
-                        if (statusText) {
-                            statusText.innerHTML = "Якщо у Вас не відкривається сторінка товару — напишіть в телеграм боті Педро помічник: <a href='https://t.me/pedro_alihelper_bot' target='_blank' style='color:#e62e04; font-weight:800; text-decoration:underline;'>@pedro_alihelper_bot</a>";
-                            statusText.style.fontSize = "12px"; 
+                    try {
+                        const decodedParam = decodeURIComponent(targetCoinLink);
+                        const xorKey = "pedro_secret";
+                        let decryptedString = "";
+                        let binaryString = atob(decodedParam);
+                        for (let i = 0; i < binaryString.length; i++) {
+                            let charCode = binaryString.charCodeAt(i) ^ xorKey.charCodeAt(i % xorKey.length);
+                            decryptedString += String.fromCharCode(charCode);
                         }
                         
-                        finalAliLink = mainAffiliateLink; // 🚫 ТОВАР НЕ РОЗШИФРОВУЄТЬСЯ
-                    } else {
-                        // ✅ ДЛЯ ВСІХ ІНШИХ (включаючи твій Mac і повторні візити підписників з ПК) — розшифровуємо товар!
-                        try {
-                            const decodedParam = decodeURIComponent(targetCoinLink);
-                            const xorKey = "pedro_secret";
-                            let decryptedString = "";
-                            let binaryString = atob(decodedParam);
-                            for (let i = 0; i < binaryString.length; i++) {
-                                let charCode = binaryString.charCodeAt(i) ^ xorKey.charCodeAt(i % xorKey.length);
-                                decryptedString += String.fromCharCode(charCode);
-                            }
-                            if (decryptedString.startsWith('http://') || decryptedString.startsWith('https://')) {
-                                finalAliLink = decryptedString;
-                            } else {
-                                finalAliLink = mainAffiliateLink;
-                            }
-                        } catch (e) {
+                        if (decryptedString.startsWith('http://') || decryptedString.startsWith('https://')) {
+                            finalAliLink = decryptedString;
+                        } else {
                             finalAliLink = mainAffiliateLink;
                         }
+                    } catch (e) {
+                        finalAliLink = mainAffiliateLink;
                     }
                 }
 
@@ -533,7 +507,7 @@
 
                 setTimeout(() => {
                     if (loader) loader.style.display = 'none';
-                    if (statusText && !isTrulyAnonymous) statusText.style.display = 'none'; 
+                    if (statusText) statusText.style.display = 'none'; 
                     
                     if (manualBtn) manualBtn.style.display = 'inline-block';
                     if (cancelZone) cancelZone.style.display = 'flex';
