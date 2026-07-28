@@ -118,7 +118,7 @@
         const urlParams = new URLSearchParams(window.location.search);
         let shlinkCode = urlParams.get('shlink_code');
         
-        // 🎯 ПАСТКА-ПЕРЕХОПЛЮВАЧ: Якщо Shlink не передав код в URL, дістаємо його з реферера
+        // 🎯 ПАСТКА-ПЕРЕХОПЛЮВАЧ
         if (!shlinkCode && document.referrer && document.referrer.includes('lexxexpress.click')) {
             try {
                 const parts = document.referrer.split('/');
@@ -130,15 +130,8 @@
         }
         shlinkCode = shlinkCode || 'unknown';
 
-        const payload = {
-            source: "REDIRECT_GATE",
-            shlink_code: shlinkCode 
-        };
         const targetCoinLink = urlParams.get('to');
-        const mainAffiliateLink = "https://s.click.aliexpress.com/e/_c3gkvif9"; // Fun Summer Savings 26-07-2026
-        // const mainAffiliateLink = "https://s.click.aliexpress.com/e/_c3Fasoqx"; // акція 13-07
-        // const mainAffiliateLink = "https://s.click.aliexpress.com/e/_c4mMcAdL"; // головне 18-06
-        // const mainAffiliateLink = "https://s.click.aliexpress.com/e/_c375ujhP"; // розпродаж 01-07-2026
+        const mainAffiliateLink = "https://s.click.aliexpress.com/e/_c3gkvif9"; // Fun Summer Savings
         
         const topBar = document.getElementById('redirect-bar');
         const manualBtn = document.getElementById('manual-btn');
@@ -177,7 +170,7 @@
             localStorage.setItem(STORAGE_KEY, userUUID);
         }
 
-        // ─── 1.5. ДЕТЕКТОР CANVAS & HARDWARE FINGERPRINT (ВЕБ-IMEI) ───
+        // ─── 1.5. ДЕТЕКТОР CANVAS, WEBGL РЕНДЕРЕРА ТА ФІЗИКИ ДЕВАЙСА ───
         function getCanvasHash() {
             try {
                 const canvas = document.createElement('canvas');
@@ -197,14 +190,27 @@
             } catch (e) { return 'cv_none'; }
         }
 
+        // 🎯 ДЕТЕКТОР СПРАВЖНЬОЇ ВІДЕОКАРТИ (АНТИДЕТЕКТ-ЧЕК)
+        function getWebGLRenderer() {
+            try {
+                const canvas = document.createElement('canvas');
+                const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
+                if (!gl) return 'no_webgl';
+                const debugInfo = gl.getExtension('WEBGL_debug_renderer_info');
+                if (!debugInfo) return 'no_debug_info';
+                return gl.getParameter(debugInfo.UNMASKED_RENDERER_WEBGL) || 'unk_renderer';
+            } catch (e) { return 'err_webgl'; }
+        }
+
         function getDeviceWebIMEI() {
             const cvHash = getCanvasHash();
             const screenStr = `${window.screen.width}x${window.screen.height}`;
             const ratio = window.devicePixelRatio || 1;
             const cores = navigator.hardwareConcurrency || 'unk';
             const tz = Intl.DateTimeFormat().resolvedOptions().timeZone || 'unk';
+            const gpu = getWebGLRenderer();
             
-            const rawFP = `${cvHash}|${screenStr}|${ratio}|${cores}|${tz}`;
+            const rawFP = `${cvHash}|${screenStr}|${ratio}|${cores}|${tz}|${gpu}`;
             let hash = 0;
             for (let i = 0; i < rawFP.length; i++) {
                 hash = ((hash << 5) - hash) + rawFP.charCodeAt(i);
@@ -214,38 +220,19 @@
                 webImei: 'dev_' + Math.abs(hash).toString(16),
                 canvasHash: cvHash,
                 cores: cores,
-                pixelRatio: ratio
+                pixelRatio: ratio,
+                gpuRenderer: gpu
             };
         }
 
         const deviceFP = getDeviceWebIMEI();
         try { localStorage.setItem('pedro_device_imei', deviceFP.webImei); } catch(e) {}
         
-        // ─── 2. БІЛИЙ СПИСОК (АБСОЛЮТНИЙ ІМУНІТЕТ — ПОВНА ТИША В ТГ) ───
+        // ─── 2. БІЛИЙ СПИСОК ───
         const trustedUUIDs = [];
 
-        // ─── 3. ЧОРНИЙ СПИСОК ДЛЯ РУЧНОГО БАНУ ───
-        const bannedUUIDs = [
-            'be88035e-d139-4547-8de0-83f04c557e7a', 
-            '8c6778ec-409e-4be7-ae7f-2fdfa024a7cd', 
-            'bc2fccb0-36e1-4c56-bdfb-842f7faa3be9', 
-            '2d365796-778e-408d-b44d-281b2934881f', 
-            '66d2f374-416c-4bcc-82e5-2e524b341eb0', 
-            '3baab278-b797-4a29-8e04-8ea7582fe426', 
-            '930a64de-f8e7-4fe9-bc9b-bd1d4f89118b', 
-            '7f048ce4-b932-4845-a17a-ccef603a600c',
-            '4957c765-be37-4b31-ab31-510fde7f6352',
-            '8bf5be56-3f38-45b6-b915-495b80480f80', 
-            '1e8ecdda-e240-477e-823c-924a9617e395', 
-            '064f6ace-7631-47c1-a329-87be5eab73f4',  
-            '90e7a1b2-b6f5-4423-8cda-ee8162bbc3b7', 
-            '24ad5e3f-5a4b-4b0a-ab7c-f51b9748b9cd',  
-            'b27f2304-5cc0-48c9-a9ab-e0228b542adb',  
-            'fe1bb142-2ba3-4605-8eaf-0c9705f6e79a',  
-            '09628fd8-9015-45f5-bdf3-9f5f29554575',  
-            'd80b2f30-6e70-44ea-b567-b8d0f05f2418',  
-            'd59a83c9-7b37-4d9d-9858-aa40bcbf35b2',  
-        ];
+        // ─── 3. ЧОРНИЙ СПИСОК (БАЗОВИЙ) ───
+        const bannedUUIDs = [];
 
         const sendBotReport = (botStatus, customDetails, finalUrlToSend) => {
             const isTrustedUser = trustedUUIDs.includes(userUUID);
@@ -261,7 +248,8 @@
                 web_imei: deviceFP.webImei,
                 canvas_hash: deviceFP.canvasHash,
                 cores: deviceFP.cores,
-                pixel_ratio: deviceFP.pixelRatio
+                pixel_ratio: deviceFP.pixelRatio,
+                gpu: deviceFP.gpuRenderer
             };
 
             fetch('https://lexxexpress.click/pedro/coupons', {
@@ -300,12 +288,25 @@
             }
 
             const userAgent = navigator.userAgent.toLowerCase();
+            const platform = (navigator.platform || '').toLowerCase();
+            const gpu = deviceFP.gpuRenderer.toLowerCase();
+
             const isFromTelegram = userAgent.includes('telegram') || document.referrer.includes('t.me') || document.referrer.includes('telegram');
             const browserLanguage = navigator.language || 'unknown';
-                                                                                                                                                                        
+                                                                                                                                                                                                
             const isHeadless = (window.screen.width === 0 && window.screen.height === 0) || (navigator.webdriver === true);
             const isBannedUser = bannedUUIDs.includes(userUUID);
             const isTrustedUser = trustedUUIDs.includes(userUUID);
+            
+            // 🎯 ДЕТЕКТОР АНОМАЛІЙ АНТИДЕТЕКТ-БРАУЗЕРІВ
+            const isAppleUA = userAgent.includes('iphone') || userAgent.includes('ipad') || userAgent.includes('ipod');
+            const isFakeAppleGPU = isAppleUA && (gpu.includes('nvidia') || gpu.includes('intel') || gpu.includes('amd') || gpu.includes('direct3d') || gpu.includes('swiftshader') || gpu.includes('angle'));
+            const isFakeApplePlatform = isAppleUA && (platform.includes('win') || platform.includes('linux'));
+
+            const isAndroidUA = userAgent.includes('android');
+            const isFakeAndroidGPU = isAndroidUA && (gpu.includes('apple') || gpu.includes('direct3d') || gpu.includes('swiftshader'));
+
+            const isAntiDetectDetected = isFakeAppleGPU || isFakeApplePlatform || isFakeAndroidGPU;
             
             // 🚷 СНАЙПЕРСЬКИЙ БАН ШПИГУНА
             if (userAgent.includes('linux x86_64') && userAgent.includes('applewebkit/534.24') && userAgent.includes('miuibrowser')) {
@@ -336,7 +337,6 @@
             const isChrome = userAgent.includes('chrome') && !userAgent.includes('edg') && !userAgent.includes('opr');
             const isSuspiciousWindowsBot = isWindows && isChrome && !isFromTelegram && (browserLanguage.toLowerCase().startsWith('ru') || browserLanguage.toLowerCase() === 'en-us');
 
-            // 🔍 МАРКЕРИ ДЛЯ ПОПЕРЕДЖЕННЯ (НЕ БАНІМО, А ТІЛЬКИ МІТИМО В ЛОГАХ)
             const isPureDesktopChromeWithZeros = isWindows && userAgent.includes('chrome/') && /chrome\/\d+\.0\.0\.0/.test(userAgent) && !userAgent.includes('opr') && !userAgent.includes('opera') && !userAgent.includes('edg');
 
             let isChromeFromFuture = false;
@@ -372,7 +372,6 @@
                 console.error("Не вдалося завантажити Canvas_suspects.json:", e);
             }
             
-            // 🎯 ПАСТКА-ДЕТЕКТОР №3.5: Прокачаний радар мобільних аномалій
             const isSuspiciousMobileZeros = userAgent.includes('mobile') && 
                 (
                     /chrome\/(\d+)\.0\.0\.0/.test(userAgent) || 
@@ -391,15 +390,19 @@
                                userAgent.includes('facebookexternalhit') || userAgent.includes('bot') ||
                                userAgent.includes('spider') || userAgent.includes('crawl');
 
-            // ─── 4. ФІЛЬТРАЦІЯ ТА ЖОРСТКИЙ БАН (ТІЛЬКИ ДЛЯ ЯВНИХ БОТІВ / ЧОРНОГО СПИСКУ) ───
-            if (isKnownBot || isHeadless || isBannedUser || isBannedHardware || isSuspiciousWindowsBot) {
+            // ─── 4. ФІЛЬТРАЦІЯ ТА ЖОРСТКИЙ БАН (АБО ДЕТЕКТ АНТИДЕТЕКТУ) ───
+            if (isKnownBot || isHeadless || isBannedUser || isBannedHardware || isSuspiciousWindowsBot || isAntiDetectDetected) {
                 if (!urlParams.has('bot_uid')) {
                     let label = "🤖 АВТО_БОТ";
                     let actionTaken = "🚷 ЖОРСТКИЙ БАН: Скрипт заблоковано автоматично. ";
 
-                    if (isBannedHardware) {
+                    if (isAntiDetectDetected) {
+                        label = "⛔️ ФЕЙКОВИЙ АНТИДЕТЕКТ (GPU/Platform)";
+                        actionTaken = `🚫 ЗЛОПОЙМАНО: Виявлено підробку девайса Антидетектом! Невідповідність відеокарти (${deviceFP.gpuRenderer}) або платформи (${navigator.platform}) до User-Agent. Скинуто на дефолт.`;
+                    }
+                    else if (isBannedHardware) {
                         label = "⛔️ ЗАБАНЕНЕ ЗАЛІЗО (WEB-IMEI)";
-                        actionTaken = `🚫 СЕНСАЦІЯ: Крадій спробував пройти в інкогніто/з новим UUID! Злопоймано за Web-IMEI (${deviceFP.webImei}). Скинуто на дефолт.`;
+                        actionTaken = `🚫 СЕНСАЦІЯ: Крадій спробував пройти з новим відбитком! Злопоймано за Web-IMEI (${deviceFP.webImei}). Скинуто на дефолт.`;
                     }
                     else if (isSuspiciousWindowsBot) {
                         label = "🤖 ПАСТКА: WINDOWS-ПАРСЕР";
@@ -407,10 +410,7 @@
                     }
                     else if (isBannedUser) {
                         label = "⛔️ ЗАБАНЕНИЙ КРАДІЙ";
-                        actionTaken = "🚫 СЕНСАЦІЯ: Старий забанений шпигун повернувся! Посилання на товар заблоковано, скинуто на дефолт.";
-                    }
-                    else {
-                        actionTaken += "Технічний робот відправлений на головну.";
+                        actionTaken = "🚫 СЕНСАЦІЯ: Забанений шпигун повернувся! Посилання заблоковано, скинуто на дефолт.";
                     }
                     
                     sendBotReport(label, actionTaken, mainAffiliateLink);
@@ -436,11 +436,10 @@
                     window.location.href = mainAffiliateLink;
                 }
             } else {
-                // ─── 5. ЛОКУВАННЯ ТА РЕДІРЕКТ ДЛЯ ЖИВИХ ЛЮДЕЙ (З ПОПЕРЕДЖЕННЯМИ В ЛОГАХ) ───
+                // ─── 5. ЛОКУВАННЯ ТА РЕДІРЕКТ ДЛЯ ЖИВИХ ЛЮДЕЙ ───
                 let userLabel = customUserLabel;
                 let clickDetails = "Клік по товару";
 
-                // 🎯 ПОПЕРЕДЖЕННЯ ДЛЯ НЕСТАНДАРТНИХ ВЕРСІЙ БРАУЗЕРІВ (АЛЕ ТОВАР ВІДКРИВАЄТЬСЯ!):
                 if (userLabel === "👤 ПІДПИСНИК") {
                     if (isPureDesktopChromeWithZeros) {
                         userLabel = "🚨 УВАГА: ДЕСКТОП ХРОМ З НУЛЯМИ";
@@ -466,7 +465,6 @@
 
                 let finalAliLink = mainAffiliateLink;
 
-                // 🎯 РОЗШИФРУВАННЯ ТОВАРУ: Живі люди (і ті, у кого є попередження) отримують розкодований товар!
                 if (targetCoinLink) {
                     try {
                         const decodedParam = decodeURIComponent(targetCoinLink);
