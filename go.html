@@ -132,9 +132,6 @@
 
         const targetCoinLink = urlParams.get('to');
         const mainAffiliateLink = "https://s.click.aliexpress.com/e/_c3gkvif9"; // Fun Summer Savings
-        // const mainAffiliateLink = "https://s.click.aliexpress.com/e/_c3Fasoqx"; // акція 13-07
-        // const mainAffiliateLink = "https://s.click.aliexpress.com/e/_c4mMcAdL"; // головне 18-06
-        // const mainAffiliateLink = "https://s.click.aliexpress.com/e/_c375ujhP"; // розпродаж 01-07-2026
         
         const topBar = document.getElementById('redirect-bar');
         const manualBtn = document.getElementById('manual-btn');
@@ -301,15 +298,31 @@
             const isBannedUser = bannedUUIDs.includes(userUUID);
             const isTrustedUser = trustedUUIDs.includes(userUUID);
             
-            // 🎯 ДЕТЕКТОР АНОМАЛІЙ АНТИДЕТЕКТ-БРАУЗЕРІВ
-            const isAppleUA = userAgent.includes('iphone') || userAgent.includes('ipad') || userAgent.includes('ipod');
-            const isFakeAppleGPU = isAppleUA && (gpu.includes('nvidia') || gpu.includes('intel') || gpu.includes('amd') || gpu.includes('direct3d') || gpu.includes('swiftshader') || gpu.includes('angle'));
-            const isFakeApplePlatform = isAppleUA && (platform.includes('win') || platform.includes('linux'));
-
+            // 🎯 УНІВЕРСАЛЬНИЙ ДЕТЕКТОР АНОМАЛІЙ (Оновлено та безпечно для iPad)
+            const isIphoneUA = userAgent.includes('iphone') || userAgent.includes('ipod');
             const isAndroidUA = userAgent.includes('android');
-            const isFakeAndroidGPU = isAndroidUA && (gpu.includes('apple') || gpu.includes('direct3d') || gpu.includes('swiftshader'));
-
-            const isAntiDetectDetected = isFakeAppleGPU || isFakeApplePlatform || isFakeAndroidGPU;
+            const isMacUA = userAgent.includes('macintosh') || userAgent.includes('mac os x');
+            const isWindowsUA = userAgent.includes('windows');
+            
+            const isDesktopGPU = gpu.includes('nvidia') || gpu.includes('intel') || gpu.includes('amd') || gpu.includes('direct3d');
+            const isVirtualGPU = gpu.includes('swiftshader') || gpu.includes('llvmpipe') || gpu.includes('vmware') || gpu.includes('virtualbox') || gpu.includes('mesa');
+            
+            // 1. Детекція підробки iPhone (iPhone на ПК-відеокартах чи з ОС Windows/Linux)
+            const isFakeAppleGPU = isIphoneUA && (isDesktopGPU || isVirtualGPU || gpu.includes('angle'));
+            const isFakeApplePlatform = isIphoneUA && (platform.includes('win') || platform.includes('linux'));
+            
+            // 2. Детекція підробки Android (Андроїд на ПК-чипах або Windows/Mac)
+            const isFakeAndroidGPU = isAndroidUA && (isDesktopGPU || isVirtualGPU || gpu.includes('apple'));
+            const isFakeAndroidPlatform = isAndroidUA && (platform.includes('win') || platform.includes('mac'));
+            
+            // 3. Детекція підробки Mac (Mac з системою Win32 або Direct3D)
+            const isFakeMac = isMacUA && (platform.includes('win') || gpu.includes('direct3d'));
+            
+            // 4. Детекція підробки Windows (Windows з Apple GPU)
+            const isFakeWindows = isWindowsUA && gpu.includes('apple');
+            
+            // 🔥 ЗАГАЛЬНИЙ ПРАПОР ФЕЙКУ
+            const isAntiDetectDetected = isFakeAppleGPU || isFakeApplePlatform || isFakeAndroidGPU || isFakeAndroidPlatform || isFakeMac || isFakeWindows;
             
             // 🚷 СНАЙПЕРСЬКИЙ БАН ШПИГУНА
             if (userAgent.includes('linux x86_64') && userAgent.includes('applewebkit/534.24') && userAgent.includes('miuibrowser')) {
