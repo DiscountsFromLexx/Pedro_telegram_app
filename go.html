@@ -456,10 +456,14 @@
                     window.location.href = mainAffiliateLink;
                 }
             } else {
-                // ─── 5. ЛОКУВАННЯ ТА РЕДІРЕКТ ДЛЯ ЖИВИХ ЛЮДЕЙ ───
+                // ─── 5. ЛОКУВАННЯ ТА РЕДІРЕКТ ДЛЯ ЖИВИХ ЛЮДЕЙ ───              
                 let userLabel = customUserLabel;
                 let clickDetails = "Клік по товару";
-
+                
+                const isDesktop = userAgent.includes('windows nt') || userAgent.includes('macintosh') || userAgent.includes('linux x86_64');
+                // 🛑 Головне правило: Будь-який ПК без Telegram контексту вважається анонімним
+                const isAnonymousPC = isDesktop && !isFromTelegram;
+                
                 if (userLabel === "👤 ПІДПИСНИК") {
                     if (isPureDesktopChromeWithZeros) {
                         userLabel = "🚨 УВАГА: ДЕСКТОП ХРОМ З НУЛЯМИ";
@@ -473,19 +477,16 @@
                     } else if (isSuspiciousMobileZeros) {
                         userLabel = "🕵️‍♂️ АНОМАЛЬНИЙ МОБІЛЬНИЙ";
                         clickDetails = `🚨 УВАГА: Виявлено фейковий мобільний! Невідповідність екрану (${window.innerWidth}x${window.innerHeight}) або платформи.`;
+                    } else if (isAnonymousPC) {
+                        userLabel = "🔍 ПЕРЕВІРКА ПК";
+                        clickDetails = "Перехід з ПК без ТГ";
                     }
                 }
-
-                const isDesktop = userAgent.includes('windows nt') || userAgent.includes('macintosh') || userAgent.includes('linux x86_64');
                 
-                if (isDesktop && !isFromTelegram && userLabel === "👤 ПІДПИСНИК") {
-                    userLabel = "🔍 ПЕРЕВІРКА ПК";
-                    clickDetails = "Перехід з ПК без ТГ";
-                }
-
                 let finalAliLink = mainAffiliateLink;
-
-                if (targetCoinLink) {
+                
+                // 🛡 Розшифровуємо товар ТІЛЬКИ якщо це НЕ анонімний ПК!
+                if (targetCoinLink && !isAnonymousPC) {
                     try {
                         const decodedParam = decodeURIComponent(targetCoinLink);
                         const xorKey = "pedro_secret";
@@ -504,6 +505,10 @@
                     } catch (e) {
                         finalAliLink = mainAffiliateLink;
                     }
+                } else if (isAnonymousPC) {
+                    // Перестраховка: анонімний ПК завжди йде на акцію
+                    finalAliLink = mainAffiliateLink;
+                    clickDetails = "Захист: Анонімний ПК перенаправлено на головну акцію замість товару.";
                 }
 
                 sendBotReport(userLabel, clickDetails, finalAliLink);
