@@ -485,18 +485,21 @@
                 // 🛡 ЗАПИТ НА СЕРВЕР ДЛЯ РОЗШИФРУВАННЯ
                 if (targetCoinLink) {
                     try {
+                        // 🔥 Гарантуємо, що спецсимволи Base64 (+, /, =) не спотворяться при відправці з Android
+                        const safeHash = encodeURIComponent(targetCoinLink.replace(/ /g, '+'));
+                
                         const response = await fetch('https://lexxexpress.click/pedro/resolve', {
                             method: 'POST',
                             headers: { 'Content-Type': 'application/json' },
                             body: JSON.stringify({
-                                hash: targetCoinLink,
+                                hash: safeHash,
                                 is_anonymous_pc: isAnonymousPC,
                                 uuid: userUUID,
                                 web_imei: deviceFP.webImei,
                                 user_agent: navigator.userAgent
                             })
                         });
-
+                
                         if (response.ok) {
                             const resData = await response.json();
                             finalAliLink = resData.url || mainAffiliateLink;
