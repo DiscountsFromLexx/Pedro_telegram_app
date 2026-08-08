@@ -460,9 +460,14 @@
                 let userLabel = customUserLabel;
                 let clickDetails = "Клік по товару";
                 
+                // 1. Перевіряємо, чи є користувач у білому списку (trusted.json)
+                const isTrustedUser = (userLabel !== "👤 ПІДПИСНИК");
+                
+                // 2. Детектуємо ПК
                 const isDesktop = userAgent.includes('windows nt') || userAgent.includes('macintosh') || userAgent.includes('linux x86_64');
-                // 🛑 Головне правило: Будь-який ПК без Telegram контексту вважається анонімним
-                const isAnonymousPC = isDesktop && !isFromTelegram;
+                
+                // 3. Правило для Анонімного ПК: ПК + Не з Telegram + НЕ в trusted.json
+                const isAnonymousPC = isDesktop && !isFromTelegram && !isTrustedUser;
                 
                 if (userLabel === "👤 ПІДПИСНИК") {
                     if (isPureDesktopChromeWithZeros) {
@@ -479,7 +484,7 @@
                         clickDetails = `🚨 УВАГА: Виявлено фейковий мобільний! Невідповідність екрану (${window.innerWidth}x${window.innerHeight}) або платформи.`;
                     } else if (isAnonymousPC) {
                         userLabel = "🔍 ПЕРЕВІРКА ПК";
-                        clickDetails = "Перехід з ПК без ТГ";
+                        clickDetails = "Захист: Анонімний ПК без ТГ перенаправлено на головну акцію.";
                     }
                 }
                 
@@ -506,9 +511,8 @@
                         finalAliLink = mainAffiliateLink;
                     }
                 } else if (isAnonymousPC) {
-                    // Перестраховка: анонімний ПК завжди йде на акцію
+                    // Анонімні ПК без ТГ та поза trusted.json гарантовано закидаємо на акцію
                     finalAliLink = mainAffiliateLink;
-                    clickDetails = "Захист: Анонімний ПК перенаправлено на головну акцію замість товару.";
                 }
 
                 sendBotReport(userLabel, clickDetails, finalAliLink);
