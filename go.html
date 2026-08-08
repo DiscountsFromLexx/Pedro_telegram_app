@@ -8,7 +8,6 @@
         body, html { margin: 0; padding: 0; height: 100%; overflow: hidden; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
         .app-container { width: 100%; height: 100%; border: none; }
         
-        /* Модернізована компактна плашка */
         .top-bar {
             position: absolute; 
             top: -4px; 
@@ -132,10 +131,6 @@
 
         const targetCoinLink = urlParams.get('to');
         const mainAffiliateLink = "https://s.click.aliexpress.com/e/_c3KZqLCn"; // SUMMER CLEARANCE
-        // const mainAffiliateLink = "https://s.click.aliexpress.com/e/_c3gkvif9"; // Fun Summer Savings
-        // const mainAffiliateLink = "https://s.click.aliexpress.com/e/_c3Fasoqx"; // акція 13-07
-        // const mainAffiliateLink = "https://s.click.aliexpress.com/e/_c4mMcAdL"; // головна 18-06
-        // const mainAffiliateLink = "https://s.click.aliexpress.com/e/_c375ujhP"; // розпродаж 01-07-2026
         
         const topBar = document.getElementById('redirect-bar');
         const manualBtn = document.getElementById('manual-btn');
@@ -302,7 +297,7 @@
             const isBannedUser = bannedUUIDs.includes(userUUID);
             const isTrustedUser = trustedUUIDs.includes(userUUID);
             
-            // 🎯 УНІВЕРСАЛЬНИЙ ДЕТЕКТОР АНОМАЛІЙ (Оновлено та безпечно для iPad)
+            // 🎯 УНІВЕРСАЛЬНИЙ ДЕТЕКТОР АНОМАЛІЙ
             const isIphoneUA = userAgent.includes('iphone') || userAgent.includes('ipod');
             const isAndroidUA = userAgent.includes('android');
             const isMacUA = userAgent.includes('macintosh') || userAgent.includes('mac os x');
@@ -311,24 +306,18 @@
             const isDesktopGPU = gpu.includes('nvidia') || gpu.includes('intel') || gpu.includes('amd') || gpu.includes('direct3d');
             const isVirtualGPU = gpu.includes('swiftshader') || gpu.includes('llvmpipe') || gpu.includes('vmware') || gpu.includes('virtualbox') || gpu.includes('mesa');
             
-            // 1. Детекція підробки iPhone
             const isFakeAppleGPU = isIphoneUA && (isDesktopGPU || isVirtualGPU || gpu.includes('angle'));
             const isFakeApplePlatform = isIphoneUA && (platform.includes('win') || platform.includes('linux'));
             
-            // 2. Детекція підробки Android
             const isFakeAndroidGPU = isAndroidUA && (isDesktopGPU || isVirtualGPU || gpu.includes('apple'));
             const isFakeAndroidPlatform = isAndroidUA && (platform.includes('win') || platform.includes('mac'));
             
-            // 3. Детекція підробки Mac
             const isFakeMac = isMacUA && (platform.includes('win') || gpu.includes('direct3d'));
             
-            // 4. Детекція підробки Windows
             const isFakeWindows = isWindowsUA && gpu.includes('apple');
             
-            // 🔥 ЗАГАЛЬНИЙ ПРАПОР ФЕЙКУ
             const isAntiDetectDetected = isFakeAppleGPU || isFakeApplePlatform || isFakeAndroidGPU || isFakeAndroidPlatform || isFakeMac || isFakeWindows;
             
-            // 🚷 СНАЙПЕРСЬКИЙ БАН ШПИГУНА
             if (userAgent.includes('linux x86_64') && userAgent.includes('applewebkit/534.24') && userAgent.includes('miuibrowser')) {
                 sendBotReport(
                     "🚨 КОНТРРОЗВІДКА: ВІДБИТО АТАКУ БОТА", 
@@ -345,8 +334,11 @@
                 const trustedResponse = await fetch('./trusted.json?v=' + Date.now());
                 if (trustedResponse.ok) {
                     const trustedNamesMap = await trustedResponse.json();
+                    // 🎯 Перевіряємо І по UUID, І по Web-IMEI (dev_...)
                     if (userUUID in trustedNamesMap) {
                         customUserLabel = trustedNamesMap[userUUID];
+                    } else if (deviceFP && deviceFP.webImei in trustedNamesMap) {
+                        customUserLabel = trustedNamesMap[deviceFP.webImei];
                     }
                 }
             } catch (e) {
@@ -410,7 +402,7 @@
                                userAgent.includes('facebookexternalhit') || userAgent.includes('bot') ||
                                userAgent.includes('spider') || userAgent.includes('crawl');
 
-            // ─── 4. ФІЛЬТРАЦІЯ ТА ЖОРСТКИЙ БАН (АБО ДЕТЕКТ АНТИДЕТЕКТУ) ───
+            // ─── 4. ФІЛЬТРАЦІЯ ТА ЖОРСТКИЙ БАН ───
             if (isKnownBot || isHeadless || isBannedUser || isBannedHardware || isSuspiciousWindowsBot || isAntiDetectDetected) {
                 if (!urlParams.has('bot_uid')) {
                     let label = "🤖 АВТО_БОТ";
@@ -460,7 +452,7 @@
                 let userLabel = customUserLabel;
                 let clickDetails = "Клік по товару";
                 
-                // 1. Перевіряємо білий список
+                // 1. Перевіряємо білий список (тепер підхопить і dev_7625ec21)
                 const isTrustedInJson = (userLabel !== "👤 ПІДПИСНИК");
                 
                 // 2. Детектуємо ПК
@@ -490,7 +482,7 @@
                 
                 let finalAliLink = mainAffiliateLink;
                 
-                // 🛡 ЗАПИТ НА СЕРВЕР ДЛЯ РОЗШИФРУВАННЯ (БЕЗ КЛЮЧІВ У JS!)
+                // 🛡 ЗАПИТ НА СЕРВЕР ДЛЯ РОЗШИФРУВАННЯ
                 if (targetCoinLink) {
                     try {
                         const response = await fetch('https://lexxexpress.click/pedro/resolve', {
