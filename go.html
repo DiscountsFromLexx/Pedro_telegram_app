@@ -132,10 +132,6 @@
 
         const targetCoinLink = urlParams.get('to');
         const mainAffiliateLink = "https://s.click.aliexpress.com/e/_c3KZqLCn"; // SUMMER CLEARANCE
-        // const mainAffiliateLink = "https://s.click.aliexpress.com/e/_c3gkvif9"; // Fun Summer Savings
-        // const mainAffiliateLink = "https://s.click.aliexpress.com/e/_c3Fasoqx"; // акція 13-07
-        // const mainAffiliateLink = "https://s.click.aliexpress.com/e/_c4mMcAdL"; // головна 18-06
-        // const mainAffiliateLink = "https://s.click.aliexpress.com/e/_c375ujhP"; // розпродаж 01-07-2026
         
         const topBar = document.getElementById('redirect-bar');
         const manualBtn = document.getElementById('manual-btn');
@@ -297,7 +293,7 @@
 
             const isFromTelegram = userAgent.includes('telegram') || document.referrer.includes('t.me') || document.referrer.includes('telegram');
             const browserLanguage = navigator.language || 'unknown';
-                                                                                                                                                                                                
+                                                                                                                                                                                                                            
             const isHeadless = (window.screen.width === 0 && window.screen.height === 0) || (navigator.webdriver === true);
             const isBannedUser = bannedUUIDs.includes(userUUID);
             const isTrustedUser = trustedUUIDs.includes(userUUID);
@@ -311,18 +307,18 @@
             const isDesktopGPU = gpu.includes('nvidia') || gpu.includes('intel') || gpu.includes('amd') || gpu.includes('direct3d');
             const isVirtualGPU = gpu.includes('swiftshader') || gpu.includes('llvmpipe') || gpu.includes('vmware') || gpu.includes('virtualbox') || gpu.includes('mesa');
             
-            // 1. Детекція підробки iPhone (iPhone на ПК-відеокартах чи з ОС Windows/Linux)
+            // 1. Детекція підробки iPhone
             const isFakeAppleGPU = isIphoneUA && (isDesktopGPU || isVirtualGPU || gpu.includes('angle'));
             const isFakeApplePlatform = isIphoneUA && (platform.includes('win') || platform.includes('linux'));
             
-            // 2. Детекція підробки Android (Андроїд на ПК-чипах або Windows/Mac)
+            // 2. Детекція підробки Android
             const isFakeAndroidGPU = isAndroidUA && (isDesktopGPU || isVirtualGPU || gpu.includes('apple'));
             const isFakeAndroidPlatform = isAndroidUA && (platform.includes('win') || platform.includes('mac'));
             
-            // 3. Детекція підробки Mac (Mac з системою Win32 або Direct3D)
+            // 3. Детекція підробки Mac
             const isFakeMac = isMacUA && (platform.includes('win') || gpu.includes('direct3d'));
             
-            // 4. Детекція підробки Windows (Windows з Apple GPU)
+            // 4. Детекція підробки Windows
             const isFakeWindows = isWindowsUA && gpu.includes('apple');
             
             // 🔥 ЗАГАЛЬНИЙ ПРАПОР ФЕЙКУ
@@ -456,18 +452,18 @@
                     window.location.href = mainAffiliateLink;
                 }
             } else {
-                // ─── 5. ЛОКУВАННЯ ТА РЕДІРЕКТ ДЛЯ ЖИВИХ ЛЮДЕЙ ───              
+                // ─── 5. СЕРВЕРНЕ РОЗШИФРУВАННЯ (ZERO-KNOWLEDGE) ───              
                 let userLabel = customUserLabel;
                 let clickDetails = "Клік по товару";
                 
-                // 1. Перевіряємо, чи є користувач у білому списку (trusted.json)
-                const isTrustedUser = (userLabel !== "👤 ПІДПИСНИК");
+                // 1. Перевіряємо білий список
+                const isTrustedInJson = (userLabel !== "👤 ПІДПИСНИК");
                 
                 // 2. Детектуємо ПК
                 const isDesktop = userAgent.includes('windows nt') || userAgent.includes('macintosh') || userAgent.includes('linux x86_64');
                 
-                // 3. Правило для Анонімного ПК: ПК + Не з Telegram + НЕ в trusted.json
-                const isAnonymousPC = isDesktop && !isFromTelegram && !isTrustedUser;
+                // 3. Визначаємо анонімний ПК: ПК + Не з Telegram + Не в trusted.json
+                const isAnonymousPC = isDesktop && !isFromTelegram && !isTrustedInJson;
                 
                 if (userLabel === "👤 ПІДПИСНИК") {
                     if (isPureDesktopChromeWithZeros) {
@@ -490,29 +486,29 @@
                 
                 let finalAliLink = mainAffiliateLink;
                 
-                // 🛡 Розшифровуємо товар ТІЛЬКИ якщо це НЕ анонімний ПК!
-                if (targetCoinLink && !isAnonymousPC) {
+                // 🛡 ЗАПИТ НА СЕРВЕР ДЛЯ РОЗШИФРУВАННЯ (БЕЗ КЛЮЧІВ У JS!)
+                if (targetCoinLink) {
                     try {
-                        const decodedParam = decodeURIComponent(targetCoinLink);
-                        const xorKey = "pedro_secret";
-                        let decryptedString = "";
-                        let binaryString = atob(decodedParam);
-                        for (let i = 0; i < binaryString.length; i++) {
-                            let charCode = binaryString.charCodeAt(i) ^ xorKey.charCodeAt(i % xorKey.length);
-                            decryptedString += String.fromCharCode(charCode);
-                        }
-                        
-                        if (decryptedString.startsWith('http://') || decryptedString.startsWith('https://')) {
-                            finalAliLink = decryptedString;
-                        } else {
-                            finalAliLink = mainAffiliateLink;
+                        const response = await fetch('https://lexxexpress.click/pedro/resolve', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({
+                                hash: targetCoinLink,
+                                is_anonymous_pc: isAnonymousPC,
+                                uuid: userUUID,
+                                web_imei: deviceFP.webImei,
+                                user_agent: navigator.userAgent
+                            })
+                        });
+
+                        if (response.ok) {
+                            const resData = await response.json();
+                            finalAliLink = resData.url || mainAffiliateLink;
                         }
                     } catch (e) {
+                        console.error("Помилка сервера розшифрування:", e);
                         finalAliLink = mainAffiliateLink;
                     }
-                } else if (isAnonymousPC) {
-                    // Анонімні ПК без ТГ та поза trusted.json гарантовано закидаємо на акцію
-                    finalAliLink = mainAffiliateLink;
                 }
 
                 sendBotReport(userLabel, clickDetails, finalAliLink);
