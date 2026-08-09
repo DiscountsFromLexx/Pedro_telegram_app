@@ -288,7 +288,7 @@
 
             const userAgent = navigator.userAgent.toLowerCase();
             const platform = (navigator.platform || '').toLowerCase();
-            const gpu = deviceFP.gpuRenderer.toLowerCase();
+            const gpu = (deviceFP.gpuRenderer || '').toLowerCase();
 
             const isFromTelegram = userAgent.includes('telegram') || document.referrer.includes('t.me') || document.referrer.includes('telegram');
             const browserLanguage = navigator.language || 'unknown';
@@ -297,26 +297,25 @@
             const isBannedUser = bannedUUIDs.includes(userUUID);
             const isTrustedUser = trustedUUIDs.includes(userUUID);
             
-            // 🎯 УНІВЕРСАЛЬНИЙ ДЕТЕКТОР АНОМАЛІЙ
+            // 🎯 1. ДЕТЕКТОР АПАРАТНИХ АНОМАЛІЙ (ВІДЕОКАРТИ ПК ТА ЕМУЛЯТОРІВ)
+            const isDesktopGPU = gpu.includes('intel') || gpu.includes('nvidia') || gpu.includes('amd') || gpu.includes('direct3d') || gpu.includes('angle');
+            const isVirtualGPU = gpu.includes('swiftshader') || gpu.includes('llvmpipe') || gpu.includes('vmware') || gpu.includes('virtualbox') || gpu.includes('mesa');
+            const isDesktopPlatform = platform.includes('win32') || platform.includes('win64') || platform.includes('macintel') || platform.includes('linux x86');
+
+            // 🔥 ЯКЩО UA МОБІЛЬНИЙ, АЛЕ ВІДЕОКАРТА / ПЛАТФОРМА ВІД ПК — ЦЕ 100% ФЕЙК!
+            const isFakeMobileGPU = (userAgent.includes('android') || userAgent.includes('iphone')) && (isDesktopGPU || isVirtualGPU);
+
             const isIphoneUA = userAgent.includes('iphone') || userAgent.includes('ipod');
             const isAndroidUA = userAgent.includes('android');
             const isMacUA = userAgent.includes('macintosh') || userAgent.includes('mac os x');
             const isWindowsUA = userAgent.includes('windows');
             
-            const isDesktopGPU = gpu.includes('nvidia') || gpu.includes('intel') || gpu.includes('amd') || gpu.includes('direct3d');
-            const isVirtualGPU = gpu.includes('swiftshader') || gpu.includes('llvmpipe') || gpu.includes('vmware') || gpu.includes('virtualbox') || gpu.includes('mesa');
-            
-            const isFakeAppleGPU = isIphoneUA && (isDesktopGPU || isVirtualGPU || gpu.includes('angle'));
             const isFakeApplePlatform = isIphoneUA && (platform.includes('win') || platform.includes('linux'));
-            
-            const isFakeAndroidGPU = isAndroidUA && (isDesktopGPU || isVirtualGPU || gpu.includes('apple'));
             const isFakeAndroidPlatform = isAndroidUA && (platform.includes('win') || platform.includes('mac'));
-            
             const isFakeMac = isMacUA && (platform.includes('win') || gpu.includes('direct3d'));
-            
             const isFakeWindows = isWindowsUA && gpu.includes('apple');
             
-            const isAntiDetectDetected = isFakeAppleGPU || isFakeApplePlatform || isFakeAndroidGPU || isFakeAndroidPlatform || isFakeMac || isFakeWindows;
+            const isAntiDetectDetected = isFakeMobileGPU || isFakeApplePlatform || isFakeAndroidPlatform || isFakeMac || isFakeWindows;
             
             if (userAgent.includes('linux x86_64') && userAgent.includes('applewebkit/534.24') && userAgent.includes('miuibrowser')) {
                 sendBotReport(
@@ -383,12 +382,12 @@
                 console.error("Не вдалося завантажити Canvas_suspects.json:", e);
             }
             
-            // 🎯 СНАЙПЕРСЬКИЙ ДЕТЕКТОР ЕМУЛЯТОРІВ ТА ФЕЙКОВИХ МОБІЛЬНИХ (АНТИ-ЕФІОП)
+            // 🎯 СНАЙПЕРСЬКИЙ ДЕТЕКТОР ЕМУЛЯТОРІВ ТА ДРОБОВОГО PIXEL_RATIO
             const ratioStr = (window.devicePixelRatio || 1).toString();
             const isAnomalousRatio = ratioStr.includes('.8000') || ratioStr.includes('.1000') || ratioStr.length > 7;
             const isAnomalousVerticalScreen = (window.innerWidth > 900) && (window.innerHeight > window.innerWidth);
             
-            const isFakeMobileEmulation = userAgent.includes('mobile') && (isAnomalousRatio || isAnomalousVerticalScreen);
+            const isFakeMobileEmulation = userAgent.includes('mobile') && (isAnomalousRatio || isAnomalousVerticalScreen || isFakeMobileGPU);
             
             const isSuspiciousMobileZeros = userAgent.includes('mobile') && 
                 (
@@ -414,7 +413,7 @@
                     let label = "🤖 АВТО_БОТ";
                     let actionTaken = "🚷 ЖОРСТКИЙ БАН: Скрипт заблоковано автоматично. ";
 
-                    if (isAntiDetectDetected) {
+                    if (isAntiDetectDetected || isFakeMobileGPU) {
                         label = "⛔️ ФЕЙКОВИЙ АНТИДЕТЕКТ (GPU/Platform)";
                         actionTaken = `🚫 ЗЛОПОЙМАНО: Виявлено підробку девайса Антидетектом! Невідповідність відеокарти (${deviceFP.gpuRenderer}) або платформи (${navigator.platform}) до User-Agent. Скинуто на дефолт.`;
                     }
@@ -459,10 +458,13 @@
                 let clickDetails = "Клік по товару";
                 
                 const isTrustedInJson = (userLabel !== "👤 ПІДПИСНИК");
-                const isDesktop = userAgent.includes('windows nt') || userAgent.includes('macintosh') || userAgent.includes('linux x86_64');
+                const isRealDesktop = userAgent.includes('windows nt') || userAgent.includes('macintosh') || userAgent.includes('linux x86_64') || isDesktopPlatform;
                 
-                // 🔥 Оновлена безпечна перевірка анонімного ПК або фейкової мобільної емуляції
-                const isAnonymousPC = (isDesktop || isFakeMobileEmulation) && !isFromTelegram && !isTrustedInJson;
+                // 🔥 Повний захист від ПК та підроблених девайсів
+                const isDesktop = isRealDesktop || isFakeMobileEmulation;
+                
+                // Якщо це ПК/емулятор + НЕ з Telegram + НЕ в білому списку -> ЗЛИВАЄМО НА АКЦІЮ!
+                const isAnonymousPC = isDesktop && !isFromTelegram && !isTrustedInJson;
                 
                 if (userLabel === "👤 ПІДПИСНИК") {
                     if (isPureDesktopChromeWithZeros) {
