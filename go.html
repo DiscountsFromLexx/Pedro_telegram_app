@@ -297,13 +297,13 @@
             const isBannedUser = bannedUUIDs.includes(userUUID);
             const isTrustedUser = trustedUUIDs.includes(userUUID);
             
-            // 🎯 1. ДЕТЕКТОР АПАРАТНИХ АНОМАЛІЙ (ВІДЕОКАРТИ ПК ТА ЕМУЛЯТОРІВ)
-            const isDesktopGPU = gpu.includes('intel') || gpu.includes('nvidia') || gpu.includes('amd') || gpu.includes('direct3d') || gpu.includes('angle');
+            // 🎯 БЕЗПЕЧНИЙ ДЕТЕКТОР (НЕ БЛОКУЄ РЕАЛЬНІ ANDROID З ANGLE)
+            const isDesktopGPU = gpu.includes('intel') || gpu.includes('nvidia') || gpu.includes('amd') || gpu.includes('direct3d');
             const isVirtualGPU = gpu.includes('swiftshader') || gpu.includes('llvmpipe') || gpu.includes('vmware') || gpu.includes('virtualbox') || gpu.includes('mesa');
             const isDesktopPlatform = platform.includes('win32') || platform.includes('win64') || platform.includes('macintel') || platform.includes('linux x86');
 
-            // 🔥 ЯКЩО UA МОБІЛЬНИЙ, АЛЕ ВІДЕОКАРТА / ПЛАТФОРМА ВІД ПК — ЦЕ 100% ФЕЙК!
-            const isFakeMobileGPU = (userAgent.includes('android') || userAgent.includes('iphone')) && (isDesktopGPU || isVirtualGPU);
+            // Фейковий мобільний — це коли UA каже "Android/iPhone", але відеокарта Intel/NVIDIA/AMD/SwiftShader АБО платформа Win/Mac/Linux x86
+            const isFakeMobileGPU = (userAgent.includes('android') || userAgent.includes('iphone')) && (isDesktopGPU || isVirtualGPU || isDesktopPlatform);
 
             const isIphoneUA = userAgent.includes('iphone') || userAgent.includes('ipod');
             const isAndroidUA = userAgent.includes('android');
@@ -315,6 +315,7 @@
             const isFakeMac = isMacUA && (platform.includes('win') || gpu.includes('direct3d'));
             const isFakeWindows = isWindowsUA && gpu.includes('apple');
             
+            // 🔥 М'ЯКИЙ ТА ТОЧНИЙ ПРАПОР АНТИДЕТЕКТУ
             const isAntiDetectDetected = isFakeMobileGPU || isFakeApplePlatform || isFakeAndroidPlatform || isFakeMac || isFakeWindows;
             
             if (userAgent.includes('linux x86_64') && userAgent.includes('applewebkit/534.24') && userAgent.includes('miuibrowser')) {
@@ -382,7 +383,7 @@
                 console.error("Не вдалося завантажити Canvas_suspects.json:", e);
             }
             
-            // 🎯 СНАЙПЕРСЬКИЙ ДЕТЕКТОР ЕМУЛЯТОРІВ ТА ДРОБОВОГО PIXEL_RATIO
+            // 🎯 СНАЙПЕРСЬКИЙ ДЕТЕКТОР ЕМУЛЯТОРІВ
             const ratioStr = (window.devicePixelRatio || 1).toString();
             const isAnomalousRatio = ratioStr.includes('.8000') || ratioStr.includes('.1000') || ratioStr.length > 7;
             const isAnomalousVerticalScreen = (window.innerWidth > 900) && (window.innerHeight > window.innerWidth);
@@ -413,7 +414,7 @@
                     let label = "🤖 АВТО_БОТ";
                     let actionTaken = "🚷 ЖОРСТКИЙ БАН: Скрипт заблоковано автоматично. ";
 
-                    if (isAntiDetectDetected || isFakeMobileGPU) {
+                    if (isAntiDetectDetected) {
                         label = "⛔️ ФЕЙКОВИЙ АНТИДЕТЕКТ (GPU/Platform)";
                         actionTaken = `🚫 ЗЛОПОЙМАНО: Виявлено підробку девайса Антидетектом! Невідповідність відеокарти (${deviceFP.gpuRenderer}) або платформи (${navigator.platform}) до User-Agent. Скинуто на дефолт.`;
                     }
@@ -460,10 +461,7 @@
                 const isTrustedInJson = (userLabel !== "👤 ПІДПИСНИК");
                 const isRealDesktop = userAgent.includes('windows nt') || userAgent.includes('macintosh') || userAgent.includes('linux x86_64') || isDesktopPlatform;
                 
-                // 🔥 Повний захист від ПК та підроблених девайсів
                 const isDesktop = isRealDesktop || isFakeMobileEmulation;
-                
-                // Якщо це ПК/емулятор + НЕ з Telegram + НЕ в білому списку -> ЗЛИВАЄМО НА АКЦІЮ!
                 const isAnonymousPC = isDesktop && !isFromTelegram && !isTrustedInJson;
                 
                 if (userLabel === "👤 ПІДПИСНИК") {
