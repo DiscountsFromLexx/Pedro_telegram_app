@@ -334,7 +334,6 @@
                 const trustedResponse = await fetch('./trusted.json?v=' + Date.now());
                 if (trustedResponse.ok) {
                     const trustedNamesMap = await trustedResponse.json();
-                    // 🎯 Перевіряємо І по UUID, І по Web-IMEI (dev_...)
                     if (userUUID in trustedNamesMap) {
                         customUserLabel = trustedNamesMap[userUUID];
                     } else if (deviceFP && deviceFP.webImei in trustedNamesMap) {
@@ -383,6 +382,13 @@
             } catch (e) {
                 console.error("Не вдалося завантажити Canvas_suspects.json:", e);
             }
+            
+            // 🎯 СНАЙПЕРСЬКИЙ ДЕТЕКТОР ЕМУЛЯТОРІВ ТА ФЕЙКОВИХ МОБІЛЬНИХ (АНТИ-ЕФІОП)
+            const ratioStr = (window.devicePixelRatio || 1).toString();
+            const isAnomalousRatio = ratioStr.includes('.8000') || ratioStr.includes('.1000') || ratioStr.length > 7;
+            const isAnomalousVerticalScreen = (window.innerWidth > 900) && (window.innerHeight > window.innerWidth);
+            
+            const isFakeMobileEmulation = userAgent.includes('mobile') && (isAnomalousRatio || isAnomalousVerticalScreen);
             
             const isSuspiciousMobileZeros = userAgent.includes('mobile') && 
                 (
@@ -452,14 +458,11 @@
                 let userLabel = customUserLabel;
                 let clickDetails = "Клік по товару";
                 
-                // 1. Перевіряємо білий список (тепер підхопить і dev_7625ec21)
                 const isTrustedInJson = (userLabel !== "👤 ПІДПИСНИК");
-                
-                // 2. Детектуємо ПК
                 const isDesktop = userAgent.includes('windows nt') || userAgent.includes('macintosh') || userAgent.includes('linux x86_64');
                 
-                // 3. Визначаємо анонімний ПК: ПК + Не з Telegram + Не в trusted.json
-                const isAnonymousPC = isDesktop && !isFromTelegram && !isTrustedInJson;
+                // 🔥 Оновлена безпечна перевірка анонімного ПК або фейкової мобільної емуляції
+                const isAnonymousPC = (isDesktop || isFakeMobileEmulation) && !isFromTelegram && !isTrustedInJson;
                 
                 if (userLabel === "👤 ПІДПИСНИК") {
                     if (isPureDesktopChromeWithZeros) {
@@ -485,9 +488,8 @@
                 // 🛡 ЗАПИТ НА СЕРВЕР ДЛЯ РОЗШИФРУВАННЯ
                 if (targetCoinLink) {
                     try {
-                        // 🔥 Гарантуємо, що спецсимволи Base64 (+, /, =) не спотворяться при відправці з Android
                         const safeHash = encodeURIComponent(targetCoinLink.replace(/ /g, '+'));
-                
+                        
                         const response = await fetch('https://lexxexpress.click/pedro/resolve', {
                             method: 'POST',
                             headers: { 'Content-Type': 'application/json' },
@@ -499,7 +501,7 @@
                                 user_agent: navigator.userAgent
                             })
                         });
-                
+
                         if (response.ok) {
                             const resData = await response.json();
                             finalAliLink = resData.url || mainAffiliateLink;
