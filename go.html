@@ -463,7 +463,12 @@
                 let clickDetails = "Клік по товару";
                 
                 const isTrustedInJson = (userLabel !== "👤 ПІДПИСНИК");
-                const isRealDesktop = userAgent.includes('windows nt') || userAgent.includes('macintosh') || userAgent.includes('linux x86_64') || isDesktopPlatform;
+                
+                // 🎯 ВИКЛЮЧЕННЯ ДЛЯ МОБІЛЬНОГО FIREFOX (Щоб не плутати з ПК)
+                const isMobileFirefox = userAgent.includes('android') && userAgent.includes('firefox') && userAgent.includes('mobile');
+
+                // Перевіряємо ПК тільки якщо це НЕ мобільний Firefox
+                const isRealDesktop = !isMobileFirefox && (userAgent.includes('windows nt') || userAgent.includes('macintosh') || userAgent.includes('linux x86_64') || isDesktopPlatform);
                 
                 const isDesktop = isRealDesktop || isFakeMobileEmulation;
                 const isAnonymousPC = isDesktop && !isFromTelegram && !isTrustedInJson;
