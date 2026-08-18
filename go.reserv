@@ -1,3 +1,580 @@
+// 18-08
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Завантаження AliExpress...</title>
+    <style>
+        body, html { margin: 0; padding: 0; height: 100%; overflow: hidden; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+        .app-container { width: 100%; height: 100%; border: none; }
+        
+        .top-bar {
+            position: absolute; 
+            top: -4px; 
+            left: 0; 
+            width: 100%; 
+            background: rgba(255, 255, 255, 0.98);
+            padding: 6px 15px; 
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1); 
+            z-index: 9999;
+            box-sizing: border-box;
+            transition: transform 0.4s ease, opacity 0.4s ease;
+        }
+
+        .bar-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+        }
+        
+        .status-message {
+            font-size: 14px;
+            font-weight: bold;
+            color: #333;
+            width: 100%;
+            text-align: center;
+            line-height: 1.4;
+        }
+
+        .timer-text {
+            display: none;
+            font-size: 14px;
+            color: #777;
+            margin-top: 4px;
+            text-align: center;
+            padding-left: 2px;
+        }
+        
+        #timer-countdown { color: #e62e04; font-weight: 800; }
+        
+        .loader { height: 3px; width: 100%; background-color: #f3f3f3; position: absolute; bottom: 0; left: 0; overflow: hidden; }
+        .loader::after {
+            content: ''; display: block; height: 100%; background-color: #e62e04; width: 40%;
+            animation: loading 0.8s infinite ease-in-out;
+        }
+        @keyframes loading { 0% { margin-left: -40%; } 100% { margin-left: 100%; } }
+
+        .action-btn {
+            display: none;
+            background-color: #e62e04;
+            color: white; border: none; 
+            padding: 8px 14px;
+            font-size: 12px; font-weight: bold; 
+            border-radius: 4px;
+            cursor: pointer; text-decoration: none;
+            box-shadow: 0 2px 4px rgba(230, 46, 4, 0.2);
+            white-space: nowrap;
+        }
+        
+        .keep-open-zone {
+            display: none;
+            align-items: center;
+            gap: 6px;
+            cursor: pointer;
+            user-select: none;
+            color: #888;
+            transition: color 0.2s;
+        }
+        .keep-open-zone:hover { color: #333; }
+        
+        .keep-open-text { font-size: 14px; font-weight: normal; }
+        .close-btn { font-size: 20px; line-height: 1; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+    <noscript>
+        <style>
+            #redirect-bar, .app-container { display: none !important; opacity: 0 !important; visibility: hidden !important; }
+            .no-js-container { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; font-family: sans-serif; text-align: center; background: #fff; }
+        </style>
+        <div class="no-js-container">
+            <h2>Завантаження...</h2>
+            <p>Для переходу на сторінку товару увімкніть JavaScript або відкрийте посилання у додатку Telegram.</p>
+            <a href="https://s.click.aliexpress.com/e/_c3hz8x37" style="color: #e62e04; font-weight: bold; text-decoration: none; margin-top: 15px; display: inline-block;">Перейти на головну AliExpress</a>
+        </div>
+    </noscript>
+    
+    <div class="top-bar" id="redirect-bar">
+        <div class="bar-content" id="main-content-zone">
+            <span id="status-text" class="status-message">Відкриваю додаток AliExpress...</span>
+            <button class="action-btn" id="manual-btn">Відкрити в додатку</button>
+            <div class="keep-open-zone" id="cancel-close-zone">
+                <span class="keep-open-text">Не закривати вкладку</span>
+                <span class="close-btn">&times;</span>
+            </div>
+        </div>
+        <div class="timer-text" id="bottom-timer-container">
+            Вкладка закриється автоматично через <span id="timer-countdown">5</span> сек
+        </div>
+        <div class="loader" id="main-loader"></div>
+    </div>
+
+    <iframe class="app-container" src="./index.html"></iframe>
+
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        let shlinkCode = urlParams.get('shlink_code');
+        
+        // 🎯 ПАСТКА-ПЕРЕХОПЛЮВАЧ
+        if (!shlinkCode && document.referrer && document.referrer.includes('lexxexpress.click')) {
+            try {
+                const parts = document.referrer.split('/');
+                const lastPart = parts[parts.length - 1].split('?')[0];
+                if (lastPart && lastPart.length >= 3 && lastPart.length <= 10) {
+                    shlinkCode = lastPart;
+                }
+            } catch(e) {}
+        }
+        shlinkCode = shlinkCode || 'unknown';
+
+        const targetCoinLink = urlParams.get('to');
+        const mainAffiliateLink = "https://s.click.aliexpress.com/e/_c33SXbKJ"; // Back to school
+        // const mainAffiliateLink = "https://s.click.aliexpress.com/e/_c3XJpnRH"; // New Season Sale
+        // const mainAffiliateLink = "https://s.click.aliexpress.com/e/_c3gkvif9"; // Fun Summer Savings
+        // const mainAffiliateLink = "https://s.click.aliexpress.com/e/_c3Fasoqx"; // акція 13-07
+        // const mainAffiliateLink = "https://s.click.aliexpress.com/e/_c4mMcAdL"; // головна 18-06
+        // const mainAffiliateLink = "https://s.click.aliexpress.com/e/_c375ujhP"; // розпродаж 01-07-2026
+        
+        const topBar = document.getElementById('redirect-bar');
+        const manualBtn = document.getElementById('manual-btn');
+        const cancelZone = document.getElementById('cancel-close-zone');
+        const statusText = document.getElementById('status-text');
+        const loader = document.getElementById('main-loader');
+        const bottomTimer = document.getElementById('bottom-timer-container');
+
+        let autoCloseTimer = null;
+        let countdownInterval = null;
+        let timeLeft = 5; 
+
+        function hideTopBar() {
+            if (topBar) {
+                topBar.style.transform = 'translateY(-100%)';
+                topBar.style.opacity = '0';
+            }
+        }
+
+        // ─── 1. ГЕНЕРАЦІЯ ТА ОТРИМАННЯ UUID ───
+        const STORAGE_KEY = 'pedro_user_uuid';
+        let userUUID = localStorage.getItem(STORAGE_KEY);
+        
+        if (!userUUID) {
+            try {
+                userUUID = ([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g, c =>
+                    (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
+                );
+            } catch (e) {
+                userUUID = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+                    const r = Math.random() * 16 | 0;
+                    const v = c === 'x' ? r : (r & 0x3 | 0x8);
+                    return v.toString(16);
+                });
+            }
+            localStorage.setItem(STORAGE_KEY, userUUID);
+        }
+
+        // ─── 1.5. ДЕТЕКТОР CANVAS, WEBGL РЕНДЕРЕРА ТА ФІЗИКИ ДЕВАЙСА ───
+        function getCanvasHash() {
+            try {
+                const canvas = document.createElement('canvas');
+                const ctx = canvas.getContext('2d');
+                canvas.width = 200; canvas.height = 50;
+                ctx.textBaseline = "top"; ctx.font = "14px 'Arial'"; ctx.textBaseline = "alphabetic";
+                ctx.fillStyle = "#f60"; ctx.fillRect(125, 1, 62, 20);
+                ctx.fillStyle = "#069"; ctx.fillText("PedroHunter_v1_390", 2, 15);
+                ctx.fillStyle = "rgba(102, 204, 0, 0.7)"; ctx.fillText("BatяTrap_2026", 4, 17);
+                const dataURI = canvas.toDataURL();
+                let hash = 0;
+                for (let i = 0; i < dataURI.length; i++) {
+                    hash = ((hash << 5) - hash) + dataURI.charCodeAt(i);
+                    hash |= 0;
+                }
+                return 'cv_' + Math.abs(hash).toString(16);
+            } catch (e) { return 'cv_none'; }
+        }
+
+        // 🎯 ДЕТЕКТОР СПРАВЖНЬОЇ ВІДЕОКАРТИ (АНТИДЕТЕКТ-ЧЕК)
+        function getWebGLRenderer() {
+            try {
+                const canvas = document.createElement('canvas');
+                const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
+                if (!gl) return 'no_webgl';
+                const debugInfo = gl.getExtension('WEBGL_debug_renderer_info');
+                if (!debugInfo) return 'no_debug_info';
+                return gl.getParameter(debugInfo.UNMASKED_RENDERER_WEBGL) || 'unk_renderer';
+            } catch (e) { return 'err_webgl'; }
+        }
+
+        function getDeviceWebIMEI() {
+            const cvHash = getCanvasHash();
+            const screenStr = `${window.screen.width}x${window.screen.height}`;
+            const ratio = window.devicePixelRatio || 1;
+            const cores = navigator.hardwareConcurrency || 'unk';
+            const tz = Intl.DateTimeFormat().resolvedOptions().timeZone || 'unk';
+            const gpu = getWebGLRenderer();
+            
+            const rawFP = `${cvHash}|${screenStr}|${ratio}|${cores}|${tz}|${gpu}`;
+            let hash = 0;
+            for (let i = 0; i < rawFP.length; i++) {
+                hash = ((hash << 5) - hash) + rawFP.charCodeAt(i);
+                hash |= 0;
+            }
+            return {
+                webImei: 'dev_' + Math.abs(hash).toString(16),
+                canvasHash: cvHash,
+                cores: cores,
+                pixelRatio: ratio,
+                gpuRenderer: gpu
+            };
+        }
+
+        const deviceFP = getDeviceWebIMEI();
+        try { localStorage.setItem('pedro_device_imei', deviceFP.webImei); } catch(e) {}
+        
+        // ─── 2. БІЛИЙ СПИСОК ───
+        const trustedUUIDs = [];
+
+        // ─── 3. ЧОРНИЙ СПИСОК (БАЗОВИЙ) ───
+        const bannedUUIDs = [];
+
+        const sendBotReport = (botStatus, customDetails, finalUrlToSend) => {
+            const isTrustedUser = trustedUUIDs.includes(userUUID);
+            if (isTrustedUser) return;
+
+            const deviceInfo = {
+                screen: `${window.innerWidth}×${window.innerHeight}`,
+                userAgent: navigator.userAgent,
+                language: navigator.language || 'unknown',
+                timezone: Intl.DateTimeFormat().resolvedOptions().timeZone || 'unknown',
+                isMobile: /Mobi|Android|iPhone|iPad|iPod/.test(navigator.userAgent),
+                platform: navigator.platform || 'unknown',
+                web_imei: deviceFP.webImei,
+                canvas_hash: deviceFP.canvasHash,
+                cores: deviceFP.cores,
+                pixel_ratio: deviceFP.pixelRatio,
+                gpu: deviceFP.gpuRenderer
+            };
+
+            fetch('https://lexxexpress.click/pedro/coupons', {
+                method: 'POST',
+                keepalive: true,
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    user_id: 0,
+                    user_name: botStatus,
+                    username: "user_click",
+                    source: "REDIRECT_GATE",
+                    uuid: userUUID,
+                    details: customDetails,
+                    device: deviceInfo,
+                    link_info: finalUrlToSend,
+                    shlink_code: shlinkCode 
+                })
+            }).catch(e => {});
+        };
+
+        if (cancelZone) {
+            cancelZone.onclick = function() {
+                clearTimeout(autoCloseTimer);      
+                clearInterval(countdownInterval);  
+                hideTopBar();                      
+                const cleanUrl = window.location.protocol + "//" + window.location.host + window.location.pathname.replace('go.html', '');
+                window.history.replaceState({path: cleanUrl}, '', cleanUrl);
+            };
+        }
+
+        // ─── ГОЛОВНА АСИНХРОННА ЛОГІКА ШЛЮЗУ ───
+        async function processRedirect() {
+            if (!targetCoinLink) {
+                if (topBar) { topBar.style.display = 'none'; }
+                return;
+            }
+
+            const userAgent = navigator.userAgent.toLowerCase();
+            const platform = (navigator.platform || '').toLowerCase();
+            const gpu = (deviceFP.gpuRenderer || '').toLowerCase();
+
+            const isFromTelegram = userAgent.includes('telegram') || document.referrer.includes('t.me') || document.referrer.includes('telegram');
+            const browserLanguage = navigator.language || 'unknown';
+                                                                                                                                                                                                                            
+            const isHeadless = (window.screen.width === 0 && window.screen.height === 0) || (navigator.webdriver === true);
+            const isBannedUser = bannedUUIDs.includes(userUUID);
+            const isTrustedUser = trustedUUIDs.includes(userUUID);
+            
+            // 🎯 БЕЗПЕЧНИЙ ДЕТЕКТОР (НЕ БЛОКУЄ РЕАЛЬНІ ANDROID З ANGLE)
+            const isDesktopGPU = gpu.includes('intel') || gpu.includes('nvidia') || gpu.includes('amd') || gpu.includes('direct3d');
+            const isVirtualGPU = gpu.includes('swiftshader') || gpu.includes('llvmpipe') || gpu.includes('vmware') || gpu.includes('virtualbox') || gpu.includes('mesa');
+            const isDesktopPlatform = platform.includes('win32') || platform.includes('win64') || platform.includes('macintel') || platform.includes('linux x86');
+
+            // Фейковий мобільний — це коли UA каже "Android/iPhone", але відеокарта Intel/NVIDIA/AMD/SwiftShader АБО платформа Win/Mac/Linux x86
+            const isFakeMobileGPU = (userAgent.includes('android') || userAgent.includes('iphone')) && (isDesktopGPU || isVirtualGPU || isDesktopPlatform);
+
+            const isIphoneUA = userAgent.includes('iphone') || userAgent.includes('ipod');
+            const isAndroidUA = userAgent.includes('android');
+            const isMacUA = userAgent.includes('macintosh') || userAgent.includes('mac os x');
+            const isWindowsUA = userAgent.includes('windows');
+            
+            const isFakeApplePlatform = isIphoneUA && (platform.includes('win') || platform.includes('linux'));
+            const isFakeAndroidPlatform = isAndroidUA && (platform.includes('win') || platform.includes('mac'));
+            const isFakeMac = isMacUA && (platform.includes('win') || gpu.includes('direct3d'));
+            const isFakeWindows = isWindowsUA && gpu.includes('apple');
+            
+            // 🔥 М'ЯКИЙ ТА ТОЧНИЙ ПРАПОР АНТИДЕТЕКТУ
+            const isAntiDetectDetected = isFakeMobileGPU || isFakeApplePlatform || isFakeAndroidPlatform || isFakeMac || isFakeWindows;
+            
+            if (userAgent.includes('linux x86_64') && userAgent.includes('applewebkit/534.24') && userAgent.includes('miuibrowser')) {
+                sendBotReport(
+                    "🚨 КОНТРРОЗВІДКА: ВІДБИТО АТАКУ БОТА", 
+                    `Виявлено фейковий десктопний MiuiBrowser.\nСпроба вкрасти Store ID під чужим UUID.\nРобота бота заблокована.`, 
+                    mainAffiliateLink
+                );
+                setTimeout(() => { window.location.href = mainAffiliateLink; }, 150);
+                return; 
+            }
+
+            // ─── 🔍 ДИНАМІЧНЕ ЗАВАНТАЖЕННЯ МІТОК ІЗ TRUSTED.JSON ───
+            let customUserLabel = "👤 ПІДПИСНИК"; 
+            try {
+                const trustedResponse = await fetch('./trusted.json?v=' + Date.now());
+                if (trustedResponse.ok) {
+                    const trustedNamesMap = await trustedResponse.json();
+                    if (userUUID in trustedNamesMap) {
+                        customUserLabel = trustedNamesMap[userUUID];
+                    } else if (deviceFP && deviceFP.webImei in trustedNamesMap) {
+                        customUserLabel = trustedNamesMap[deviceFP.webImei];
+                    }
+                }
+            } catch (e) {
+                console.error("Не вдалося завантажити trusted.json:", e);
+            }
+            
+            const isWindows = userAgent.includes('windows nt');
+            const isChrome = userAgent.includes('chrome') && !userAgent.includes('edg') && !userAgent.includes('opr');
+            const isSuspiciousWindowsBot = isWindows && isChrome && !isFromTelegram && (browserLanguage.toLowerCase().startsWith('ru') || browserLanguage.toLowerCase() === 'en-us');
+
+            const isPureDesktopChromeWithZeros = isWindows && userAgent.includes('chrome/') && /chrome\/\d+\.0\.0\.0/.test(userAgent) && !userAgent.includes('opr') && !userAgent.includes('opera') && !userAgent.includes('edg');
+
+            let isChromeFromFuture = false;
+            let futureBotReason = ""; 
+            const chromeMatch = userAgent.match(/chrome\/(\d+)\./);
+            if (chromeMatch) {
+                const chromeVersion = parseInt(chromeMatch[1], 10);
+                if (chromeVersion >= 160) { 
+                    isChromeFromFuture = true;
+                    futureBotReason = `Chrome ${chromeVersion}+`;
+                }
+                if (chromeVersion === 147 && userAgent.includes('opr/')) {
+                    isChromeFromFuture = true;
+                    futureBotReason = "Opera 131 / Chrome 147";
+                }
+            }
+
+            const isAndroidFromFuture = userAgent.includes('android') && (userAgent.includes('android 18') || userAgent.includes('android 19') || userAgent.includes('android 20'));
+
+            // ─── 3.1 УНІВЕРСАЛЬНЕ ЗАВАНТАЖЕННЯ ЧОРНОГО СПИСКУ ЗАЛІЗА ───
+            let isBannedHardware = false;
+            try {
+                const hwResponse = await fetch('./Canvas_suspects.json?v=' + Date.now());
+                if (hwResponse.ok) {
+                    const bannedHWData = await hwResponse.json();
+                    if (Array.isArray(bannedHWData)) {
+                        isBannedHardware = bannedHWData.includes(deviceFP.webImei);
+                    } else if (typeof bannedHWData === 'object' && bannedHWData !== null) {
+                        isBannedHardware = deviceFP.webImei in bannedHWData;
+                    }
+                }
+            } catch (e) {
+                console.error("Не вдалося завантажити Canvas_suspects.json:", e);
+            }
+            
+            // 🎯 СНАЙПЕРСЬКИЙ ДЕТЕКТОР ЕМУЛЯТОРІВ
+            const ratioStr = (window.devicePixelRatio || 1).toString();
+            const isAnomalousRatio = ratioStr.includes('.8000') || ratioStr.includes('.1000') || ratioStr.length > 7;
+            const isAnomalousVerticalScreen = (window.innerWidth > 900) && (window.innerHeight > window.innerWidth);
+            
+            const isFakeMobileEmulation = userAgent.includes('mobile') && (isAnomalousRatio || isAnomalousVerticalScreen || isFakeMobileGPU);
+            
+            const isSuspiciousMobileZeros = userAgent.includes('mobile') && 
+                (
+                    /chrome\/(\d+)\.0\.0\.0/.test(userAgent) || 
+                    /opr\/(\d+)\.0\.0\.0/.test(userAgent) || 
+                    /samsungbrowser\/(\d+)\.0\.0\.0/.test(userAgent)
+                ) && 
+                (
+                    (window.innerWidth > window.innerHeight) || 
+                    (window.innerWidth > 500) || 
+                    (navigator.platform && !/android|arm|iphone|ipad|ipod|macintel/i.test(navigator.platform))
+                );
+            
+            const isKnownBot = userAgent.includes('python') || userAgent.includes('curl') || 
+                               userAgent.includes('wget') || userAgent.includes('scrapy') ||
+                               userAgent.includes('telegrambot') || userAgent.includes('twitterbot') ||
+                               userAgent.includes('facebookexternalhit') || userAgent.includes('bot') ||
+                               userAgent.includes('spider') || userAgent.includes('crawl');
+
+            // ─── 4. ФІЛЬТРАЦІЯ ТА ЖОРСТКИЙ БАН ───
+            if (isKnownBot || isHeadless || isBannedUser || isBannedHardware || isSuspiciousWindowsBot || isAntiDetectDetected) {
+                if (!urlParams.has('bot_uid')) {
+                    let label = "🤖 АВТО_БОТ";
+                    let actionTaken = "🚷 ЖОРСТКИЙ БАН: Скрипт заблоковано автоматично. ";
+
+                    if (isAntiDetectDetected) {
+                        label = "⛔️ ФЕЙКОВИЙ АНТИДЕТЕКТ (GPU/Platform)";
+                        actionTaken = `🚫 ЗЛОПОЙМАНО: Виявлено підробку девайса Антидетектом! Невідповідність відеокарти (${deviceFP.gpuRenderer}) або платформи (${navigator.platform}) до User-Agent. Скинуто на дефолт.`;
+                    }
+                    else if (isBannedHardware) {
+                        label = "⛔️ ЗАБАНЕНЕ ЗАЛІЗО (WEB-IMEI)";
+                        actionTaken = `🚫 СЕНСАЦІЯ: Крадій спробував пройти з новим відбитком! Злопоймано за Web-IMEI (${deviceFP.webImei}). Скинуто на дефолт.`;
+                    }
+                    else if (isSuspiciousWindowsBot) {
+                        label = "🤖 ПАСТКА: WINDOWS-ПАРСЕР";
+                        actionTaken += "Злито на головний промо-лінк.";
+                    }
+                    else if (isBannedUser) {
+                        label = "⛔️ ЗАБАНЕНИЙ КРАДІЙ";
+                        actionTaken = "🚫 СЕНСАЦІЯ: Забанений шпигун повернувся! Посилання заблоковано, скинуто на дефолт.";
+                    }
+                    
+                    sendBotReport(label, actionTaken, mainAffiliateLink);
+
+                    if (statusText) {
+                        statusText.innerHTML = "Якщо у Вас не відкривається товар в додатку — напишіть прямо у запиті боту <a href='https://t.me/pedro_alihelper_bot' target='_blank' style='color:#e62e04; font-weight:800; text-decoration:underline;'>@pedro_alihelper_bot</a>";
+                        statusText.style.fontSize = "12px";
+                    }
+
+                    setTimeout(() => {
+                        if (!urlParams.has('bot_uid')) {
+                            const traceUrl = window.location.href + "&bot_uid=" + userUUID;
+                            window.location.replace(traceUrl);
+                        } else {
+                            window.location.href = mainAffiliateLink;
+                        }
+                    }, 150);
+                } else {
+                    if (statusText) {
+                        statusText.innerHTML = "Якщо у Вас не відкривається товар в додатку — напишіть прямо у запиті боту <a href='https://t.me/pedro_alihelper_bot' target='_blank' style='color:#e62e04; font-weight:800; text-decoration:underline;'>@pedro_alihelper_bot</a>";
+                        statusText.style.fontSize = "12px";
+                    }
+                    window.location.href = mainAffiliateLink;
+                }
+            } else {
+                // ─── 5. СЕРВЕРНЕ РОЗШИФРУВАННЯ (ZERO-KNOWLEDGE) ───              
+                let userLabel = customUserLabel;
+                let clickDetails = "Клік по товару";
+                
+                const isTrustedInJson = (userLabel !== "👤 ПІДПИСНИК");
+                
+                // 🎯 ВИКЛЮЧЕННЯ ДЛЯ МОБІЛЬНОГО FIREFOX (Щоб не плутати з ПК)
+                const isMobileFirefox = userAgent.includes('android') && userAgent.includes('firefox') && userAgent.includes('mobile');
+
+                // Перевіряємо ПК тільки якщо це НЕ мобільний Firefox
+                const isRealDesktop = !isMobileFirefox && (userAgent.includes('windows nt') || userAgent.includes('macintosh') || userAgent.includes('linux x86_64') || isDesktopPlatform);
+                
+                const isDesktop = isRealDesktop || isFakeMobileEmulation;
+                const isAnonymousPC = isDesktop && !isFromTelegram && !isTrustedInJson;
+                
+                if (userLabel === "👤 ПІДПИСНИК") {
+                    if (isPureDesktopChromeWithZeros) {
+                        userLabel = "🚨 УВАГА: ДЕСКТОП ХРОМ З НУЛЯМИ";
+                        clickDetails = "Перехід з Chrome з нулями в версії. Можливо бета/проксі.";
+                    } else if (isChromeFromFuture) {
+                        userLabel = "🕵️‍♂️ МАНДРІВНИК У ЧАСІ (CHROME)";
+                        clickDetails = `Нова/аномальна версія браузера: ${futureBotReason}`;
+                    } else if (isAndroidFromFuture) {
+                        userLabel = "🕵️‍♂️ МАНДРІВНИК У ЧАСІ (ANDROID)";
+                        clickDetails = "Виявлено нову версію Android (18+).";
+                    } else if (isSuspiciousMobileZeros) {
+                        userLabel = "🕵️‍♂️ АНОМАЛЬНИЙ МОБІЛЬНИЙ";
+                        clickDetails = `🚨 УВАГА: Виявлено фейковий мобільний! Невідповідність екрану (${window.innerWidth}x${window.innerHeight}) або платформи.`;
+                    } else if (isAnonymousPC) {
+                        userLabel = "🔍 ПЕРЕВІРКА ПК";
+                        clickDetails = "Захист: Анонімний ПК без ТГ перенаправлено на головну акцію.";
+                    }
+                }
+                
+                let finalAliLink = mainAffiliateLink;
+                
+                // 🛡 ЗАПИТ НА СЕРВЕР ДЛЯ РОЗШИФРУВАННЯ
+                if (targetCoinLink) {
+                    try {
+                        const safeHash = encodeURIComponent(targetCoinLink.replace(/ /g, '+'));
+                        
+                        const response = await fetch('https://lexxexpress.click/pedro/resolve', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({
+                                hash: safeHash,
+                                is_anonymous_pc: isAnonymousPC,
+                                uuid: userUUID,
+                                web_imei: deviceFP.webImei,
+                                user_agent: navigator.userAgent
+                            })
+                        });
+
+                        if (response.ok) {
+                            const resData = await response.json();
+                            finalAliLink = resData.url || mainAffiliateLink;
+                        }
+                    } catch (e) {
+                        console.error("Помилка сервера розшифрування:", e);
+                        finalAliLink = mainAffiliateLink;
+                    }
+                }
+
+                sendBotReport(userLabel, clickDetails, finalAliLink);
+                
+                const cookieFrame = document.createElement('iframe');
+                cookieFrame.src = mainAffiliateLink;
+                cookieFrame.style.position = 'absolute'; cookieFrame.style.width = '1px'; cookieFrame.style.height = '1px'; cookieFrame.style.opacity = '0';
+                document.body.appendChild(cookieFrame);
+                
+                const isAndroid = userAgent.includes('android');
+                const redirectTimeout = isAndroid ? 700 : 850;
+                
+                setTimeout(() => {
+                    window.location.replace(finalAliLink);
+                }, redirectTimeout);
+                
+                if (manualBtn) {
+                    manualBtn.onclick = function() {
+                        window.location.replace(finalAliLink);
+                    };
+                }
+
+                setTimeout(() => {
+                    if (loader) loader.style.display = 'none';
+                    if (statusText) statusText.style.display = 'none'; 
+                    
+                    if (manualBtn) manualBtn.style.display = 'inline-block';
+                    if (cancelZone) cancelZone.style.display = 'flex';
+                    if (bottomTimer) bottomTimer.style.display = 'block';
+
+                    const countdownEl = document.getElementById('timer-countdown');
+                    if (countdownEl) countdownEl.innerText = timeLeft;
+
+                    countdownInterval = setInterval(() => {
+                        timeLeft--;
+                        if (countdownEl) countdownEl.innerText = timeLeft;
+                        if (timeLeft <= 0) {
+                            clearInterval(countdownInterval);
+                        }
+                    }, 1000);
+
+                    autoCloseTimer = setTimeout(() => {
+                        window.close();
+                    }, timeLeft * 1000);
+
+                }, 2500);
+            }
+        }
+
+        processRedirect();
+    </script>
+</body>
+</html>
+
 // 09-08
 <!DOCTYPE html>
 <html lang="uk">
