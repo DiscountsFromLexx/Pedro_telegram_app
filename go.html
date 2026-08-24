@@ -341,34 +341,24 @@
             const isChrome = userAgent.includes('chrome') && !userAgent.includes('edg') && !userAgent.includes('opr');
             const isSuspiciousWindowsBot = isWindows && isChrome && !isFromTelegram && (browserLanguage.toLowerCase().startsWith('ru') || browserLanguage.toLowerCase() === 'en-us');
 
-            // ─── 4. ФІЛЬТРАЦІЯ БОТІВ ТА ПАРСЕРІВ ───
+            // ─── 4. ФІЛЬТРАЦІЯ БОТІВ ТА ПАРСЕРІВ (МАРКУВАННЯ) ───
+            let userLabel = "👤 ПІДПИСНИК";
+            let clickDetails = "Клік по товару";
+
             if (isKnownBot || isHeadless || isSuspiciousWindowsBot || isAntiDetectDetected) {
-                let label = "🤖 АВТО_БОТ";
-                let actionTaken = "🚷 ЖОРСТКИЙ БАН: Скрипт заблоковано автоматично.";
-
                 if (isAntiDetectDetected) {
-                    label = "⛔️ ФЕЙКОВИЙ АНТИДЕТЕКТ (GPU/Platform)";
-                    actionTaken = `🚫 ЗЛОПОЙМАНО: Виявлено підробку девайса Антидетектом! Невідповідність відеокарти (${deviceFP.gpuRenderer}) або платформи (${navigator.platform}).`;
+                    userLabel = "⛔️ ФЕЙКОВИЙ АНТИДЕТЕКТ (GPU/Platform)";
+                    clickDetails = `🚫 Виявлено підробку: GPU (${deviceFP.gpuRenderer}) / Platform (${navigator.platform})`;
                 } else if (isSuspiciousWindowsBot) {
-                    label = "🤖 ПАСТКА: WINDOWS-ПАРСЕР";
-                    actionTaken = "Злито на головний промо-лінк.";
+                    userLabel = "🤖 ПАСТКА: WINDOWS-ПАРСЕР";
+                    clickDetails = "Перехід з Windows/Chrome без Telegram.";
+                } else {
+                    userLabel = "🤖 АВТО_БОТ";
+                    clickDetails = "Скрипт або бот.";
                 }
-                
-                sendBotReport(label, actionTaken, mainAffiliateLink);
-
-                if (statusText) {
-                    statusText.innerHTML = "Якщо у Вас не відкривається товар в додатку — напишіть боту <a href='https://t.me/pedro_alihelper_bot' target='_blank' style='color:#e62e04; font-weight:800;'>@pedro_alihelper_bot</a>";
-                    statusText.style.fontSize = "12px";
-                }
-
-                setTimeout(() => { window.location.href = mainAffiliateLink; }, 150);
-                return;
             }
 
             // ─── 5. СЕРВЕРНЕ РОЗШИФРУВАННЯ ТА ДЕТЕКТИ ─── 
-            let userLabel = "👤 ПІДПИСНИК"; 
-            let clickDetails = "Клік по товару";
-
             const isMobileFirefox = userAgent.includes('android') && userAgent.includes('firefox') && userAgent.includes('mobile');
             const isRealDesktop = !isMobileFirefox && (userAgent.includes('windows nt') || userAgent.includes('macintosh') || userAgent.includes('linux x86_64') || isDesktopPlatform);
             const isDesktop = isRealDesktop || isFakeMobileEmulation;
