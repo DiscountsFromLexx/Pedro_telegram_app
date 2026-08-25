@@ -653,10 +653,9 @@ document.addEventListener('DOMContentLoaded', () => {
         if (btn) btn.style.display = window.scrollY > 100 ? 'block' : 'none';
     });
 
-    
-    // ─── Кнопка FEEDBACK — повернення на головну ─────────────────────────────────
+    // ─── Кнопка MAIN — без логування (не критичні дії) ──────
     document.querySelector('.main-btn')?.addEventListener('click', () => {
-        window.location.href = 'index.html';
+        window.open('https://pedroapp.lexxexpress.click', '_blank');
     });
     
     // Слайдер
