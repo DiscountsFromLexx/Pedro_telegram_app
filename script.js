@@ -327,6 +327,12 @@ function openFeedbackModal() {
 
 // === 4. ІНІЦІАЛІЗАЦІЯ ВСІХ КНОПОК ===
 function initButtons() {
+    
+    // 🏠 Кнопка повернення на головну при натисканні на логотип
+    document.querySelector('.main-btn')?.addEventListener('click', () => {
+        window.location.href = 'index.html';
+    });
+    
     document.querySelector('.instruction-btn')?.addEventListener('click', () => {
         window.location.href = 'howto.html';
     });
@@ -651,11 +657,6 @@ document.addEventListener('DOMContentLoaded', () => {
     window.addEventListener('scroll', () => {
         const btn = document.querySelector('.scroll-top-btn');
         if (btn) btn.style.display = window.scrollY > 100 ? 'block' : 'none';
-    });
-
-    // ─── Кнопка MAIN — без логування (не критичні дії) ──────
-    document.querySelector('.main-btn')?.addEventListener('click', () => {
-        window.open('https://pedroapp.lexxexpress.click', '_blank');
     });
     
     // Слайдер
