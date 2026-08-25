@@ -232,10 +232,7 @@
                                 ua.includes('googlebot') || 
                                 (window.innerWidth === 400 && window.innerHeight === 400);
 
-            // 🔇 Якщо це Google-бот або екран 400х400 — НЕ шлемо звіт у Telegram
-            if (isGoogleBot) {
-                return;
-            }
+            
 
             const deviceInfo = {
                 screen: `${window.innerWidth}×${window.innerHeight}`,
