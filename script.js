@@ -513,6 +513,11 @@ document.addEventListener('DOMContentLoaded', () => {
         window.open('https://pedroapp.lexxexpress.click', '_blank');
     });
 
+    // ─── Кнопка FEEDBACK — повернення на головну ─────────────────────────────────
+    document.querySelector('.main-btn')?.addEventListener('click', () => {
+        window.location.href = 'index.html';
+    });
+    
     // Обробка форми / трекінг
     const sendForm = async () => {
         let inputValue = field4.value.trim();
