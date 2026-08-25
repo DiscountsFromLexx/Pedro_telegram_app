@@ -512,11 +512,6 @@ document.addEventListener('DOMContentLoaded', () => {
     document.querySelector('.web-btn')?.addEventListener('click', () => {
         window.open('https://pedroapp.lexxexpress.click', '_blank');
     });
-
-    // ─── Кнопка FEEDBACK — повернення на головну ─────────────────────────────────
-    document.querySelector('.main-btn')?.addEventListener('click', () => {
-        window.location.href = 'index.html';
-    });
     
     // Обробка форми / трекінг
     const sendForm = async () => {
@@ -656,7 +651,13 @@ document.addEventListener('DOMContentLoaded', () => {
     window.addEventListener('scroll', () => {
         const btn = document.querySelector('.scroll-top-btn');
         if (btn) btn.style.display = window.scrollY > 100 ? 'block' : 'none';
-    });    
+    });
+
+    
+    // ─── Кнопка FEEDBACK — повернення на головну ─────────────────────────────────
+    document.querySelector('.main-btn')?.addEventListener('click', () => {
+        window.location.href = 'index.html';
+    });
     
     // Слайдер
     const slider = document.getElementById('slider');
