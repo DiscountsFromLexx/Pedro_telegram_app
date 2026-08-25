@@ -517,11 +517,6 @@ document.addEventListener('DOMContentLoaded', () => {
     document.querySelector('.main-btn')?.addEventListener('click', () => {
         window.location.href = 'index.html';
     });
-
-    // ─── Кнопка FEEDBACK — повернення на головну ─────────────────────────────────
-    document.querySelector('.main-btn')?.addEventListener('click', () => {
-        window.location.href = 'index.html';
-    });
     
     // Обробка форми / трекінг
     const sendForm = async () => {
