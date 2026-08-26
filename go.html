@@ -442,13 +442,23 @@
                         })
                     });
 
+                    let isBlockedOrFailed = false;
+
                     if (response.ok) {
                         const resData = await response.json();
                         finalAliLink = resData.url || mainAffiliateLink;
+                        
+                        // 🎯 Якщо сервер заблокував (BANNED / TRAPPED_PC / FAIL_DECRYPT) або не віддав посилання
+                        if (resData.status !== "SUCCESS" || !resData.url) {
+                            isBlockedOrFailed = true;
+                        }
+                    } else {
+                        isBlockedOrFailed = true;
                     }
                 } catch (e) {
                     console.error("Помилка сервера розшифрування:", e);
                     finalAliLink = mainAffiliateLink;
+                    isBlockedOrFailed = true;
                 }
             }
 
@@ -474,6 +484,21 @@
 
             setTimeout(() => {
                 if (loader) loader.style.display = 'none';
+                
+                // ℹ️ ЯКЩО БЛОКОВАНО: Показуємо підказку написати в бота і не закриваємо вкладку таймером
+                if (isBlockedOrFailed) {
+                    if (statusText) {
+                        statusText.style.display = 'block';
+                        statusText.innerHTML = "Якщо у Вас не відкривається товар в додатку — напишіть боту <a href='https://t.me/pedro_alihelper_bot' target='_blank' style='color:#e62e04; font-weight:800; text-decoration:underline;'>@pedro_alihelper_bot</a>";
+                        statusText.style.fontSize = "13px";
+                    }
+                    if (manualBtn) manualBtn.style.display = 'none';
+                    if (bottomTimer) bottomTimer.style.display = 'none';
+                    if (cancelZone) cancelZone.style.display = 'flex';
+                    return;
+                }
+
+                // 🟢 ДЛЯ УСПІШНИХ ПЕРЕХОДІВ: Звичайний інтерфейс із кнопкою та таймером
                 if (statusText) statusText.style.display = 'none'; 
                 
                 if (manualBtn) manualBtn.style.display = 'inline-block';
