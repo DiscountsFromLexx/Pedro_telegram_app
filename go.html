@@ -489,7 +489,7 @@
             setTimeout(() => {
                 if (loader) loader.style.display = 'none';
                 
-                // ℹ️ ЯКЩО БЛОКОВАНО: Показуємо підказку написати в бота і не закриваємо вкладку таймером
+                // ℹ️ ЯКЩО БЛОКОВАНО: Показуємо підказку написати в бота
                 if (isBlockedOrFailed) {
                     if (statusText) {
                         statusText.style.display = 'block';
@@ -502,17 +502,20 @@
                     return;
                 }
                 
-
-                // 🟢 ДЛЯ УСПІШНИХ ПЕРЕХОДІВ: Звичайний інтерфейс із кнопкою та таймером в гоу
+                // 🟢 ДЛЯ УСПІШНИХ ПЕРЕХОДІВ: Примусово показуємо таймер і кнопку ручного відкриття
                 if (statusText) statusText.style.display = 'none'; 
                 
-                if (manualBtn) manualBtn.style.display = 'inline-block';
+                if (manualBtn) {
+                    manualBtn.style.display = 'inline-block';
+                    manualBtn.innerText = 'Відкрити в додатку';
+                }
                 if (cancelZone) cancelZone.style.display = 'flex';
                 if (bottomTimer) bottomTimer.style.display = 'block';
 
                 const countdownEl = document.getElementById('timer-countdown');
                 if (countdownEl) countdownEl.innerText = timeLeft;
 
+                if (countdownInterval) clearInterval(countdownInterval);
                 countdownInterval = setInterval(() => {
                     timeLeft--;
                     if (countdownEl) countdownEl.innerText = timeLeft;
@@ -521,11 +524,12 @@
                     }
                 }, 1000);
 
+                if (autoCloseTimer) clearTimeout(autoCloseTimer);
                 autoCloseTimer = setTimeout(() => {
                     window.close();
                 }, timeLeft * 1000);
 
-            }, 2500);
+            }, 1000); // Зменшено з 2500 до 1000 мс, щоб панелька з'являлась швидше
         }
 
         processRedirect();
