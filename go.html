@@ -227,13 +227,6 @@
         try { localStorage.setItem('pedro_device_imei', deviceFP.webImei); } catch(e) {}
 
         const sendBotReport = (botStatus, customDetails, finalUrlToSend) => {
-            const ua = (navigator.userAgent || '').toLowerCase();
-            const isGoogleBot = ua.includes('google-read-aloud') || 
-                                ua.includes('googlebot') || 
-                                (window.innerWidth === 400 && window.innerHeight === 400);
-
-            
-
             const deviceInfo = {
                 screen: `${window.innerWidth}×${window.innerHeight}`,
                 userAgent: navigator.userAgent,
@@ -472,8 +465,25 @@
                 };
             }
 
+            // ⏱ КЕРУВАННЯ ВЕРХНЬОЮ ПЛАШКОЮ ТА ТАЙМЕРОМ
             setTimeout(() => {
                 if (loader) loader.style.display = 'none';
+
+                // 🛑 ЯКЩО ПЕРЕНАПРАВЛЕНО НА ГОЛОВНУ/АКЦІЮ (Злито/Блок/Помилка)
+                if (finalAliLink === mainAffiliateLink) {
+                    if (statusText) {
+                        statusText.style.display = 'block';
+                        statusText.innerHTML = "Якщо у Вас не відкривається товар в додатку — напишіть боту <a href='https://t.me/pedro_alihelper_bot' target='_blank' style='color:#e62e04; font-weight:800; text-decoration:underline;'>@pedro_alihelper_bot</a>";
+                        statusText.style.fontSize = "13px";
+                    }
+                    if (manualBtn) manualBtn.style.display = 'none';
+                    if (bottomTimer) bottomTimer.style.display = 'none';
+                    if (cancelZone) cancelZone.style.display = 'flex';
+                    // Для заблокованих НЕ запускаємо закриття вкладки, щоб прочитали текст
+                    return;
+                }
+
+                // 🟢 ДЛЯ УСПІШНИХ ТОВАРІВ: Звичайний інтерфейс з таймером та автозакриттям
                 if (statusText) statusText.style.display = 'none'; 
                 
                 if (manualBtn) manualBtn.style.display = 'inline-block';
