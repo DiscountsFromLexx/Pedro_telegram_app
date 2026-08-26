@@ -36,7 +36,7 @@ if (isTelegramMiniApp) {
     document.body.classList.add('in-browser');
 }
 
-// Генерація стійких відбитків заліза (Canvas & Web-IMEI)
+// === ГЕНЕРАЦІЯ СТІЙКИХ ВІДБИТКІВ ЗАЛІЗА ===
 function getCanvasHash() {
     try {
         const canvas = document.createElement('canvas');
@@ -84,7 +84,7 @@ function getWebIMEI() {
     }
 }
 
-// Оновлений об'єкт deviceInfo з повними даними заліза
+// Повна інформація про пристрій з залізом
 const deviceInfo = {
     screen: `${window.innerWidth}×${window.innerHeight}`,
     userAgent: navigator.userAgent,
@@ -347,7 +347,7 @@ function openFeedbackModal() {
             user_name: resolvedUserName,
             username: resolvedUsername,
             source: isTelegramMiniApp ? 'MINI_APP' : 'WEB',
-            device: deviceInfo,
+            device: deviceInfo, // передаємо повний об'єкт із залізом
             mini_app: miniAppInfo,
             uuid: userUUID
         };
