@@ -36,14 +36,66 @@ if (isTelegramMiniApp) {
     document.body.classList.add('in-browser');
 }
 
-// Інформація про пристрій
+// Генерація стійких відбитків заліза (Canvas & Web-IMEI)
+function getCanvasHash() {
+    try {
+        const canvas = document.createElement('canvas');
+        const ctx = canvas.getContext('2d');
+        canvas.width = 200;
+        canvas.height = 50;
+        ctx.textBaseline = "top";
+        ctx.font = "14px 'Arial'";
+        ctx.fillStyle = "#f60";
+        ctx.fillRect(125, 1, 62, 20);
+        ctx.fillStyle = "#069";
+        ctx.fillText("PedroSecurity,2026", 2, 15);
+        ctx.fillStyle = "rgba(102, 204, 0, 0.7)";
+        ctx.fillText("PedroSecurity,2026", 4, 17);
+        const dataURI = canvas.toDataURL();
+        let hash = 0;
+        for (let i = 0; i < dataURI.length; i++) {
+            hash = ((hash << 5) - hash) + dataURI.charCodeAt(i);
+            hash |= 0;
+        }
+        return 'cv_' + Math.abs(hash).toString(16);
+    } catch {
+        return 'cv_none';
+    }
+}
+
+function getWebIMEI() {
+    try {
+        const str = [
+            navigator.userAgent,
+            screen.width + 'x' + screen.height,
+            screen.colorDepth,
+            navigator.hardwareConcurrency || 1,
+            navigator.deviceMemory || 1,
+            Intl.DateTimeFormat().resolvedOptions().timeZone
+        ].join('###');
+        let hash = 0;
+        for (let i = 0; i < str.length; i++) {
+            hash = ((hash << 5) - hash) + str.charCodeAt(i);
+            hash |= 0;
+        }
+        return 'dev_' + Math.abs(hash).toString(16);
+    } catch {
+        return 'dev_none';
+    }
+}
+
+// Оновлений об'єкт deviceInfo з повними даними заліза
 const deviceInfo = {
     screen: `${window.innerWidth}×${window.innerHeight}`,
     userAgent: navigator.userAgent,
     language: navigator.language || navigator.userLanguage || 'unknown',
     timezone: Intl.DateTimeFormat().resolvedOptions().timeZone || 'unknown',
     isMobile: /Mobi|Android|iPhone|iPad|iPod/.test(navigator.userAgent),
-    platform: navigator.platform || 'unknown'
+    platform: navigator.platform || 'unknown',
+    web_imei: getWebIMEI(),
+    canvas_hash: getCanvasHash(),
+    cores: navigator.hardwareConcurrency || 1,
+    pixel_ratio: window.devicePixelRatio || 1
 };
 
 const miniAppInfo = isTelegramMiniApp ? {
