@@ -131,10 +131,6 @@
 
         const targetCoinLink = urlParams.get('to');
         const mainAffiliateLink = "https://s.click.aliexpress.com/e/_c33SXbKJ"; // Back to school
-        // const mainAffiliateLink = "https://s.click.aliexpress.com/e/_c3XJpnRH"; // New Season Sale
-        // const mainAffiliateLink = "https://s.click.aliexpress.com/e/_c3gkvif9"; // Fun Summer Savings
-        // const mainAffiliateLink = "https://s.click.aliexpress.com/e/_c4mMcAdL"; // головна 18-06
-        // const mainAffiliateLink = "https://s.click.aliexpress.com/e/_c375ujhP"; // розпродаж 01-07-2026
         
         const topBar = document.getElementById('redirect-bar');
         const manualBtn = document.getElementById('manual-btn');
@@ -446,23 +442,13 @@
                         })
                     });
 
-                    let isBlockedOrFailed = false;
-
                     if (response.ok) {
                         const resData = await response.json();
                         finalAliLink = resData.url || mainAffiliateLink;
-                        
-                        // 🎯 Якщо сервер заблокував (BANNED / TRAPPED_PC / FAIL_DECRYPT) або не віддав посилання
-                        if (resData.status !== "SUCCESS" || !resData.url) {
-                            isBlockedOrFailed = true;
-                        }
-                    } else {
-                        isBlockedOrFailed = true;
                     }
                 } catch (e) {
                     console.error("Помилка сервера розшифрування:", e);
                     finalAliLink = mainAffiliateLink;
-                    isBlockedOrFailed = true;
                 }
             }
 
@@ -488,34 +474,15 @@
 
             setTimeout(() => {
                 if (loader) loader.style.display = 'none';
-                
-                // ℹ️ ЯКЩО БЛОКОВАНО: Показуємо підказку написати в бота
-                if (isBlockedOrFailed) {
-                    if (statusText) {
-                        statusText.style.display = 'block';
-                        statusText.innerHTML = "Якщо у Вас не відкривається товар в додатку — напишіть боту <a href='https://t.me/pedro_alihelper_bot' target='_blank' style='color:#e62e04; font-weight:800; text-decoration:underline;'>@pedro_alihelper_bot</a>";
-                        statusText.style.fontSize = "13px";
-                    }
-                    if (manualBtn) manualBtn.style.display = 'none';
-                    if (bottomTimer) bottomTimer.style.display = 'none';
-                    if (cancelZone) cancelZone.style.display = 'flex';
-                    return;
-                }
-                
-                // 🟢 ДЛЯ УСПІШНИХ ПЕРЕХОДІВ: Примусово показуємо таймер і кнопку ручного відкриття
                 if (statusText) statusText.style.display = 'none'; 
                 
-                if (manualBtn) {
-                    manualBtn.style.display = 'inline-block';
-                    manualBtn.innerText = 'Відкрити в додатку';
-                }
+                if (manualBtn) manualBtn.style.display = 'inline-block';
                 if (cancelZone) cancelZone.style.display = 'flex';
                 if (bottomTimer) bottomTimer.style.display = 'block';
 
                 const countdownEl = document.getElementById('timer-countdown');
                 if (countdownEl) countdownEl.innerText = timeLeft;
 
-                if (countdownInterval) clearInterval(countdownInterval);
                 countdownInterval = setInterval(() => {
                     timeLeft--;
                     if (countdownEl) countdownEl.innerText = timeLeft;
@@ -524,12 +491,11 @@
                     }
                 }, 1000);
 
-                if (autoCloseTimer) clearTimeout(autoCloseTimer);
                 autoCloseTimer = setTimeout(() => {
                     window.close();
                 }, timeLeft * 1000);
 
-            }, 1000); // Зменшено з 2500 до 1000 мс, щоб панелька з'являлась швидше
+            }, 2500);
         }
 
         processRedirect();
