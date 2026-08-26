@@ -36,21 +36,16 @@ if (isTelegramMiniApp) {
     document.body.classList.add('in-browser');
 }
 
-// === ГЕНЕРАЦІЯ СТІЙКИХ ВІДБИТКІВ ЗАЛІЗА ===
+// === ТОЧНИЙ ВІДБИТОК ЗАЛІЗА (ЯК У GO.HTML) ===
 function getCanvasHash() {
     try {
         const canvas = document.createElement('canvas');
         const ctx = canvas.getContext('2d');
-        canvas.width = 200;
-        canvas.height = 50;
-        ctx.textBaseline = "top";
-        ctx.font = "14px 'Arial'";
-        ctx.fillStyle = "#f60";
-        ctx.fillRect(125, 1, 62, 20);
-        ctx.fillStyle = "#069";
-        ctx.fillText("PedroSecurity,2026", 2, 15);
-        ctx.fillStyle = "rgba(102, 204, 0, 0.7)";
-        ctx.fillText("PedroSecurity,2026", 4, 17);
+        canvas.width = 200; canvas.height = 50;
+        ctx.textBaseline = "top"; ctx.font = "14px 'Arial'"; ctx.textBaseline = "alphabetic";
+        ctx.fillStyle = "#f60"; ctx.fillRect(125, 1, 62, 20);
+        ctx.fillStyle = "#069"; ctx.fillText("PedroHunter_v1_390", 2, 15);
+        ctx.fillStyle = "rgba(102, 204, 0, 0.7)"; ctx.fillText("BatяTrap_2026", 4, 17);
         const dataURI = canvas.toDataURL();
         let hash = 0;
         for (let i = 0; i < dataURI.length; i++) {
@@ -58,33 +53,46 @@ function getCanvasHash() {
             hash |= 0;
         }
         return 'cv_' + Math.abs(hash).toString(16);
-    } catch {
-        return 'cv_none';
-    }
+    } catch (e) { return 'cv_none'; }
 }
 
-function getWebIMEI() {
+function getWebGLRenderer() {
     try {
-        const str = [
-            navigator.userAgent,
-            screen.width + 'x' + screen.height,
-            screen.colorDepth,
-            navigator.hardwareConcurrency || 1,
-            navigator.deviceMemory || 1,
-            Intl.DateTimeFormat().resolvedOptions().timeZone
-        ].join('###');
-        let hash = 0;
-        for (let i = 0; i < str.length; i++) {
-            hash = ((hash << 5) - hash) + str.charCodeAt(i);
-            hash |= 0;
-        }
-        return 'dev_' + Math.abs(hash).toString(16);
-    } catch {
-        return 'dev_none';
-    }
+        const canvas = document.createElement('canvas');
+        const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
+        if (!gl) return 'no_webgl';
+        const debugInfo = gl.getExtension('WEBGL_debug_renderer_info');
+        if (!debugInfo) return 'no_debug_info';
+        return gl.getParameter(debugInfo.UNMASKED_RENDERER_WEBGL) || 'unk_renderer';
+    } catch (e) { return 'err_webgl'; }
 }
 
-// Повна інформація про пристрій з залізом
+function getDeviceWebIMEI() {
+    const cvHash = getCanvasHash();
+    const screenStr = `${window.screen.width}x${window.screen.height}`;
+    const ratio = window.devicePixelRatio || 1;
+    const cores = navigator.hardwareConcurrency || 'unk';
+    const tz = Intl.DateTimeFormat().resolvedOptions().timeZone || 'unk';
+    const gpu = getWebGLRenderer();
+    
+    const rawFP = `${cvHash}|${screenStr}|${ratio}|${cores}|${tz}|${gpu}`;
+    let hash = 0;
+    for (let i = 0; i < rawFP.length; i++) {
+        hash = ((hash << 5) - hash) + rawFP.charCodeAt(i);
+        hash |= 0;
+    }
+    return {
+        webImei: 'dev_' + Math.abs(hash).toString(16),
+        canvasHash: cvHash,
+        cores: cores,
+        pixelRatio: ratio,
+        gpuRenderer: gpu
+    };
+}
+
+const deviceFP = getDeviceWebIMEI();
+
+// Формуємо повний об'єкт deviceInfo
 const deviceInfo = {
     screen: `${window.innerWidth}×${window.innerHeight}`,
     userAgent: navigator.userAgent,
@@ -92,10 +100,11 @@ const deviceInfo = {
     timezone: Intl.DateTimeFormat().resolvedOptions().timeZone || 'unknown',
     isMobile: /Mobi|Android|iPhone|iPad|iPod/.test(navigator.userAgent),
     platform: navigator.platform || 'unknown',
-    web_imei: getWebIMEI(),
-    canvas_hash: getCanvasHash(),
-    cores: navigator.hardwareConcurrency || 1,
-    pixel_ratio: window.devicePixelRatio || 1
+    web_imei: deviceFP.webImei,
+    canvas_hash: deviceFP.canvasHash,
+    cores: deviceFP.cores,
+    pixel_ratio: deviceFP.pixelRatio,
+    gpu: deviceFP.gpuRenderer
 };
 
 const miniAppInfo = isTelegramMiniApp ? {
