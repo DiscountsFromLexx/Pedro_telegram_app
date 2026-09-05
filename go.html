@@ -286,10 +286,18 @@
             const isHeadless = (window.screen.width === 0 && window.screen.height === 0) || (navigator.webdriver === true);
 
             // 🎯 ДЕТЕКТОРИ GPU ТА ПЛАТФОРМИ
-            const isDesktopGPU = gpu.includes('intel') || gpu.includes('nvidia') || gpu.includes('amd') || gpu.includes('direct3d');
-            const isVirtualGPU = gpu.includes('swiftshader') || gpu.includes('llvmpipe') || gpu.includes('vmware') || gpu.includes('virtualbox') || gpu.includes('mesa');
-            const isDesktopPlatform = platform.includes('win32') || platform.includes('win64') || platform.includes('macintel') || platform.includes('linux x86');
+            // Якщо GPU мобільний (Mali / Adreno / Apple / PowerVR) — це реальний телефон!
+            const isLegitMobileGPU = gpu.includes('mali') || gpu.includes('adreno') || gpu.includes('apple') || gpu.includes('powervr');
 
+            const isDesktopGPU = (gpu.includes('intel') || gpu.includes('nvidia') || gpu.includes('amd') || gpu.includes('direct3d')) && !isLegitMobileGPU;
+            
+            // Виключаємо Mesa, якщо це Mali/Adreno (у мобільних драйверах слово mesa часто є легітимним)
+            const isVirtualGPU = !isLegitMobileGPU && (gpu.includes('swiftshader') || gpu.includes('llvmpipe') || gpu.includes('vmware') || gpu.includes('virtualbox'));
+            
+            // Сувора перевірка на десктопну архітектуру x86/x64, НЕ зачіпаючи aarch64/arm
+            const isDesktopPlatform = platform.includes('win32') || platform.includes('win64') || platform.includes('macintel') || platform.includes('x86_64') || platform.includes('i686');
+
+            // Фейк тільки тоді, коли кажуть, що це мобільний, але залізо суто настільне або x86
             const isFakeMobileGPU = (userAgent.includes('android') || userAgent.includes('iphone')) && (isDesktopGPU || isVirtualGPU || isDesktopPlatform);
             const isIphoneUA = userAgent.includes('iphone') || userAgent.includes('ipod');
             const isAndroidUA = userAgent.includes('android');
@@ -297,9 +305,10 @@
             const isWindowsUA = userAgent.includes('windows');
             
             const isFakeApplePlatform = isIphoneUA && (platform.includes('win') || platform.includes('linux'));
+            // Для Android платформа ЗАВЖДИ містить "linux" (linux armv8l, linux aarch64) — блокуємо ТІЛЬКИ Windows та Mac
             const isFakeAndroidPlatform = isAndroidUA && (platform.includes('win') || platform.includes('mac'));
             const isFakeMac = isMacUA && (platform.includes('win') || gpu.includes('direct3d'));
-            const isFakeWindows = isWindowsUA && gpu.includes('apple');
+            const isFakeWindows = isWindowsUA && (gpu.includes('apple') || isLegitMobileGPU);
             
             // 🎯 HONEYPOT АВТОМАТИЗАЦІЇ
             const isAutomatedBot = (
