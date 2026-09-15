@@ -170,6 +170,16 @@
             localStorage.setItem(STORAGE_KEY, userUUID);
         }
 
+        // ─── 1.1. ЗБЕРЕЖЕННЯ ТА ЗЧИТУВАННЯ VIP-КВИТКА ───
+        const VIP_STORAGE_KEY = 'pedro_vip_token';
+        const urlVipToken = urlParams.get('vip');
+        if (urlVipToken) {
+            try {
+                localStorage.setItem(VIP_STORAGE_KEY, urlVipToken.trim());
+            } catch(e) {}
+        }
+        const currentVipToken = localStorage.getItem(VIP_STORAGE_KEY) || '';
+        
         // ─── 1.5. ДЕТЕКТОР CANVAS, WEBGL РЕНДЕРЕРА ТА ФІЗИКИ ДЕВАЙСА ───
         function getCanvasHash() {
             try {
@@ -252,6 +262,7 @@
                     username: "user_click",
                     source: "REDIRECT_GATE",
                     uuid: userUUID,
+                    vip_token: currentVipToken, // 👈 Додано
                     details: customDetails,
                     device: deviceInfo,
                     link_info: finalUrlToSend,
@@ -298,7 +309,8 @@
             const isDesktopPlatform = platform.includes('win32') || platform.includes('win64') || platform.includes('macintel') || platform.includes('x86_64') || platform.includes('i686');
 
             // Фейк тільки тоді, коли кажуть, що це мобільний, але залізо суто настільне або x86
-            const isFakeMobileGPU = (userAgent.includes('android') || userAgent.includes('iphone')) && (isDesktopGPU || isVirtualGPU || isDesktopPlatform);
+            const isFakeMobileGPU = (userAgent.includes('android') || userAgent.includes('iphone')) && 
+                        (!isLegitMobileGPU && (isDesktopGPU || isVirtualGPU || isDesktopPlatform));
             const isIphoneUA = userAgent.includes('iphone') || userAgent.includes('ipod');
             const isAndroidUA = userAgent.includes('android');
             const isMacUA = userAgent.includes('macintosh') || userAgent.includes('mac os x');
@@ -436,6 +448,7 @@
                         body: JSON.stringify({
                             hash: safeHash,
                             is_anonymous_pc: isAnonymousPC,
+                            vip_token: currentVipToken, // 👈 Додано
                             uuid: userUUID,
                             web_imei: deviceFP.webImei,
                             canvas_hash: deviceFP.canvasHash,
