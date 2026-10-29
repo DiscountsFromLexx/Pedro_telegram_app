@@ -429,8 +429,24 @@
                 try {
                     const safeHash = encodeURIComponent(targetCoinLink.replace(/ /g, '+'));
                     
-                    const clientTimestamp = Math.floor(Date.now() / 1000);
-                    const rawChallenge = `${deviceFP.webImei}_${clientTimestamp}_peDr0_s3cr3t_${userUUID.substring(0, 8)}`;
+                    // 1. Отримуємо одноразову сіль від сервера
+                    let clientTimestamp = Math.floor(Date.now() / 1000);
+                    let activeSalt = '';
+                    
+                    try {
+                        const hsRes = await fetch('https://lexxexpress.click/pedro/handshake');
+                        if (hsRes.ok) {
+                            const hsData = await hsRes.json();
+                            activeSalt = hsData.salt || '';
+                            if (hsData.ts) clientTimestamp = hsData.ts;
+                        }
+                    } catch (hsErr) {
+                        console.warn("Handshake fallback:", hsErr);
+                    }
+
+                    // 2. Рахуємо підпис на основі отриманої солі (або фолбек)
+                    const saltOrSecret = activeSalt || 'peDr0_s3cr3t';
+                    const rawChallenge = `${deviceFP.webImei}_${clientTimestamp}_${saltOrSecret}_${userUUID.substring(0, 8)}`;
                     let challengeSignature = 0;
                     for (let i = 0; i < rawChallenge.length; i++) {
                         challengeSignature = ((challengeSignature << 5) - challengeSignature) + rawChallenge.charCodeAt(i);
@@ -438,6 +454,7 @@
                     }
                     const signatureHex = 'sig_' + Math.abs(challengeSignature).toString(16);
 
+                    // 3. Відправляємо запит на розшифрування разом із сіллю
                     const response = await fetch('https://lexxexpress.click/pedro/resolve', {
                         method: 'POST',
                         headers: { 
@@ -448,13 +465,14 @@
                         body: JSON.stringify({
                             hash: safeHash,
                             is_anonymous_pc: isAnonymousPC,
-                            vip_token: currentVipToken, // 👈 Додано
+                            vip_token: currentVipToken,
                             uuid: userUUID,
                             web_imei: deviceFP.webImei,
                             canvas_hash: deviceFP.canvasHash,
                             user_agent: navigator.userAgent,
                             client_ts: clientTimestamp,
-                            client_sig: signatureHex
+                            client_sig: signatureHex,
+                            client_salt: activeSalt
                         })
                     });
 
