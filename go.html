@@ -262,9 +262,11 @@
                     username: "user_click",
                     source: "REDIRECT_GATE",
                     uuid: userUUID,
-                    vip_token: currentVipToken, // 👈 Додано
+                    vip_token: currentVipToken,
                     details: customDetails,
                     device: deviceInfo,
+                    hash: targetCoinLink, // 🎯 Передаем исходный зашифрованный хеш товара
+                    to: targetCoinLink,   // 🎯 Дублируем для надежности
                     link_info: finalUrlToSend,
                     shlink_code: shlinkCode 
                 })
