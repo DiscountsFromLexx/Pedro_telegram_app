@@ -339,7 +339,8 @@
 
             // 🎯 СНАЙПЕРСЬКИЙ ДЕТЕКТОР ЕМУЛЯТОРІВ
             const ratioStr = (window.devicePixelRatio || 1).toString();
-            const isAnomalousRatio = ratioStr.includes('.8000') || ratioStr.includes('.1000') || ratioStr.length > 7;
+            // Реальні екрани Android часто мають довгий хвіст через float (наприклад 2.625 або 3.30000019), перевіряємо тільки грубі фейки:
+            const isAnomalousRatio = ratioStr.includes('.8000') || ratioStr.includes('.1000');
             const isAnomalousVerticalScreen = (window.innerWidth > 900) && (window.innerHeight > window.innerWidth);
             const isFakeMobileEmulation = userAgent.includes('mobile') && (isAnomalousRatio || isAnomalousVerticalScreen || isFakeMobileGPU);
 
